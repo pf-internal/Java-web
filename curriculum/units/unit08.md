@@ -12,6 +12,7 @@
 - JSPが「最終的にServletのJavaコードに変換されて動く」ことを説明できる
 - JavaBeans（getter/setter）という“形”を言える
 - request/session のどちらに何を置くかを意識できる
+- JSTL（Core）の最小セット（`c:out` / `c:forEach` / `c:if`）で表示を書ける
 
 ---
 
@@ -51,8 +52,10 @@ request/session は「最初から用意されている箱」
 
 - JavaBeansを1つ作り、Servletで値を詰める
 - requestに入れて、JSPで表示する
+- 1つだけ JSTL（`c:out`）で表示してみる（スクリプトレットを使わない）
 
 ### 5-2. 余力があれば（拡張）
 
 - sessionに入れ替えて、次リクエストでも残ることを確認する
+- List（複数件）を request に入れ、JSTL（`c:forEach`）で一覧表示する
 

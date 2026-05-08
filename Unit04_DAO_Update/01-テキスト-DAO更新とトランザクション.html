@@ -88,7 +88,13 @@
 				<li style="margin-bottom: 6px;"><strong>(1)</strong> なぜ <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">finally</code> で <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">setAutoCommit(true)</code> に戻す必要がある？（1行）</li>
 				<li style="margin-bottom: 6px;"><strong>(2)</strong> <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">commit</code> は「いつ」呼ぶ？ <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">rollback</code> は「いつ」呼ぶ？（それぞれ1行）</li>
 				<li style="margin-bottom: 6px;"><strong>(3)</strong> なぜ「複数の更新をまとめる」には <strong>同じ Connection</strong> が必要？（1行）</li>
-				<li style="margin-bottom: 0;"><strong>(4)</strong> 次のうち、更新系の実行メソッドとして正しいのはどれ？\n+					<ul style=\"padding-left: 20px; margin: 6px 0 0 0;\">\n+						<li style=\"margin-bottom: 4px;\"><strong>A</strong> executeQuery</li>\n+						<li style=\"margin-bottom: 4px;\"><strong>B</strong> executeUpdate</li>\n+						<li style=\"margin-bottom: 0;\"><strong>C</strong> next</li>\n+					</ul>\n+				</li>
+				<li style="margin-bottom: 0;"><strong>(4)</strong> 次のうち、更新系の実行メソッドとして正しいのはどれ？
+					<ul style="padding-left: 20px; margin: 6px 0 0 0;">
+						<li style="margin-bottom: 4px;"><strong>A</strong> executeQuery</li>
+						<li style="margin-bottom: 4px;"><strong>B</strong> executeUpdate</li>
+						<li style="margin-bottom: 0;"><strong>C</strong> next</li>
+					</ul>
+				</li>
 			</ul>
 
 			<div style="border-bottom: 1px solid #ccc; margin: 10px 0;"></div>
@@ -115,20 +121,255 @@
 
 	<section style="margin-bottom: 30px;">
 		<h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 15px;">
-			5. EmpDao の更新系（ドラッグでコピー）
+			5. サンプルコード（段階的に難しく）
 		</h2>
+
+		<div style="margin: 0 0 12px 0; padding: 15px; background-color: #f0f8ff; border-radius: 10px; border: 1px solid #e1dbbd;">
+			<p style="margin: 0;"><strong>狙い</strong>　まずは「更新系の最小形（executeUpdate）」→ 次に「同じ Connection を使ったトランザクション」を、2段階で写経します。</p>
+		</div>
+
 		<details style="margin-top: 10px;">
-			<summary style="cursor: pointer; font-weight: bold; color: #0033ff;">insert / updateSalaryAndDept / delete（概要）</summary>
+			<summary style="cursor: pointer; font-weight: bold; color: #0033ff;">(1) 単純な更新系（UPDATE 1本）</summary>
 			<div style="margin: 10px 0; padding: 10px 15px; background-color: #fff; border-radius: 10px; border: 1px solid #e1dbbd;">
-				<p style="margin: 0 0 10px 0; font-size: 13px; color: #555;">全文は <strong>Unit03_DAO/src/EmpDao.java</strong> にあります。主キー <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">emp_id</code> は既存データと重複しない値（演習では 11 以降など）を使うこと。</p>
+				<p style="margin: 0 0 10px 0; font-size: 13px; color: #555;">ポイント：<code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">executeUpdate()</code> の戻り値（更新件数）を表示する。</p>
+				<pre style="background-color: #fdf5e6; color: #333; padding: 12px 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace; margin: 0 0 10px 0;">import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+public class SimpleUpdateSample extends DaoBase {
+
+	public static void main(String[] args) {
+		SimpleUpdateSample app = new SimpleUpdateSample();
+		app.run();
+	}
+
+	private void run() {
+		String sql = "UPDATE emps SET salary = ? WHERE emp_id = ?";
+
+		try (Connection con = getConnection();
+				PreparedStatement ps = con.prepareStatement(sql)) {
+
+			ps.setInt(1, 290000);
+			ps.setInt(2, 3);
+
+			int n = ps.executeUpdate();
+			System.out.println("update件数=" + n);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+}</pre>
 				<div style="background: #e6f7ff; padding: 10px 15px; border: 2px dashed #1890ff; border-radius: 6px;">
 					<p style="font-size: 12px; color: #0050b3; margin-bottom: 8px; font-weight: bold;">マウスで全選択して貼り付け欄へドラッグしてください：</p>
-					<textarea readonly style="width: 100%; height: 280px; font-family: Consolas, monospace; font-size: 13px; padding: 10px; border: 1px solid #91d5ff; background: #fff; display: block; user-select: all !important;">// insert
-String sql = "INSERT INTO emps (emp_id, fname, lname, salary, dept_no) VALUES (?, ?, ?, ?, ?)";
-// update（給与と部署）
-sql = "UPDATE emps SET salary = ?, dept_no = ? WHERE emp_id = ?";
-// delete
-sql = "DELETE FROM emps WHERE emp_id = ?";</textarea>
+					<textarea readonly style="width: 100%; height: 360px; font-family: Consolas, monospace; font-size: 13px; padding: 10px; border: 1px solid #91d5ff; background: #fff; display: block; user-select: all !important;">import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+public class SimpleUpdateSample extends DaoBase {
+
+	public static void main(String[] args) {
+		SimpleUpdateSample app = new SimpleUpdateSample();
+		app.run();
+	}
+
+	private void run() {
+		String sql = "UPDATE emps SET salary = ? WHERE emp_id = ?";
+
+		try (Connection con = getConnection();
+				PreparedStatement ps = con.prepareStatement(sql)) {
+
+			ps.setInt(1, 290000);
+			ps.setInt(2, 3);
+
+			int n = ps.executeUpdate();
+			System.out.println("update件数=" + n);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+}</textarea>
+				</div>
+			</div>
+		</details>
+
+		<details style="margin-top: 10px;">
+			<summary style="cursor: pointer; font-weight: bold; color: #0033ff;">(2) トランザクション込み（同一Connectionで複数操作）</summary>
+			<div style="margin: 10px 0; padding: 10px 15px; background-color: #fff; border-radius: 10px; border: 1px solid #e1dbbd;">
+				<p style="margin: 0 0 10px 0; font-size: 13px; color: #555;">ポイント：<code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">setAutoCommit(false)</code> → 成功で <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">commit</code>、失敗で <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">rollback</code>、最後に <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">true</code> に戻す。</p>
+				<pre style="background-color: #fdf5e6; color: #333; padding: 12px 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace; margin: 0 0 10px 0;">import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class TransactionUpdateSample extends DaoBase {
+
+	public static void main(String[] args) {
+		TransactionUpdateSample app = new TransactionUpdateSample();
+		app.run();
+	}
+
+	private void run() {
+		int empId = 99;
+
+		String insertSql = "INSERT INTO emps (emp_id, fname, lname, salary, dept_no) VALUES (?, ?, ?, ?, ?)";
+		String selectSql = "SELECT emp_id, fname, lname, salary, dept_no FROM emps WHERE emp_id = ?";
+		String updateSql = "UPDATE emps SET salary = ? WHERE emp_id = ?";
+		String deleteSql = "DELETE FROM emps WHERE emp_id = ?";
+
+		try (Connection con = getConnection()) {
+			con.setAutoCommit(false);
+			try {
+				// 1) INSERT
+				try (PreparedStatement ps = con.prepareStatement(insertSql)) {
+					ps.setInt(1, empId);
+					ps.setString(2, "Tx");
+					ps.setString(3, "Sample");
+					ps.setInt(4, 200000);
+					ps.setInt(5, 10);
+					System.out.println("insert件数=" + ps.executeUpdate());
+				}
+
+				// 2) SELECT
+				selectAndPrint(con, selectSql, empId);
+
+				// 3) UPDATE
+				try (PreparedStatement ps = con.prepareStatement(updateSql)) {
+					ps.setInt(1, 210000);
+					ps.setInt(2, empId);
+					System.out.println("update件数=" + ps.executeUpdate());
+				}
+
+				// 4) SELECT
+				selectAndPrint(con, selectSql, empId);
+
+				// 5) DELETE
+				try (PreparedStatement ps = con.prepareStatement(deleteSql)) {
+					ps.setInt(1, empId);
+					System.out.println("delete件数=" + ps.executeUpdate());
+				}
+
+				// 6) SELECT（該当なし確認）
+				selectAndPrint(con, selectSql, empId);
+
+				con.commit();
+			} catch (SQLException e) {
+				con.rollback();
+				e.printStackTrace();
+			} finally {
+				con.setAutoCommit(true);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void selectAndPrint(Connection con, String sql, int empId) throws SQLException {
+		try (PreparedStatement ps = con.prepareStatement(sql)) {
+			ps.setInt(1, empId);
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					System.out.println("emp_id=" + rs.getInt("emp_id")
+							+ " fname=" + rs.getString("fname")
+							+ " lname=" + rs.getString("lname")
+							+ " salary=" + rs.getInt("salary")
+							+ " dept_no=" + rs.getInt("dept_no"));
+				} else {
+					System.out.println("該当なし: emp_id=" + empId);
+				}
+			}
+		}
+	}
+}</pre>
+				<div style="background: #e6f7ff; padding: 10px 15px; border: 2px dashed #1890ff; border-radius: 6px;">
+					<p style="font-size: 12px; color: #0050b3; margin-bottom: 8px; font-weight: bold;">マウスで全選択して貼り付け欄へドラッグしてください：</p>
+					<textarea readonly style="width: 100%; height: 620px; font-family: Consolas, monospace; font-size: 13px; padding: 10px; border: 1px solid #91d5ff; background: #fff; display: block; user-select: all !important;">import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class TransactionUpdateSample extends DaoBase {
+
+	public static void main(String[] args) {
+		TransactionUpdateSample app = new TransactionUpdateSample();
+		app.run();
+	}
+
+	private void run() {
+		int empId = 99;
+
+		String insertSql = "INSERT INTO emps (emp_id, fname, lname, salary, dept_no) VALUES (?, ?, ?, ?, ?)";
+		String selectSql = "SELECT emp_id, fname, lname, salary, dept_no FROM emps WHERE emp_id = ?";
+		String updateSql = "UPDATE emps SET salary = ? WHERE emp_id = ?";
+		String deleteSql = "DELETE FROM emps WHERE emp_id = ?";
+
+		try (Connection con = getConnection()) {
+			con.setAutoCommit(false);
+			try {
+				// 1) INSERT
+				try (PreparedStatement ps = con.prepareStatement(insertSql)) {
+					ps.setInt(1, empId);
+					ps.setString(2, "Tx");
+					ps.setString(3, "Sample");
+					ps.setInt(4, 200000);
+					ps.setInt(5, 10);
+					System.out.println("insert件数=" + ps.executeUpdate());
+				}
+
+				// 2) SELECT
+				selectAndPrint(con, selectSql, empId);
+
+				// 3) UPDATE
+				try (PreparedStatement ps = con.prepareStatement(updateSql)) {
+					ps.setInt(1, 210000);
+					ps.setInt(2, empId);
+					System.out.println("update件数=" + ps.executeUpdate());
+				}
+
+				// 4) SELECT
+				selectAndPrint(con, selectSql, empId);
+
+				// 5) DELETE
+				try (PreparedStatement ps = con.prepareStatement(deleteSql)) {
+					ps.setInt(1, empId);
+					System.out.println("delete件数=" + ps.executeUpdate());
+				}
+
+				// 6) SELECT（該当なし確認）
+				selectAndPrint(con, selectSql, empId);
+
+				con.commit();
+			} catch (SQLException e) {
+				con.rollback();
+				e.printStackTrace();
+			} finally {
+				con.setAutoCommit(true);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void selectAndPrint(Connection con, String sql, int empId) throws SQLException {
+		try (PreparedStatement ps = con.prepareStatement(sql)) {
+			ps.setInt(1, empId);
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					System.out.println("emp_id=" + rs.getInt("emp_id")
+							+ " fname=" + rs.getString("fname")
+							+ " lname=" + rs.getString("lname")
+							+ " salary=" + rs.getInt("salary")
+							+ " dept_no=" + rs.getInt("dept_no"));
+				} else {
+					System.out.println("該当なし: emp_id=" + empId);
+				}
+			}
+		}
+	}
+}</textarea>
 				</div>
 			</div>
 		</details>

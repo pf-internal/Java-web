@@ -12,6 +12,7 @@
 - 黄金ルート（Browser→Tomcat→Servlet→DAO→DB→JSP→Browser）を描ける
 - “名前の対応”を崩さずに実装できる（パラメータ名・属性名・変数名）
 - 1回で動かす（動作優先）
+- JSTL（`c:out` / `c:forEach` / `c:if`）前提で、表示を組み立てられる
 
 ---
 
@@ -33,6 +34,7 @@
 フォームname → getParameter("name")
 setAttribute("key") → JSPで取り出すkey
 DAOメソッド名 → SQL（SELECT/INSERT）
+JSP表示（JSTL）: c:out / c:forEach / c:if
 ```
 
 ---
