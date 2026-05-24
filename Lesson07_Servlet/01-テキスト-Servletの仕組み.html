@@ -1,0 +1,366 @@
+Unit06 Servletの仕組み ～司令塔「受け取る→判断→渡す→返す」～
+<div style="max-width: 800px; margin: 0 auto; font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif; line-height: 1.6; color: #333; padding: 20px; border: 1px solid #eee; background-color: #fff;">
+
+  <h1 style="padding-left: 10px; background-color: #f0f8ff; color: #0033ff; font-size: 24px; margin-bottom: 30px;">
+    Unit06 Servletの仕組み ～司令塔「受け取る→判断→渡す→返す」～
+  </h1>
+
+  <!-- 前回の復習 -->
+  <section style="margin-bottom: 30px;">
+    <h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 15px;">
+      前回の復習
+    </h2>
+
+    <div style="background-color: #f0f8ff; padding: 20px; border-radius: 5px; border-left: 5px solid #0033ff; margin-bottom: 15px;">
+      <div style="margin: 15px 0; background-color: #fff; padding: 15px; border-radius: 10px; border: 1px solid #e1dbbd;">
+        <p style="margin-bottom: 8px;"><strong>Unit05 で学んだこと</strong></p>
+        <ul style="padding-left: 20px; margin-bottom: 0;">
+          <li style="margin-bottom: 8px;">ブラウザ →（HTTPリクエスト）→ サーバ　←→　ブラウザ ←（HTTPレスポンス）← サーバ</li>
+          <li style="margin-bottom: 8px;">GET は「取得」、POST は「送信・変更」</li>
+          <li style="margin-bottom: 8px;">Tomcat は <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">webapps / アプリ名 / WEB-INF</code> の3層構造</li>
+          <li style="margin-bottom: 0;">WEB-INF の中はブラウザから直接見えない</li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="background-color: #f2f2f2; padding: 15px; border-radius: 5px; border-left: 5px solid #888888; margin-bottom: 10px;">
+      <p style="margin: 0;"><strong>カバ先生：</strong>前回は Tomcat が HTTP リクエストを受け付けるところまで学びました。今日は、そのリクエストを実際に処理する Java クラス ― Servlet ― を学びます。DAO や DB はすでに作れるので、あとは<strong>フォームから受け取って DAO へ渡す橋</strong>を作ります。</p>
+    </div>
+  </section>
+
+  <hr style="border: none; border-top: 1px solid #ccc; margin: 1.5em 0;">
+
+  <!-- 65秒集中動画 -->
+  <section style="margin-bottom: 30px;">
+    <h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 15px;">
+      65秒集中動画：doGet / doPost の型を見る
+    </h2>
+
+    <div style="background-color: #f0f8ff; padding: 15px; border-radius: 5px; border-left: 5px solid #0033ff; margin-bottom: 15px;">
+      <p style="margin: 0;"><strong>視聴区間</strong>：51:02 〜 52:07（手動停止の目安：<strong>52:07</strong>）</p>
+    </div>
+
+    <div style="margin-bottom: 10px;">
+      <iframe
+        width="560"
+        height="315"
+        src="https://www.youtube.com/embed/gvcCEFlA-50?start=3062&end=3127&rel=0"
+        title="Servletの doGet/doPost の型（抜粋）"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+        style="max-width: 100%; display: block;">
+      </iframe>
+    </div>
+
+    <p style="font-size: 12px; color: #666; margin-bottom: 15px;">
+      ※ リセット方法：ブラウザの更新（Windows: F5 / Ctrl+R、Mac: Command+R）<br>
+      ※ 手動停止の目安：<strong>52:07</strong>
+    </p>
+
+    <div style="background-color: #f2f2f2; padding: 15px; border-radius: 5px; border-left: 5px solid #888888; margin-bottom: 10px;">
+      <p style="margin: 0;"><strong>カバ先生：</strong>Servlet の処理は3ステップです。① <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">getParameter</code>（受け取る）→ ② 処理（DAO へ）→ ③ <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">setAttribute + forward</code>（表示へ渡す）</p>
+    </div>
+  </section>
+
+  <hr style="border: none; border-top: 1px solid #ccc; margin: 1.5em 0;">
+
+  <!-- Servletとは -->
+  <section style="margin-bottom: 30px;">
+    <h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 15px;">
+      チャプター1：Servletは「司令塔」
+    </h2>
+
+    <p style="margin-bottom: 10px;">Servlet は、Webアプリの中で<strong>受け取る→判断→渡す→返す</strong>を担当する Java クラスです。</p>
+
+    <div style="background-color: #f0f8ff; padding: 20px; border-radius: 5px; border-left: 5px solid #0033ff; margin-bottom: 15px;">
+      <div style="margin: 15px 0; background-color: #fff; padding: 15px; border-radius: 10px; border: 1px solid #e1dbbd;">
+        <p style="margin-bottom: 10px;"><strong>データの旅（Servlet の立ち位置）</strong></p>
+        <pre style="background-color: #fdf5e6; color: #333; padding: 12px; border-radius: 5px; border: 1px solid #e1dbbd; margin: 0; font-family: monospace;">
+画面（フォーム）
+    ↓  HTTPリクエスト（POST）
+【Servlet ← 今日はここ】
+    ↓  getParameter で値を受け取る
+    ↓  DAO に処理を依頼
+    ↓  DB（MySQL）
+    ↑  結果を受け取る
+    ↓  setAttribute で JSP に渡す
+    ↓  forward で JSP へ移動
+画面（JSP）← ブラウザに返る</pre>
+      </div>
+    </div>
+
+    <div style="background-color: #f2f2f2; padding: 15px; border-radius: 5px; border-left: 5px solid #888888; margin-bottom: 10px;">
+      <p style="margin: 0;"><strong>カバ先生：</strong>Servlet は<strong>画面を自分では描かない</strong>のがポイントです。<strong>Servlet は表示しない、JSP が表示する</strong>。役割を分けることで、それぞれをシンプルに保てます。</p>
+    </div>
+  </section>
+
+  <hr style="border: none; border-top: 1px solid #ccc; margin: 1.5em 0;">
+
+  <!-- doGet / doPost の基本型 -->
+  <section style="margin-bottom: 30px;">
+    <h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 15px;">
+      チャプター2：doGet / doPost の基本型
+    </h2>
+
+    <p style="margin-bottom: 10px;">Servlet クラスは <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">HttpServlet</code> を継承し、GETとPOSTを別々のメソッドで受け取ります。</p>
+
+    <pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">
+@WebServlet("/items")
+public class ItemServlet extends HttpServlet {
+
+	// GET リクエスト（一覧表示など）
+	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		// ここに GET の処理を書く
+	}
+
+	// POST リクエスト（登録・更新など）
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		// ここに POST の処理を書く
+	}
+}</pre>
+
+    <table style="border-collapse: collapse; width: 100%; margin-top: 15px; margin-bottom: 15px;">
+      <tr>
+        <th style="background-color: #f0f8ff; border: 1px solid #ccc; padding: 8px; text-align: left;">キーワード</th>
+        <th style="background-color: #f0f8ff; border: 1px solid #ccc; padding: 8px; text-align: left;">役割</th>
+      </tr>
+      <tr>
+        <td style="border: 1px solid #ccc; padding: 8px;"><code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">@WebServlet("/items")</code></td>
+        <td style="border: 1px solid #ccc; padding: 8px;">このクラスが <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">/items</code> という URL に対応することを宣言する</td>
+      </tr>
+      <tr>
+        <td style="border: 1px solid #ccc; padding: 8px;"><code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">HttpServletRequest request</code></td>
+        <td style="border: 1px solid #ccc; padding: 8px;">ブラウザから来た情報（フォームの値など）を受け取る箱</td>
+      </tr>
+      <tr>
+        <td style="border: 1px solid #ccc; padding: 8px;"><code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">HttpServletResponse response</code></td>
+        <td style="border: 1px solid #ccc; padding: 8px;">ブラウザへ返す情報を設定する箱</td>
+      </tr>
+      <tr>
+        <td style="border: 1px solid #ccc; padding: 8px;"><code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">doGet</code></td>
+        <td style="border: 1px solid #ccc; padding: 8px;">GETリクエスト時に Tomcat から呼ばれるメソッド</td>
+      </tr>
+      <tr>
+        <td style="border: 1px solid #ccc; padding: 8px;"><code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">doPost</code></td>
+        <td style="border: 1px solid #ccc; padding: 8px;">POSTリクエスト時に Tomcat から呼ばれるメソッド</td>
+      </tr>
+    </table>
+
+    <div style="background-color: #f2f2f2; padding: 15px; border-radius: 5px; border-left: 5px solid #888888; margin-bottom: 10px;">
+      <p style="margin: 0;"><strong>カバ先生：</strong>フォームの <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">method="post"</code> → <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">doPost</code>、GET リンク → <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">doGet</code> が対応します。Tomcat がメソッドを判断して自動で振り分けてくれます。私たちは中身を書くだけです。</p>
+    </div>
+  </section>
+
+  <hr style="border: none; border-top: 1px solid #ccc; margin: 1.5em 0;">
+
+  <!-- 黄金フロー：getParameter → 型変換 → DAO -->
+  <section style="margin-bottom: 30px;">
+    <h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 15px;">
+      チャプター3：黄金フロー①「受け取る→変換→DAOへ」
+    </h2>
+
+    <p style="margin-bottom: 10px;">フォームから送られた値を取り出し、Java の型に変換して DAO へ渡す流れです。</p>
+
+    <pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">
+@Override
+protected void doPost(HttpServletRequest request, HttpServletResponse response)
+		throws ServletException, IOException {
+
+	// ① フォームの値を受け取る（すべて String で来る）
+	String itemName = request.getParameter("itemName");
+	String priceStr = request.getParameter("price");
+
+	// ② 型変換（String → int）
+	int price = Integer.parseInt(priceStr);
+
+	// ③ DTO（Bean）に詰める
+	ItemDto dto = new ItemDto();
+	dto.setItemName(itemName);
+	dto.setPrice(price);
+
+	// ④ DAOへ渡して DB に登録
+	ItemDao dao = new ItemDao();
+	dao.insert(dto);
+}</pre>
+
+    <table style="border-collapse: collapse; width: 100%; margin-top: 15px; margin-bottom: 15px;">
+      <tr>
+        <th style="background-color: #f0f8ff; border: 1px solid #ccc; padding: 8px; text-align: left;">ステップ</th>
+        <th style="background-color: #f0f8ff; border: 1px solid #ccc; padding: 8px; text-align: left;">コード</th>
+        <th style="background-color: #f0f8ff; border: 1px solid #ccc; padding: 8px; text-align: left;">注意点</th>
+      </tr>
+      <tr>
+        <td style="border: 1px solid #ccc; padding: 8px;">① 受け取る</td>
+        <td style="border: 1px solid #ccc; padding: 8px;"><code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">request.getParameter("itemName")</code></td>
+        <td style="border: 1px solid #ccc; padding: 8px;">引数はフォームの <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">name</code> 属性と<strong>完全一致</strong>させる</td>
+      </tr>
+      <tr>
+        <td style="border: 1px solid #ccc; padding: 8px;">② 型変換</td>
+        <td style="border: 1px solid #ccc; padding: 8px;"><code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">Integer.parseInt(priceStr)</code></td>
+        <td style="border: 1px solid #ccc; padding: 8px;">getParameter の戻り値は必ず <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">String</code>。数値が必要なら変換する</td>
+      </tr>
+      <tr>
+        <td style="border: 1px solid #ccc; padding: 8px;">③ DTO に詰める</td>
+        <td style="border: 1px solid #ccc; padding: 8px;"><code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">dto.setItemName(itemName)</code></td>
+        <td style="border: 1px solid #ccc; padding: 8px;">DTO は「データを運ぶ箱」。setter で値を詰める</td>
+      </tr>
+      <tr>
+        <td style="border: 1px solid #ccc; padding: 8px;">④ DAO へ渡す</td>
+        <td style="border: 1px solid #ccc; padding: 8px;"><code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">dao.insert(dto)</code></td>
+        <td style="border: 1px solid #ccc; padding: 8px;">DB 操作は DAO の仕事。Servlet は「頼む」だけ</td>
+      </tr>
+    </table>
+
+    <div style="background-color: #f2f2f2; padding: 15px; border-radius: 5px; border-left: 5px solid #888888; margin-bottom: 10px;">
+      <p style="margin: 0;"><strong>カバ先生</strong>：「<code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">getParameter</code> の引数とフォームの <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">name</code> 属性は<strong>完全に一致</strong>させてください。ここが食い違うと <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">null</code> が返ってきて、次の <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">parseInt</code> で例外が起きます。」</p>
+    </div>
+  </section>
+
+  <hr style="border: none; border-top: 1px solid #ccc; margin: 1.5em 0;">
+
+  <!-- 黄金フロー：setAttribute + forward -->
+  <section style="margin-bottom: 30px;">
+    <h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 15px;">
+      チャプター4：黄金フロー②「結果をJSPに渡す」
+    </h2>
+
+    <p style="margin-bottom: 10px;">DAO から受け取った結果を JSP に渡して画面を表示させる流れです。</p>
+
+    <pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">
+@Override
+protected void doGet(HttpServletRequest request, HttpServletResponse response)
+		throws ServletException, IOException {
+
+	// ① DAOから一覧を取得
+	ItemDao dao = new ItemDao();
+	List&lt;ItemDto&gt; itemList = dao.findAll();
+
+	// ② JSP に渡すために request に保存
+	request.setAttribute("items", itemList);
+
+	// ③ JSP に処理を移す（forward）
+	RequestDispatcher dispatcher =
+			request.getRequestDispatcher("/WEB-INF/jsp/itemList.jsp");
+	dispatcher.forward(request, response);
+}</pre>
+
+    <table style="border-collapse: collapse; width: 100%; margin-top: 15px; margin-bottom: 15px;">
+      <tr>
+        <th style="background-color: #f0f8ff; border: 1px solid #ccc; padding: 8px; text-align: left;">ステップ</th>
+        <th style="background-color: #f0f8ff; border: 1px solid #ccc; padding: 8px; text-align: left;">コード</th>
+        <th style="background-color: #f0f8ff; border: 1px solid #ccc; padding: 8px; text-align: left;">注意点</th>
+      </tr>
+      <tr>
+        <td style="border: 1px solid #ccc; padding: 8px;">① DAOから取得</td>
+        <td style="border: 1px solid #ccc; padding: 8px;"><code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">dao.findAll()</code></td>
+        <td style="border: 1px solid #ccc; padding: 8px;">Unit03で作ったDAOをそのまま使える</td>
+      </tr>
+      <tr>
+        <td style="border: 1px solid #ccc; padding: 8px;">② JSPへ預ける</td>
+        <td style="border: 1px solid #ccc; padding: 8px;"><code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">request.setAttribute("items", itemList)</code></td>
+        <td style="border: 1px solid #ccc; padding: 8px;">キー名 <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">"items"</code> でJSP側から取り出せる</td>
+      </tr>
+      <tr>
+        <td style="border: 1px solid #ccc; padding: 8px;">③ JSPへ移動</td>
+        <td style="border: 1px solid #ccc; padding: 8px;"><code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">dispatcher.forward(request, response)</code></td>
+        <td style="border: 1px solid #ccc; padding: 8px;">forwardは<strong>サーバ内</strong>の移動。URLは変わらない</td>
+      </tr>
+    </table>
+
+    <div style="background-color: #f2f2f2; padding: 15px; border-radius: 5px; border-left: 5px solid #888888; margin-bottom: 10px;">
+      <p style="margin: 0;"><strong>カバ先生：</strong><code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">setAttribute("items", ...)</code> と JSP 側の <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">${items}</code> は<strong>同じキー文字列</strong>でつながっています。このキー名はプロジェクト内で統一してください。食い違うと JSP 側で null になります。</p>
+    </div>
+  </section>
+
+  <hr style="border: none; border-top: 1px solid #ccc; margin: 1.5em 0;">
+
+  <!-- データの通り道まとめ図 -->
+  <section style="margin-bottom: 30px;">
+    <h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 15px;">
+      チャプター5：データの通り道マップ
+    </h2>
+
+    <p style="margin-bottom: 10px;">今日学んだフローを「名前」で追うと次のようになります。フォームの <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">name</code> 属性から JSP の表示まで、<strong>同じキー名がどこで使われるか</strong>を意識してください。</p>
+
+    <pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">
+【フォーム（HTML）】
+  name="itemName"  ←→  name="price"
+
+          ↓ POSTリクエスト
+
+【Servlet の doPost】
+  getParameter("itemName")  ←→  getParameter("price")
+          ↓ 型変換・DTO に詰める
+  dao.insert(dto)  → DB
+
+【Servlet の doGet】
+  dao.findAll()  ← DB
+  setAttribute("items", itemList)  ← キー名："items"
+  forward("/WEB-INF/jsp/itemList.jsp")
+
+          ↓ forward
+
+【JSP（itemList.jsp）】
+  ${items}  または  getAttribute("items")  ← 同じキー名："items"</pre>
+
+    <div style="background-color: #f2f2f2; padding: 15px; border-radius: 5px; border-left: 5px solid #888888; margin-top: 10px;">
+      <p style="margin: 0;"><strong>カバ先生</strong>：「この図の<strong>矢印とキー名</strong>を自分で描けるようになることが、今日のゴールです。」</p>
+    </div>
+  </section>
+
+  <hr style="border: none; border-top: 1px solid #ccc; margin: 1.5em 0;">
+
+  <!-- まとめ -->
+  <section style="margin-bottom: 30px;">
+    <h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 15px;">
+      まとめ
+    </h2>
+
+    <div style="background-color: #f0f8ff; padding: 20px; border-radius: 5px; border-left: 5px solid #0033ff;">
+      <div style="margin: 15px 0; background-color: #fff; padding: 15px; border-radius: 10px; border: 1px solid #e1dbbd;">
+        <ul style="padding-left: 20px; margin-bottom: 0;">
+          <li style="margin-bottom: 10px;"><strong>Servlet は「司令塔」</strong>。画面を描かず、受け取り・判断・渡し・返しに専念する</li>
+          <li style="margin-bottom: 10px;"><strong>doGet</strong> は GET リクエスト（一覧表示など）、<strong>doPost</strong> は POST リクエスト（登録・更新）に対応する</li>
+          <li style="margin-bottom: 10px;"><strong>getParameter</strong> の引数はフォームの <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">name</code> 属性と<strong>完全一致</strong>させる</li>
+          <li style="margin-bottom: 10px;"><strong>getParameter の戻り値は必ず String</strong>。数値が必要なら <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">Integer.parseInt</code> で変換する</li>
+          <li style="margin-bottom: 10px;"><strong>setAttribute(キー, 値)</strong> → <strong>forward</strong> で JSP にデータを渡す。キー名は JSP 側と一致させる</li>
+          <li style="margin-bottom: 0;"><strong>DAOはUnit03〜04で作ったものを再利用</strong>。Servletは「頼む」だけ</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5分間プレゼン課題 -->
+  <section style="margin-bottom: 30px;">
+    <h2 style="border-left: 5px solid #cc0000; padding-left: 10px; color: #cc0000; font-size: 18px; margin-bottom: 15px;">
+      マスター認定：5分間プレゼン課題
+    </h2>
+
+    <div style="background-color: #fff5f5; padding: 20px; border-radius: 5px; border-left: 5px solid #cc0000; margin-bottom: 15px;">
+      <p style="margin-bottom: 10px;"><strong>お題</strong>：「Servletの司令塔メカニズム」をホワイトボードに描いて説明してください。</p>
+      <p style="margin-bottom: 6px;"><strong>ルール</strong>：講師のOKが出るまで次に進めない。</p>
+    </div>
+
+    <h3 style="padding-left: 10px; color: #cc0000; font-size: 16px; margin-top: 20px; margin-bottom: 10px;">
+      チェックポイント（これだけ描ければOK）
+    </h3>
+
+    <div style="background-color: #f0f8ff; padding: 20px; border-radius: 5px; border-left: 5px solid #0033ff;">
+      <div style="margin: 15px 0; background-color: #fff; padding: 15px; border-radius: 10px; border: 1px solid #e1dbbd;">
+        <ul style="padding-left: 20px; margin-bottom: 0;">
+          <li style="margin-bottom: 10px;">Servlet を「中央の司令塔」として描ける（左：フォーム、中：Servlet、右：DAO/DB、下：JSP）</li>
+          <li style="margin-bottom: 10px;">request / response の矢印が描ける</li>
+          <li style="margin-bottom: 0;">「<strong>Servletは表示しない、JSPが表示する</strong>」を言葉で説明できる</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</div>

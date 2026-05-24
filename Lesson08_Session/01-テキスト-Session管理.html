@@ -1,0 +1,237 @@
+Unit07 Session管理 ～CookieとSessionで「状態」を持つ～
+<div style="max-width: 800px; margin: 0 auto; font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif; line-height: 1.6; color: #333; padding: 20px; border: 1px solid #eee; background-color: #fff;">
+
+  <h1 style="padding-left: 10px; background-color: #f0f8ff; color: #0033ff; font-size: 24px; margin-bottom: 30px;">
+    Unit07 Session管理 ～CookieとSessionで「状態」を持つ～
+  </h1>
+
+  <!-- 前回の復習 -->
+  <section style="margin-bottom: 30px;">
+    <h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 15px;">
+      前回の復習
+    </h2>
+
+    <div style="background-color: #f0f8ff; padding: 20px; border-radius: 5px; border-left: 5px solid #0033ff; margin-bottom: 15px;">
+      <div style="margin: 15px 0; background-color: #fff; padding: 15px; border-radius: 10px; border: 1px solid #e1dbbd;">
+        <p style="margin-bottom: 8px;"><strong>Unit06 で学んだこと（写経した内容）</strong></p>
+        <ul style="padding-left: 20px; margin-bottom: 0;">
+          <li style="margin-bottom: 8px;"><code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">getParameter</code>（受け取る）→ 型変換 → DTO → DAO へ</li>
+          <li style="margin-bottom: 8px;"><code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">setAttribute</code>（JSPへ預ける）→ <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">forward</code>（JSPへ移動）</li>
+          <li style="margin-bottom: 0;">Servlet は「表示しない」—— 画面は JSP が担当する</li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="background-color: #f2f2f2; padding: 15px; border-radius: 5px; border-left: 5px solid #888888; margin-bottom: 10px;">
+      <p style="margin: 0;"><strong>カバ先生：</strong>Unit06 では1回のリクエスト・レスポンスの流れを学びました。今日のテーマは「<strong>次のリクエストにも情報を持ち越す</strong>」仕組みです。HTTP はもともと<strong>状態を持たない（ステートレス）</strong>な仕組みで、1回のリクエストが終わるとサーバはお客さんを忘れてしまいます。それを補うのが <strong>Cookie と Session</strong> です。</p>
+    </div>
+  </section>
+
+  <hr style="border: none; border-top: 1px solid #ccc; margin: 1.5em 0;">
+
+  <!-- 65秒集中動画 -->
+  <section style="margin-bottom: 30px;">
+    <h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 15px;">
+      65秒集中動画：Cookie / Session の2箱図を見る
+    </h2>
+
+    <div style="background-color: #f0f8ff; padding: 15px; border-radius: 5px; border-left: 5px solid #0033ff; margin-bottom: 15px;">
+      <p style="margin: 0;"><strong>視聴区間</strong>：1:18:50 〜 1:19:55（手動停止の目安：<strong>1:18:55</strong>）</p>
+    </div>
+
+    <div style="margin-bottom: 10px;">
+      <iframe
+        width="560"
+        height="315"
+        src="https://www.youtube.com/embed/gvcCEFlA-50?start=4670&end=4735&rel=0"
+        title="Cookie/Session の2箱図（抜粋）"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+        style="max-width: 100%; display: block;">
+      </iframe>
+    </div>
+
+    <p style="font-size: 12px; color: #666; margin-bottom: 15px;">
+      ※ リセット方法：ブラウザの更新（Windows: F5 / Ctrl+R、Mac: Command+R）<br>
+      ※ 手動停止の目安：<strong>1:18:55</strong>
+    </p>
+
+    <div style="background-color: #f2f2f2; padding: 15px; border-radius: 5px; border-left: 5px solid #888888; margin-bottom: 10px;">
+      <p style="margin-bottom: 8px;"><strong>カバ先生：</strong>動画で確認したら、この2行が要点です。</p>
+      <pre style="background-color: #fdf5e6; color: #333; padding: 12px; border-radius: 5px; border: 1px solid #e1dbbd; margin: 0; font-family: monospace;">Cookie  = ブラウザが持つID（SessionID）
+Session = サーバが持つ台帳（SessionID → データ）</pre>
+    </div>
+  </section>
+
+  <hr style="border: none; border-top: 1px solid #ccc; margin: 1.5em 0;">
+
+  <!-- CookieとSessionの関係 -->
+  <section style="margin-bottom: 30px;">
+    <h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 15px;">
+      チャプター1：CookieとSessionは「IDと台帳」
+    </h2>
+
+    <p style="margin-bottom: 10px;">図解で仕組みを押さえましょう。</p>
+
+    <pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">
+【1回目アクセス】
+  ブラウザ ─── HTTPリクエスト ──────────────────→ Tomcat
+                                                    ↓
+                                             SessionIDを発行
+                                             台帳に「userName=ユウタ」を記録
+  ブラウザ ←── HTTPレスポンス（Set-Cookie: JSESSIONID=abc123）── Tomcat
+  （ブラウザがIDを保存）
+
+【2回目アクセス】
+  ブラウザ ─── HTTPリクエスト（Cookie: JSESSIONID=abc123）───→ Tomcat
+                                                    ↓
+                                             IDで台帳を引く
+                                             「userName=ユウタ」を取り出せる</pre>
+
+    <table style="border-collapse: collapse; width: 100%; margin-top: 15px; margin-bottom: 15px;">
+      <tr>
+        <th style="background-color: #f0f8ff; border: 1px solid #ccc; padding: 8px; text-align: left;">種類</th>
+        <th style="background-color: #f0f8ff; border: 1px solid #ccc; padding: 8px; text-align: left;">誰が持つ</th>
+        <th style="background-color: #f0f8ff; border: 1px solid #ccc; padding: 8px; text-align: left;">何を持つ</th>
+        <th style="background-color: #f0f8ff; border: 1px solid #ccc; padding: 8px; text-align: left;">寿命</th>
+      </tr>
+      <tr>
+        <td style="border: 1px solid #ccc; padding: 8px;"><strong>Cookie</strong></td>
+        <td style="border: 1px solid #ccc; padding: 8px;">ブラウザ</td>
+        <td style="border: 1px solid #ccc; padding: 8px;">SessionID（番号札）</td>
+        <td style="border: 1px solid #ccc; padding: 8px;">ブラウザを閉じるまで（デフォルト）</td>
+      </tr>
+      <tr>
+        <td style="border: 1px solid #ccc; padding: 8px;"><strong>Session</strong></td>
+        <td style="border: 1px solid #ccc; padding: 8px;">サーバ（Tomcat）</td>
+        <td style="border: 1px solid #ccc; padding: 8px;">実際のデータ（台帳）</td>
+        <td style="border: 1px solid #ccc; padding: 8px;">一定時間操作なし or invalidate() まで</td>
+      </tr>
+    </table>
+
+    <div style="background-color: #f2f2f2; padding: 15px; border-radius: 5px; border-left: 5px solid #888888; margin-bottom: 10px;">
+      <p style="margin: 0;"><strong>カバ先生：</strong>イメージはレストランの番号札です。お客さん（ブラウザ）が番号札（Cookie）を持ち、お店（サーバ）が番号で注文の台帳（Session）を管理します。<strong>データはサーバ側に置き、ブラウザには番号だけ渡す</strong>のがポイントです。</p>
+    </div>
+  </section>
+
+  <hr style="border: none; border-top: 1px solid #ccc; margin: 1.5em 0;">
+
+  <!-- HttpSession の操作 -->
+  <section style="margin-bottom: 30px;">
+    <h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 15px;">
+      チャプター2：HttpSession の基本操作
+    </h2>
+
+    <p style="margin-bottom: 10px;">Servlet から Session を操作するコードの型です。</p>
+
+    <h3 style="padding-left: 10px; color: #0033ff; font-size: 16px; margin-top: 15px; margin-bottom: 10px;">
+      Session に値を保存する
+    </h3>
+
+    <pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">
+// Session を取得（なければ新規作成）
+HttpSession session = request.getSession();
+
+// Session に値を保存
+session.setAttribute("loginUser", "ユウタ");</pre>
+
+    <h3 style="padding-left: 10px; color: #0033ff; font-size: 16px; margin-top: 20px; margin-bottom: 10px;">
+      Session から値を取り出す
+    </h3>
+
+    <pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">
+HttpSession session = request.getSession();
+
+// Session から値を取り出す（キャストが必要）
+String loginUser = (String) session.getAttribute("loginUser");</pre>
+
+    <h3 style="padding-left: 10px; color: #0033ff; font-size: 16px; margin-top: 20px; margin-bottom: 10px;">
+      Session を破棄する（ログアウト）
+    </h3>
+
+    <pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">
+HttpSession session = request.getSession(false); // なければ null を返す
+if (session != null) {
+	session.invalidate(); // Session を破棄（ログアウト相当）
+}</pre>
+
+  </section>
+
+  <hr style="border: none; border-top: 1px solid #ccc; margin: 1.5em 0;">
+
+  <!-- request vs session -->
+  <section style="margin-bottom: 30px;">
+    <h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 15px;">
+      チャプター3：request と session の使い分け
+    </h2>
+
+    <table style="border-collapse: collapse; width: 100%; margin-bottom: 15px;">
+      <tr>
+        <th style="background-color: #f0f8ff; border: 1px solid #ccc; padding: 8px; text-align: left;">スコープ</th>
+        <th style="background-color: #f0f8ff; border: 1px solid #ccc; padding: 8px; text-align: left;">寿命</th>
+        <th style="background-color: #f0f8ff; border: 1px solid #ccc; padding: 8px; text-align: left;">使いどき</th>
+        <th style="background-color: #f0f8ff; border: 1px solid #ccc; padding: 8px; text-align: left;">操作</th>
+      </tr>
+      <tr>
+        <td style="border: 1px solid #ccc; padding: 8px;"><strong>request</strong></td>
+        <td style="border: 1px solid #ccc; padding: 8px;">1回の往復のみ</td>
+        <td style="border: 1px solid #ccc; padding: 8px;">一覧データ、エラーメッセージなど<br>1回表示すれば消えていいもの</td>
+        <td style="border: 1px solid #ccc; padding: 8px;"><code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">request.setAttribute</code><br><code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">request.getAttribute</code></td>
+      </tr>
+      <tr>
+        <td style="border: 1px solid #ccc; padding: 8px;"><strong>session</strong></td>
+        <td style="border: 1px solid #ccc; padding: 8px;">ブラウザ単位で継続</td>
+        <td style="border: 1px solid #ccc; padding: 8px;">ログイン情報、カートの中身など<br>複数ページをまたいで持ち越すもの</td>
+        <td style="border: 1px solid #ccc; padding: 8px;"><code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">session.setAttribute</code><br><code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">session.getAttribute</code></td>
+      </tr>
+    </table>
+
+    <div style="background-color: #f2f2f2; padding: 15px; border-radius: 5px; border-left: 5px solid #888888; margin-bottom: 10px;">
+      <p style="margin: 0;"><strong>カバ先生</strong>：「判断の基準は簡単です。『<strong>次のページでも使うか？</strong>』→ Yes なら session、No なら request です。session に何でも入れると、古いデータが残ってバグの原因になります。」</p>
+    </div>
+  </section>
+
+  <hr style="border: none; border-top: 1px solid #ccc; margin: 1.5em 0;">
+
+  <!-- まとめ -->
+  <section style="margin-bottom: 30px;">
+    <h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 15px;">
+      まとめ
+    </h2>
+
+    <div style="background-color: #f0f8ff; padding: 20px; border-radius: 5px; border-left: 5px solid #0033ff;">
+      <div style="margin: 15px 0; background-color: #fff; padding: 15px; border-radius: 10px; border: 1px solid #e1dbbd;">
+        <ul style="padding-left: 20px; margin-bottom: 0;">
+          <li style="margin-bottom: 10px;"><strong>HTTP はステートレス</strong> ── 1回のリクエストが終わるとサーバは相手を忘れる</li>
+          <li style="margin-bottom: 10px;"><strong>Cookie</strong>：ブラウザが持つ SessionID（番号札）。データそのものは持たない</li>
+          <li style="margin-bottom: 10px;"><strong>Session</strong>：サーバが持つ台帳。SessionID をキーに実際のデータを保管する</li>
+          <li style="margin-bottom: 10px;"><code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">request.getSession()</code> で Session を取得し、<code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">setAttribute / getAttribute</code> で操作する</li>
+          <li style="margin-bottom: 0;"><strong>次ページに持ち越す</strong> → session ／ <strong>1回だけ使う</strong> → request</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5分間プレゼン課題 -->
+  <section style="margin-bottom: 30px;">
+    <h2 style="border-left: 5px solid #cc0000; padding-left: 10px; color: #cc0000; font-size: 18px; margin-bottom: 15px;">
+      マスター認定：5分間プレゼン課題
+    </h2>
+
+    <div style="background-color: #fff5f5; padding: 20px; border-radius: 5px; border-left: 5px solid #cc0000; margin-bottom: 15px;">
+      <p style="margin-bottom: 10px;"><strong>お題</strong>：「CookieとSessionの連携」をホワイトボードに描いて説明してください。</p>
+    </div>
+
+    <div style="background-color: #f0f8ff; padding: 20px; border-radius: 5px; border-left: 5px solid #0033ff;">
+      <div style="margin: 15px 0; background-color: #fff; padding: 15px; border-radius: 10px; border: 1px solid #e1dbbd;">
+        <ul style="padding-left: 20px; margin-bottom: 0;">
+          <li style="margin-bottom: 10px;">「ブラウザのID」→「サーバの台帳」の矢印が描ける</li>
+          <li style="margin-bottom: 10px;">1回目アクセスと2回目アクセスで、同じ台帳を引く流れを言える</li>
+          <li style="margin-bottom: 0;"><strong>request と session の違い</strong>を一言で言える（寿命の違い）</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</div>

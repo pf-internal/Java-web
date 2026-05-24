@@ -15,50 +15,67 @@ Claude Code に依頼するときは、まず `.cursorrules` を読み、そこ�
 
 ---
 
-## 現状（ここまで完了）
+## フォルダ構成（現状）
 
-- Unit03（DAO参照系）まで完了済み。
-- 「練習問題の題材は動物/社員のみ」といった固定ルールは撤去済み（今後Web教材では動物/社員は題材として使わない方針）。
+| フォルダ名 | 内容 | 状態 |
+|---|---|---|
+| `Lesson01_SQL` | MySQL基礎・CRUD | 完了 |
+| `Lesson02_JDBC` | JDBC・PreparedStatement | 完了 |
+| `Lesson03_DAO` | DAO参照系 | 完了 |
+| `Lesson05_DAO_Update` | DAO更新系・トランザクション | 完了 |
+| `Lesson06_Web` | Web基本構造・Tomcat・HTTP | 完了 |
+| `Lesson07_Servlet` | Servletの仕組み・黄金フロー | 完了 |
+| `Lesson08_Session` | Cookie / Session / 4スコープ | 完了 |
+| `Lesson09_JSP` | JSP・JavaBeans・JSTL最小3タグ | 完了 |
+| `Lesson10_Exercise` | ひたすら演習（黄金ルート反復・JSTL前提） | 完了 |
+| `Lesson100_MVC_Test` | MVC完成・4スコープ寿命・フォルダ設計 | 完了 |
+| `Lesson90-1_HtmlIo` | HTMLフォーム・テーブルI/O型 | 完了 |
+| `Unit90_Exception` | 例外処理補足 | 保留 |
+| `diagrams/` | SVG図ファイル（GitHub リンク用） | 運用中 |
+
+### Lesson10_Exercise（ひたすら演習）とは
+- 新しい内容を教えない「練習専用日」
+- 黄金ルート（Browser→Servlet→DAO→DB→JSP）を名前の対応を崩さず反復
+- JSTL前提（`c:out` / `c:forEach` / `c:if`）の穴埋め問題中心
 
 ---
 
-## これからの作業方針（Unit04_DAO_Update から）
+## デザインルール（Java-Web 版）
+
+### キャラクター使用方針
+- **カバ先生ボックスのみ使用**（`#f2f2f2` / `#888888`）
+- **ユウタ・ナナコのセリフボックスは使わない**（削除済み）
+
+### 写経フェーズ
+- **「ノートに書き写す」写経は不要** → 削除済み
+- コード例・図は「参照・確認用」として残す
+- コピー用 textarea（ドラッグ用）も不要 → 削除済み
+
+### 図・画像
+- キャラクター図などは `diagrams/` に SVG を作成してリンク
+- GitHub raw URL: `https://raw.githubusercontent.com/yamiqumo/Java-web/master/diagrams/[ファイル名].svg`
+
+---
+
+## 現在の作業方針
 
 ### ゴール
-- **Unit04_DAO_Update** を起点に、DAO更新系（INSERT/UPDATE/DELETE）とトランザクションを扱う教材を整備する。
-- 次のWeb単元へ繋げやすいように、**更新件数**・**例外時のrollback**・**同一Connectionの重要性**が伝わる構成にする。
+- **Lesson06〜Lesson100** の Web 単元を整備済み。
+- 次の作業として Servlet（Lesson07）の内容強化を予定。
 
 ### 題材（DB）
-- DB題材は **商品DB** または **社員DB** を参照する（方針）。
-- 難易度設計は次のイメージ：
-  - **テキストのサンプル**: 単表で簡単なCRUD（例：商品 items）
-  - **練習問題（難しい方）**: 関連テーブルあり（例：emps / depts のJOINやプルダウン選択）
+- DB題材は **商品DB**（`items` テーブル）を基本とする。
+- 練習問題で関連テーブル（`emps / depts`）を使うこともある。
+- 「動物」「社員」を題材として使わない（DB説明のために必要な範囲は可）。
 
-※ 実際の採用題材・テーブル名は既存Unit（Unit01〜03）で使っているDBに合わせる。
-
----
-
-## Unit04 の作業チェックリスト（依頼テンプレ）
-
-Claude Code への依頼は、次を上から順にやってください。
-
-1. `Unit04_DAO_Update/01-テキスト-DAO更新とトランザクション.html` の構成を見直し
-   - 更新系は `executeUpdate()` と「更新件数」を強調
-   - トランザクションは `setAutoCommit(false)` → `commit/rollback` → `finally` で `true` に戻す流れ
-2. `Unit04_DAO_Update/03-練習問題-DAO更新とトランザクション.html` の問題設計
-   - 基本（単発更新）→ 発展（同一Connectionで複数操作を1トランザクション）の段階
-3. PDFが必要なら `Unit04_DAO_Update/src/template.html` と `scripts` の生成手順に合わせて整合
-4. 文言・表記の整合
-   - 「動物」「社員」を“題材”として使わない（DBの `emps/depts` などの説明として必要な範囲は可）
-   - 用語・デザインは `.cursorrules` と `_doc/4-デザインルール.md` に合わせる
+### JSTL
+- **Lesson09（JSP）の後半で最小導入**（`c:out` / `c:forEach` / `c:if`）
+- **Lesson10 以降は JSTL前提**で問題を作る
 
 ---
 
 ## 依頼するときに渡す情報（最小）
 
-- どの単元（Unit04〜）を、どの題材（商品/社員）で進めるか
+- どの Lesson を、どの題材（商品/社員）で進めるか
 - テキストを「単表」、練習問題を「関連あり」にする方針でOKか
-- JSTL導入のタイミング
-  - **Unit08（JSP & JavaBeans）の後半で最小導入**（`c:out` / `c:forEach` / `c:if`）
-  - Unit09（演習）以降は **JSTL前提**で問題を作る
-
+- 新規 Lesson の場合は番号と内容を指定する

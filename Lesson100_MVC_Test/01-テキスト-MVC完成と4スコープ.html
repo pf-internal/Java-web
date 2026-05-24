@@ -1,0 +1,311 @@
+Lesson4 MVC完成と4スコープ ～役割を分けて、寿命を管理する～
+<div style="max-width: 800px; margin: 0 auto; font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif; line-height: 1.6; color: #333; padding: 20px; border: 1px solid #eee; background-color: #fff;">
+
+<h1 style="padding-left: 10px; background-color: #f0f8ff; color: #0033ff; font-size: 24px; margin-bottom: 30px;">Lesson4 MVC完成と4スコープ</h1>
+
+<!-- ===== 復習 ===== -->
+<section style="margin-bottom: 30px;">
+<h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 15px;">前回までの復習</h2>
+<div style="background-color: #f0f8ff; padding: 20px; border-radius: 5px; border-left: 5px solid #0033ff;">
+<p style="margin-bottom: 10px;"><strong>ここまで学んできた技術を整理する</strong></p>
+<div style="margin: 15px 0; background-color: #fff; padding: 15px; border-radius: 10px; border: 1px solid #e1dbbd;">
+<ul style="padding-left: 20px; margin-bottom: 0;">
+  <li style="margin-bottom: 10px;"><strong>Unit05</strong>：WebとTomcatの仕組み（HTTP・GET/POST・ディレクトリ構造）</li>
+  <li style="margin-bottom: 10px;"><strong>Unit06</strong>：Servletの黄金フロー（getParameter → DTO → DAO → setAttribute → forward）</li>
+  <li style="margin-bottom: 10px;"><strong>Unit07</strong>：Session管理（Cookie = SessionID / Session = 台帳 / 4スコープ）</li>
+  <li style="margin-bottom: 10px;"><strong>Unit08</strong>：JSPとJavaBeans（EL式 / 暗黙オブジェクト / JSTL最小3タグ）</li>
+  <li style="margin-bottom: 0px;"><strong>Unit09</strong>：総合演習（黄金ルートの反復・名前の対応を崩さない）</li>
+</ul>
+</div>
+<p style="margin-bottom: 0;">今回はこれらをひとつの「設計の型（MVC）」として統合し、<strong>どこに何を書くか</strong>の判断基準を身につけます。</p>
+</div>
+</section>
+
+<!-- ===== 65秒集中動画 ===== -->
+<section style="margin-bottom: 30px;">
+<h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 15px;">65秒集中動画：4スコープの寿命を確認する</h2>
+
+<p style="margin-bottom: 10px;">動画の 2:45:12 あたり（65秒間）を集中視聴して、下の「写経テンプレ」を手で書き写してください。</p>
+<div style="text-align: center; margin-bottom: 15px;">
+<iframe width="560" height="315"
+  src="https://www.youtube.com/embed/gvcCEFlA-50?start=9847&end=9912"
+  frameborder="0" allowfullscreen></iframe>
+</div>
+
+<h3 style="padding-left: 10px; color: #0033ff; font-size: 16px; margin-top: 20px; margin-bottom: 10px;">写経テンプレ（4スコープの寿命）</h3>
+<pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">page        : JSPの1ページ内（ほぼ使わない）
+request     : 1回の往復（Servlet → JSP へ渡す）
+session     : ブラウザ単位で継続（ログイン情報など）
+application : サーバ全体で共有（全ユーザー共通）</pre>
+
+<div style="background:#e6f7ff;padding:15px;border:2px dashed #1890ff;border-radius:6px; margin-top: 10px;">
+  <p style="font-size:12px;color:#0050b3;margin-bottom:8px;font-weight:bold;">🖱️ マウスで全選択して Eclipse やメモ帳へドラッグしてください：</p>
+  <textarea readonly style="width:100%;height:90px;font-family:Consolas,monospace;font-size:13px;padding:10px;border:1px solid #91d5ff;background:#fff;display:block;user-select:all !important;">page        : JSPの1ページ内（ほぼ使わない）
+request     : 1回の往復（Servlet → JSP へ渡す）
+session     : ブラウザ単位で継続（ログイン情報など）
+application : サーバ全体で共有（全ユーザー共通）</textarea>
+</div>
+</section>
+
+<hr style="border: none; border-top: 1px solid #ccc; margin: 1.5em 0;">
+
+<!-- ===== チャプター1: MVCの三角形 ===== -->
+<section style="margin-bottom: 30px;">
+<h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 15px;">チャプター1：MVCの三角形と役割分担</h2>
+
+<h3 style="padding-left: 10px; color: #0033ff; font-size: 16px; margin-top: 15px; margin-bottom: 10px;">MVC とは何か</h3>
+
+<div style="background-color: #f2f2f2; padding: 15px; border-radius: 5px; border-left: 5px solid #888888; margin-bottom: 10px;">
+<p style="margin-bottom: 5px;"><strong>カバ先生：</strong> MVCは「役割を3つに分けるルール」です。</p>
+<p style="margin-bottom: 5px;">コードが全部1か所に書いてあると、後から読めなくなります。</p>
+<p style="margin-bottom: 0;">そこで「<strong>受け取る人（C）</strong>・<strong>処理する人（M）</strong>・<strong>表示する人（V）</strong>」に分業します。</p>
+</div>
+
+<table border="1" style="border-collapse: collapse; width: 100%; margin-bottom: 15px;">
+<tr style="background-color: #f0f8ff;">
+  <th style="padding: 8px;">役割</th>
+  <th style="padding: 8px;">担当クラス</th>
+  <th style="padding: 8px;">やること</th>
+</tr>
+<tr>
+  <td style="padding: 8px; font-weight: bold; color: #0033ff;">Controller（C）</td>
+  <td style="padding: 8px; font-family: monospace;">Servlet</td>
+  <td style="padding: 8px;">リクエスト受け取り・判断・フォワード</td>
+</tr>
+<tr>
+  <td style="padding: 8px; font-weight: bold; color: #0033ff;">Model（M）</td>
+  <td style="padding: 8px; font-family: monospace;">DAO / JavaBeans（DTO）</td>
+  <td style="padding: 8px;">データ操作（SQL）・ビジネスロジック</td>
+</tr>
+<tr>
+  <td style="padding: 8px; font-weight: bold; color: #0033ff;">View（V）</td>
+  <td style="padding: 8px; font-family: monospace;">JSP</td>
+  <td style="padding: 8px;">画面表示（HTMLを組み立てる）</td>
+</tr>
+</table>
+
+<div style="background-color: #e6f4ff; padding: 15px; border-radius: 5px; border-left: 5px solid #4da6ff; margin-bottom: 10px;">
+<p style="margin-bottom: 5px;"><strong>ユウタ：</strong> Servlet に全部書いたらダメなんですか？</p>
+</div>
+<div style="background-color: #f2f2f2; padding: 15px; border-radius: 5px; border-left: 5px solid #888888; margin-bottom: 10px;">
+<p style="margin-bottom: 0;"><strong>カバ先生：</strong> 動きはします。でも SQL と HTML が混在したコードは、後から修正する時に大変です。「JSP には表示だけ、DAOにはSQLだけ」と決めておくと、変更箇所を1か所で済ませられます。</p>
+</div>
+
+<h3 style="padding-left: 10px; color: #0033ff; font-size: 16px; margin-top: 20px; margin-bottom: 10px;">ルール：何を書いてはいけないか</h3>
+<table border="1" style="border-collapse: collapse; width: 100%; margin-bottom: 15px;">
+<tr style="background-color: #f0f8ff;">
+  <th style="padding: 8px;">ファイル</th>
+  <th style="padding: 8px;">書いてよいこと</th>
+  <th style="padding: 8px;">書いてはいけないこと</th>
+</tr>
+<tr>
+  <td style="padding: 8px; font-family: monospace;">Servlet</td>
+  <td style="padding: 8px;">getParameter / setAttribute / forward / sendRedirect</td>
+  <td style="padding: 8px;">SQL文・HTMLの直接出力</td>
+</tr>
+<tr>
+  <td style="padding: 8px; font-family: monospace;">DAO</td>
+  <td style="padding: 8px;">SQL / JDBC / ResultSet処理</td>
+  <td style="padding: 8px;">request / response の操作</td>
+</tr>
+<tr>
+  <td style="padding: 8px; font-family: monospace;">JSP</td>
+  <td style="padding: 8px;">EL式 / JSTL / HTMLタグ</td>
+  <td style="padding: 8px;">DB接続・ビジネスロジック</td>
+</tr>
+</table>
+</section>
+
+<hr style="border: none; border-top: 1px solid #ccc; margin: 1.5em 0;">
+
+<!-- ===== チャプター2: フォルダ構成 ===== -->
+<section style="margin-bottom: 30px;">
+<h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 15px;">チャプター2：フォルダ構成の型</h2>
+
+<p style="margin-bottom: 10px;">「どこに何を置くか」を決めておくと、チームで開発するときに迷いません。</p>
+
+<h3 style="padding-left: 10px; color: #0033ff; font-size: 16px; margin-top: 15px; margin-bottom: 10px;">基本のフォルダ構成（Eclipse Dynamic Web Project）</h3>
+<pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">myapp/
+  src/
+    main/
+      java/
+        <span style="color:#0033ff;">controller/</span>       ← Servlet（Controller）
+            ItemListServlet.java
+            ItemRegisterServlet.java
+        <span style="color:#0033ff;">model/</span>            ← DAO / DTO（Model）
+            ItemDao.java
+            ItemDto.java
+  webapp/
+    WEB-INF/
+      <span style="color:#0033ff;">jsp/</span>              ← JSPファイル（View）※直接アクセス不可
+          itemList.jsp
+          itemRegister.jsp
+      web.xml
+    <span style="color:#666;">assets/            ← CSS・画像（任意）</span>
+    index.jsp          ← トップページ（任意）</pre>
+
+<div style="background-color: #ffe6f0; padding: 15px; border-radius: 5px; border-left: 5px solid #e8a0b0; margin-bottom: 10px;">
+<p style="margin-bottom: 5px;"><strong>ナナコ：</strong> なんで JSP は WEB-INF の中にあるんですか？</p>
+</div>
+<div style="background-color: #f2f2f2; padding: 15px; border-radius: 5px; border-left: 5px solid #888888; margin-bottom: 10px;">
+<p style="margin-bottom: 0;"><strong>カバ先生：</strong> <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">WEB-INF/</code> はブラウザから直接アクセスできないフォルダです。JSP を直接叩かれると Servlet を経由しないためデータが空になります。「必ず Servlet を通してから表示する」ように <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">WEB-INF/jsp/</code> に置くのがお作法です。</p>
+</div>
+
+<h3 style="padding-left: 10px; color: #0033ff; font-size: 16px; margin-top: 20px; margin-bottom: 10px;">1機能の紐づけ型</h3>
+<table border="1" style="border-collapse: collapse; width: 100%; margin-bottom: 15px;">
+<tr style="background-color: #f0f8ff;">
+  <th style="padding: 8px;">機能</th>
+  <th style="padding: 8px;">URL</th>
+  <th style="padding: 8px;">Servlet</th>
+  <th style="padding: 8px;">DAO</th>
+  <th style="padding: 8px;">JSP</th>
+</tr>
+<tr>
+  <td style="padding: 8px;">一覧表示</td>
+  <td style="padding: 8px; font-family: monospace;">/item/list</td>
+  <td style="padding: 8px; font-family: monospace;">ItemListServlet</td>
+  <td style="padding: 8px; font-family: monospace;">findAll()</td>
+  <td style="padding: 8px; font-family: monospace;">itemList.jsp</td>
+</tr>
+<tr>
+  <td style="padding: 8px;">新規登録</td>
+  <td style="padding: 8px; font-family: monospace;">/item/register</td>
+  <td style="padding: 8px; font-family: monospace;">ItemRegisterServlet</td>
+  <td style="padding: 8px; font-family: monospace;">insert(dto)</td>
+  <td style="padding: 8px; font-family: monospace;">itemRegister.jsp</td>
+</tr>
+<tr>
+  <td style="padding: 8px;">詳細表示</td>
+  <td style="padding: 8px; font-family: monospace;">/item/detail</td>
+  <td style="padding: 8px; font-family: monospace;">ItemDetailServlet</td>
+  <td style="padding: 8px; font-family: monospace;">findById(id)</td>
+  <td style="padding: 8px; font-family: monospace;">itemDetail.jsp</td>
+</tr>
+</table>
+<p style="font-size: 13px; color: #555;">「<strong>1機能 = 1URL + 1Servlet + 1DAOメソッド + 1JSP</strong>」が基本の型です。</p>
+</section>
+
+<hr style="border: none; border-top: 1px solid #ccc; margin: 1.5em 0;">
+
+<!-- ===== チャプター3: 4スコープ寿命表 ===== -->
+<section style="margin-bottom: 30px;">
+<h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 15px;">チャプター3：4スコープの使い分け（寿命表）</h2>
+
+<table border="1" style="border-collapse: collapse; width: 100%; margin-bottom: 15px;">
+<tr style="background-color: #f0f8ff;">
+  <th style="padding: 8px;">スコープ</th>
+  <th style="padding: 8px;">オブジェクト</th>
+  <th style="padding: 8px;">寿命</th>
+  <th style="padding: 8px;">使いどき（例）</th>
+</tr>
+<tr>
+  <td style="padding: 8px; font-weight: bold;">page</td>
+  <td style="padding: 8px; font-family: monospace;">pageContext</td>
+  <td style="padding: 8px;">JSP の1ページ内だけ</td>
+  <td style="padding: 8px;">ほぼ使わない</td>
+</tr>
+<tr>
+  <td style="padding: 8px; font-weight: bold;">request</td>
+  <td style="padding: 8px; font-family: monospace;">HttpServletRequest</td>
+  <td style="padding: 8px;">1回のリクエスト〜レスポンス</td>
+  <td style="padding: 8px;">一覧データ・エラーメッセージ・完了メッセージ</td>
+</tr>
+<tr>
+  <td style="padding: 8px; font-weight: bold;">session</td>
+  <td style="padding: 8px; font-family: monospace;">HttpSession</td>
+  <td style="padding: 8px;">ブラウザを閉じるまで（またはinvalidate）</td>
+  <td style="padding: 8px;">ログインユーザー・カート情報</td>
+</tr>
+<tr>
+  <td style="padding: 8px; font-weight: bold;">application</td>
+  <td style="padding: 8px; font-family: monospace;">ServletContext</td>
+  <td style="padding: 8px;">Tomcat起動〜停止</td>
+  <td style="padding: 8px;">サイト全体の設定値・アクセスカウンタ</td>
+</tr>
+</table>
+
+<div style="background-color: #e6f4ff; padding: 15px; border-radius: 5px; border-left: 5px solid #4da6ff; margin-bottom: 10px;">
+<p style="margin-bottom: 5px;"><strong>ユウタ：</strong> session に全部入れたらダメですか？</p>
+</div>
+<div style="background-color: #f2f2f2; padding: 15px; border-radius: 5px; border-left: 5px solid #888888; margin-bottom: 10px;">
+<p style="margin-bottom: 0;"><strong>カバ先生：</strong> session はサーバのメモリを消費し続けます。「1回の画面遷移で済む情報」は request に入れ、「ブラウザをまたいで必要な情報」だけ session にしましょう。迷ったら <strong>寿命の短いほうを選ぶ</strong>のが鉄則です。</p>
+</div>
+
+<h3 style="padding-left: 10px; color: #0033ff; font-size: 16px; margin-top: 20px; margin-bottom: 10px;">スコープの操作コード例</h3>
+<pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;"><span style="color:#666;">// request スコープ（Servlet → JSP への一時的な橋渡し）</span>
+request.setAttribute(<span style="color:#cc0000;">"itemList"</span>, itemList);
+RequestDispatcher dispatcher =
+    request.getRequestDispatcher(<span style="color:#cc0000;">"/WEB-INF/jsp/itemList.jsp"</span>);
+dispatcher.forward(request, response);
+
+<span style="color:#666;">// session スコープ（ログイン情報の保持）</span>
+HttpSession session = request.getSession();
+session.setAttribute(<span style="color:#cc0000;">"loginUser"</span>, userName);
+
+<span style="color:#666;">// application スコープ（サーバ全体の共有値）</span>
+ServletContext application = getServletContext();
+application.setAttribute(<span style="color:#cc0000;">"siteTitle"</span>, <span style="color:#cc0000;">"商品管理システム"</span>);</pre>
+</section>
+
+<hr style="border: none; border-top: 1px solid #ccc; margin: 1.5em 0;">
+
+<!-- ===== チャプター4: ミニアプリ設計書 ===== -->
+<section style="margin-bottom: 30px;">
+<h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 15px;">チャプター4：ミニアプリの設計書テンプレート</h2>
+
+<p style="margin-bottom: 10px;">新しいアプリを作るとき、コードを書く前にこの設計書を埋めると迷いが減ります。</p>
+
+<h3 style="padding-left: 10px; color: #0033ff; font-size: 16px; margin-top: 15px; margin-bottom: 10px;">記入例：商品管理ミニアプリ</h3>
+<table border="1" style="border-collapse: collapse; width: 100%; margin-bottom: 15px;">
+<tr style="background-color: #f0f8ff;">
+  <th style="padding: 8px;">機能名</th>
+  <th style="padding: 8px;">URL（パス）</th>
+  <th style="padding: 8px;">Servletクラス名</th>
+  <th style="padding: 8px;">DAOメソッド</th>
+  <th style="padding: 8px;">JSPファイル名</th>
+  <th style="padding: 8px;">使用スコープ</th>
+</tr>
+<tr>
+  <td style="padding: 8px;">商品一覧</td>
+  <td style="padding: 8px; font-family: monospace;">/item/list</td>
+  <td style="padding: 8px; font-family: monospace;">ItemListServlet</td>
+  <td style="padding: 8px; font-family: monospace;">findAll()</td>
+  <td style="padding: 8px; font-family: monospace;">itemList.jsp</td>
+  <td style="padding: 8px;">request</td>
+</tr>
+<tr>
+  <td style="padding: 8px;">商品登録</td>
+  <td style="padding: 8px; font-family: monospace;">/item/register</td>
+  <td style="padding: 8px; font-family: monospace;">ItemRegisterServlet</td>
+  <td style="padding: 8px; font-family: monospace;">insert(dto)</td>
+  <td style="padding: 8px; font-family: monospace;">— (redirect)</td>
+  <td style="padding: 8px;">request</td>
+</tr>
+<tr>
+  <td style="padding: 8px;">ログイン</td>
+  <td style="padding: 8px; font-family: monospace;">/login</td>
+  <td style="padding: 8px; font-family: monospace;">LoginServlet</td>
+  <td style="padding: 8px; font-family: monospace;">findByLogin()</td>
+  <td style="padding: 8px; font-family: monospace;">— (redirect)</td>
+  <td style="padding: 8px;">session</td>
+</tr>
+</table>
+</section>
+
+<hr style="border: none; border-top: 1px solid #ccc; margin: 1.5em 0;">
+
+<!-- ===== マスター認定 ===== -->
+<section style="margin-bottom: 30px;">
+<h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 15px;">マスター認定：5分プレゼン課題</h2>
+<div style="background-color: #f0f8ff; padding: 20px; border-radius: 5px; border-left: 5px solid #0033ff;">
+<p style="margin-bottom: 10px;"><strong>お題：</strong>「MVC ＋ 4スコープを使った商品管理アプリの設計」を5分で説明してください。</p>
+<ul style="padding-left: 20px; margin-bottom: 0;">
+  <li style="margin-bottom: 10px;">MVCの三角形（C / M / V の役割）をホワイトボードで描けること</li>
+  <li style="margin-bottom: 10px;">フォルダ構成（Servlet / DAO / JSP をどこに置くか）を説明できること</li>
+  <li style="margin-bottom: 10px;">「一覧表示 → 登録」の1機能紐づけ表を書けること</li>
+  <li style="margin-bottom: 0px;"><strong>講師のOKが出るまで次の単元には進みません。</strong></li>
+</ul>
+</div>
+</section>
+
+</div>

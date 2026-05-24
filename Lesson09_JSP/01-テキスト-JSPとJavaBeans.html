@@ -1,0 +1,322 @@
+Unit08 JSPとJavaBeans ～画面を組み立てる「View」の型～
+<div style="max-width: 800px; margin: 0 auto; font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif; line-height: 1.6; color: #333; padding: 20px; border: 1px solid #eee; background-color: #fff;">
+
+  <h1 style="padding-left: 10px; background-color: #f0f8ff; color: #0033ff; font-size: 24px; margin-bottom: 30px;">
+    Unit08 JSPとJavaBeans ～画面を組み立てる「View」の型～
+  </h1>
+
+  <!-- 前回の復習 -->
+  <section style="margin-bottom: 30px;">
+    <h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 15px;">
+      前回の復習
+    </h2>
+
+    <div style="background-color: #f0f8ff; padding: 20px; border-radius: 5px; border-left: 5px solid #0033ff; margin-bottom: 15px;">
+      <div style="margin: 15px 0; background-color: #fff; padding: 15px; border-radius: 10px; border: 1px solid #e1dbbd;">
+        <ul style="padding-left: 20px; margin-bottom: 0;">
+          <li style="margin-bottom: 8px;"><strong>Cookie</strong> = ブラウザが持つ SessionID（番号札）</li>
+          <li style="margin-bottom: 8px;"><strong>Session</strong> = サーバが持つ台帳（SessionID → データ）</li>
+          <li style="margin-bottom: 0;">次ページに持ち越す → <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">session</code> ／ 1回だけ → <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">request</code></li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="background-color: #f2f2f2; padding: 15px; border-radius: 5px; border-left: 5px solid #888888; margin-bottom: 10px;">
+      <p style="margin: 0;"><strong>カバ先生</strong>：「今日は Servlet が <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">setAttribute</code> で渡したデータを、<strong>JSP がどう受け取って画面に表示するか</strong>を学びます。MVC の View 側を完成させる回です。」</p>
+    </div>
+  </section>
+
+  <hr style="border: none; border-top: 1px solid #ccc; margin: 1.5em 0;">
+
+  <!-- 65秒集中動画 x2 -->
+  <section style="margin-bottom: 30px;">
+    <h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 15px;">
+      65秒集中動画①：JSPの正体（Servletへの変換）
+    </h2>
+
+    <div style="background-color: #f0f8ff; padding: 15px; border-radius: 5px; border-left: 5px solid #0033ff; margin-bottom: 15px;">
+      <p style="margin: 0;"><strong>視聴区間</strong>：1:37:24 〜 1:38:29（手動停止の目安：<strong>1:38:29</strong>）</p>
+    </div>
+
+    <div style="margin-bottom: 10px;">
+      <iframe
+        width="560"
+        height="315"
+        src="https://www.youtube.com/embed/gvcCEFlA-50?start=5844&end=5909&rel=0"
+        title="JSPがServletに変換される仕組み（抜粋）"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+        style="max-width: 100%; display: block;">
+      </iframe>
+    </div>
+
+    <p style="font-size: 12px; color: #666; margin-bottom: 15px;">
+      ※ 手動停止の目安：<strong>1:38:29</strong>
+    </p>
+
+    <div style="background-color: #f2f2f2; padding: 15px; border-radius: 5px; border-left: 5px solid #888888; margin-bottom: 10px;">
+      <p style="margin-bottom: 8px;"><strong>カバ先生：</strong>動画で確認したら、この変換フローを押さえておいてください。</p>
+      <pre style="background-color: #fdf5e6; color: #333; padding: 12px; border-radius: 5px; border: 1px solid #e1dbbd; margin: 0; font-family: monospace;">JSP（.jsp）→（変換）→ Servlet（.java）→（コンパイル）→ 実行</pre>
+    </div>
+
+    <h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-top: 30px; margin-bottom: 15px;">
+      65秒集中動画②：request / session の暗黙オブジェクト
+    </h2>
+
+    <div style="background-color: #f0f8ff; padding: 15px; border-radius: 5px; border-left: 5px solid #0033ff; margin-bottom: 15px;">
+      <p style="margin: 0;"><strong>視聴区間</strong>：2:21:03 〜 2:22:08（手動停止の目安：<strong>2:22:08</strong>）</p>
+    </div>
+
+    <div style="margin-bottom: 10px;">
+      <iframe
+        width="560"
+        height="315"
+        src="https://www.youtube.com/embed/gvcCEFlA-50?start=8463&end=8528&rel=0"
+        title="request/sessionの暗黙オブジェクト（抜粋）"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+        style="max-width: 100%; display: block;">
+      </iframe>
+    </div>
+
+    <p style="font-size: 12px; color: #666; margin-bottom: 15px;">
+      ※ 手動停止の目安：<strong>2:22:08</strong>
+    </p>
+
+    <div style="background-color: #f2f2f2; padding: 15px; border-radius: 5px; border-left: 5px solid #888888; margin-bottom: 10px;">
+      <p style="margin-bottom: 8px;"><strong>カバ先生：</strong>暗黙オブジェクトのポイントです。</p>
+      <pre style="background-color: #fdf5e6; color: #333; padding: 12px; border-radius: 5px; border: 1px solid #e1dbbd; margin: 0; font-family: monospace;">request / session は「最初から用意されている箱」（JSP の暗黙オブジェクト）</pre>
+    </div>
+  </section>
+
+  <hr style="border: none; border-top: 1px solid #ccc; margin: 1.5em 0;">
+
+  <!-- JSPの正体 -->
+  <section style="margin-bottom: 30px;">
+    <h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 15px;">
+      チャプター1：JSP の正体
+    </h2>
+
+    <p style="margin-bottom: 10px;">JSP は見た目は HTML に近いですが、<strong>Tomcat が自動的に Servlet の Java コードに変換してからコンパイル・実行</strong>します。</p>
+
+    <table style="border-collapse: collapse; width: 100%; margin-bottom: 15px;">
+      <tr>
+        <th style="background-color: #f0f8ff; border: 1px solid #ccc; padding: 8px; text-align: left;">JSP の記法</th>
+        <th style="background-color: #f0f8ff; border: 1px solid #ccc; padding: 8px; text-align: left;">意味</th>
+        <th style="background-color: #f0f8ff; border: 1px solid #ccc; padding: 8px; text-align: left;">例</th>
+      </tr>
+      <tr>
+        <td style="border: 1px solid #ccc; padding: 8px;"><code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">&lt;%= 式 %&gt;</code></td>
+        <td style="border: 1px solid #ccc; padding: 8px;">値を画面に出力する</td>
+        <td style="border: 1px solid #ccc; padding: 8px;"><code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">&lt;%= item.getName() %&gt;</code></td>
+      </tr>
+      <tr>
+        <td style="border: 1px solid #ccc; padding: 8px;"><code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">&lt;% 文 %&gt;</code></td>
+        <td style="border: 1px solid #ccc; padding: 8px;">Java のコードを書く（スクリプトレット）</td>
+        <td style="border: 1px solid #ccc; padding: 8px;"><code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">&lt;% for (Item item : items) { %&gt;</code></td>
+      </tr>
+      <tr>
+        <td style="border: 1px solid #ccc; padding: 8px;"><code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">${ 式 }</code></td>
+        <td style="border: 1px solid #ccc; padding: 8px;">EL式（より簡潔に値を出力）</td>
+        <td style="border: 1px solid #ccc; padding: 8px;"><code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">${item.name}</code></td>
+      </tr>
+    </table>
+
+    <div style="background-color: #f2f2f2; padding: 15px; border-radius: 5px; border-left: 5px solid #888888; margin-bottom: 10px;">
+      <p style="margin: 0;"><strong>カバ先生</strong>：「Unit09 以降は <strong>JSTL（c:forEach 等）前提</strong>になります。スクリプトレット（<code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">&lt;% %&gt;</code>）は仕組みを理解するために学びますが、実際には使わずに JSTL に置き換えていきます。」</p>
+    </div>
+  </section>
+
+  <hr style="border: none; border-top: 1px solid #ccc; margin: 1.5em 0;">
+
+  <!-- JavaBeans -->
+  <section style="margin-bottom: 30px;">
+    <h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 15px;">
+      チャプター2：JavaBeans のルール
+    </h2>
+
+    <p style="margin-bottom: 10px;">JSP や JSTL がデータを扱いやすくするために、<strong>JavaBeans</strong> という「形が決まった Java クラス」を使います。</p>
+
+    <div style="background-color: #f0f8ff; padding: 20px; border-radius: 5px; border-left: 5px solid #0033ff; margin-bottom: 15px;">
+      <div style="margin: 15px 0; background-color: #fff; padding: 15px; border-radius: 10px; border: 1px solid #e1dbbd;">
+        <p style="margin-bottom: 8px;"><strong>JavaBeans の3つのルール</strong></p>
+        <ul style="padding-left: 20px; margin-bottom: 0;">
+          <li style="margin-bottom: 8px;"><strong>引数なしのコンストラクタ</strong>がある</li>
+          <li style="margin-bottom: 8px;">フィールドは <strong>private</strong>、外部からは <strong>getter / setter</strong> でアクセスする</li>
+          <li style="margin-bottom: 0;">getter の名前は <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">get + フィールド名（先頭大文字）</code></li>
+        </ul>
+      </div>
+    </div>
+
+    <pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">
+public class ItemDto {
+
+	// フィールド（private）
+	private int    itemId;
+	private String itemName;
+	private int    price;
+
+	// 引数なしのコンストラクタ（必須）
+	public ItemDto() {}
+
+	// getter / setter
+	public int getItemId() {
+		return itemId;
+	}
+	public void setItemId(int itemId) {
+		this.itemId = itemId;
+	}
+	public String getItemName() {
+		return itemName;
+	}
+	public void setItemName(String itemName) {
+		this.itemName = itemName;
+	}
+	public int getPrice() {
+		return price;
+	}
+	public void setPrice(int price) {
+		this.price = price;
+	}
+}</pre>
+
+    <div style="background-color: #f2f2f2; padding: 15px; border-radius: 5px; border-left: 5px solid #888888; margin-bottom: 10px;">
+      <p style="margin: 0;"><strong>カバ先生：</strong>EL 式で <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">${item.itemName}</code> と書くと、内部では自動的に <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">item.getItemName()</code> が呼ばれます。getter の名前の形が決まっているから EL 式がフィールド名から自動でメソッドを見つけられます。これが JavaBeans のルールに従う理由です。</p>
+    </div>
+  </section>
+
+  <hr style="border: none; border-top: 1px solid #ccc; margin: 1.5em 0;">
+
+  <!-- JSPでの表示パターン -->
+  <section style="margin-bottom: 30px;">
+    <h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 15px;">
+      チャプター3：JSPでの表示パターン（スクリプトレット → JSTL）
+    </h2>
+
+    <h3 style="padding-left: 10px; color: #0033ff; font-size: 16px; margin-top: 15px; margin-bottom: 10px;">
+      3-1. 単一値の表示
+    </h3>
+
+    <p style="margin-bottom: 6px; font-size: 14px; color: #555;">スクリプトレット版（仕組みを理解する用）</p>
+    <pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">
+&lt;p&gt;登録完了：&lt;%= message %&gt;&lt;/p&gt;</pre>
+
+    <p style="margin-bottom: 6px; margin-top: 10px; font-size: 14px; color: #555;">JSTL版（実際の開発で使う）</p>
+    <pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">
+&lt;%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %&gt;
+&lt;p&gt;登録完了：&lt;c:out value="${message}"/&gt;&lt;/p&gt;</pre>
+
+    <h3 style="padding-left: 10px; color: #0033ff; font-size: 16px; margin-top: 20px; margin-bottom: 10px;">
+      3-2. 一覧表示（List を table で展開）
+    </h3>
+
+    <p style="margin-bottom: 6px; font-size: 14px; color: #555;">スクリプトレット版</p>
+    <pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">
+&lt;table border="1"&gt;
+  &lt;tr&gt;&lt;th&gt;ID&lt;/th&gt;&lt;th&gt;商品名&lt;/th&gt;&lt;th&gt;価格&lt;/th&gt;&lt;/tr&gt;
+  &lt;% for (ItemDto item : items) { %&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;%= item.getItemId() %&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;%= item.getItemName() %&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;%= item.getPrice() %&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;% } %&gt;
+&lt;/table&gt;</pre>
+
+    <p style="margin-bottom: 6px; margin-top: 10px; font-size: 14px; color: #555;">JSTL版（Unit09 以降はこちらが前提）</p>
+    <pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">
+&lt;table border="1"&gt;
+  &lt;tr&gt;&lt;th&gt;ID&lt;/th&gt;&lt;th&gt;商品名&lt;/th&gt;&lt;th&gt;価格&lt;/th&gt;&lt;/tr&gt;
+  &lt;c:forEach var="item" items="${items}"&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;c:out value="${item.itemId}"/&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;c:out value="${item.itemName}"/&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;c:out value="${item.price}"/&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/c:forEach&gt;
+&lt;/table&gt;</pre>
+
+    <h3 style="padding-left: 10px; color: #0033ff; font-size: 16px; margin-top: 20px; margin-bottom: 10px;">
+      3-3. 条件分岐（メッセージの出し分け）
+    </h3>
+
+    <p style="margin-bottom: 6px; font-size: 14px; color: #555;">JSTL版</p>
+    <pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">
+&lt;c:if test="${not empty message}"&gt;
+  &lt;p style="color: green;"&gt;&lt;c:out value="${message}"/&gt;&lt;/p&gt;
+&lt;/c:if&gt;
+
+&lt;c:if test="${not empty errorMsg}"&gt;
+  &lt;p style="color: red;"&gt;&lt;c:out value="${errorMsg}"/&gt;&lt;/p&gt;
+&lt;/c:if&gt;</pre>
+
+    <table style="border-collapse: collapse; width: 100%; margin-top: 15px; margin-bottom: 10px;">
+      <tr>
+        <th style="background-color: #f0f8ff; border: 1px solid #ccc; padding: 8px; text-align: left;">JSTLタグ</th>
+        <th style="background-color: #f0f8ff; border: 1px solid #ccc; padding: 8px; text-align: left;">役割</th>
+        <th style="background-color: #f0f8ff; border: 1px solid #ccc; padding: 8px; text-align: left;">スクリプトレットの置き換え</th>
+      </tr>
+      <tr>
+        <td style="border: 1px solid #ccc; padding: 8px;"><code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">c:out</code></td>
+        <td style="border: 1px solid #ccc; padding: 8px;">値を安全に出力（XSS対策）</td>
+        <td style="border: 1px solid #ccc; padding: 8px;"><code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">&lt;%= %&gt;</code></td>
+      </tr>
+      <tr>
+        <td style="border: 1px solid #ccc; padding: 8px;"><code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">c:forEach</code></td>
+        <td style="border: 1px solid #ccc; padding: 8px;">コレクションをループ</td>
+        <td style="border: 1px solid #ccc; padding: 8px;"><code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">&lt;% for (...) { %&gt;</code></td>
+      </tr>
+      <tr>
+        <td style="border: 1px solid #ccc; padding: 8px;"><code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">c:if</code></td>
+        <td style="border: 1px solid #ccc; padding: 8px;">条件分岐（else なし）</td>
+        <td style="border: 1px solid #ccc; padding: 8px;"><code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">&lt;% if (...) { %&gt;</code></td>
+      </tr>
+    </table>
+
+  </section>
+
+  <hr style="border: none; border-top: 1px solid #ccc; margin: 1.5em 0;">
+
+  <!-- まとめ -->
+  <section style="margin-bottom: 30px;">
+    <h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 15px;">
+      まとめ
+    </h2>
+
+    <div style="background-color: #f0f8ff; padding: 20px; border-radius: 5px; border-left: 5px solid #0033ff;">
+      <div style="margin: 15px 0; background-color: #fff; padding: 15px; border-radius: 10px; border: 1px solid #e1dbbd;">
+        <ul style="padding-left: 20px; margin-bottom: 0;">
+          <li style="margin-bottom: 10px;"><strong>JSP は最終的に Servlet に変換されて実行</strong>される。ファイルは .jsp だが中身は Java</li>
+          <li style="margin-bottom: 10px;"><strong>JavaBeans のルール</strong>：引数なしコンストラクタ ＋ private フィールド ＋ getter/setter</li>
+          <li style="margin-bottom: 10px;"><strong>EL 式 ${item.itemName}</strong> は内部で <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">item.getItemName()</code> を呼ぶ</li>
+          <li style="margin-bottom: 10px;"><strong>JSTL の最小3タグ</strong>：<code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">c:out</code>（出力）／ <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">c:forEach</code>（ループ）／ <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">c:if</code>（条件）</li>
+          <li style="margin-bottom: 0;"><strong>Unit09 以降は JSTL 前提</strong>。スクリプトレットは仕組み理解のみ</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5分間プレゼン課題 -->
+  <section style="margin-bottom: 30px;">
+    <h2 style="border-left: 5px solid #cc0000; padding-left: 10px; color: #cc0000; font-size: 18px; margin-bottom: 15px;">
+      マスター認定：5分間プレゼン課題
+    </h2>
+
+    <div style="background-color: #fff5f5; padding: 20px; border-radius: 5px; border-left: 5px solid #cc0000; margin-bottom: 15px;">
+      <p style="margin-bottom: 10px;"><strong>お題</strong>：「JSPの正体とJavaBeansのルール」を説明してください。</p>
+    </div>
+
+    <div style="background-color: #f0f8ff; padding: 20px; border-radius: 5px; border-left: 5px solid #0033ff;">
+      <div style="margin: 15px 0; background-color: #fff; padding: 15px; border-radius: 10px; border: 1px solid #e1dbbd;">
+        <ul style="padding-left: 20px; margin-bottom: 0;">
+          <li style="margin-bottom: 10px;">「JSPが変換される」流れを矢印で描ける</li>
+          <li style="margin-bottom: 10px;">JavaBeans の3ルール（コンストラクタ・private・getter/setter）を言える</li>
+          <li style="margin-bottom: 0;">request と session の使い分けを一言で言える</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</div>

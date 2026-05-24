@@ -1,0 +1,345 @@
+Lesson4 練習問題：MVC完成 ～役割・配置・スコープを決める～
+<div style="max-width: 800px; margin: 0 auto; font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif; line-height: 1.6; color: #333; padding: 20px; border: 1px solid #eee; background-color: #fff;">
+
+<h1 style="padding-left: 10px; background-color: #f0f8ff; color: #0033ff; font-size: 24px; margin-bottom: 30px;">Lesson4 練習問題：MVC完成</h1>
+
+<!-- ===== ミッション1 ===== -->
+<section style="margin-bottom: 30px;">
+<h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 15px;">ミッション1：ファイル配置パズル</h2>
+<p style="margin-bottom: 10px;">次のファイル・クラスを正しいフォルダに振り分けてください。①〜⑦の番号を正しい列に書き入れましょう。</p>
+
+<table border="1" style="border-collapse: collapse; width: 100%; margin-bottom: 10px;">
+<tr style="background-color: #f0f8ff;">
+  <th style="padding: 8px;">ファイル／クラス</th>
+  <th style="padding: 8px;">controller/</th>
+  <th style="padding: 8px;">model/</th>
+  <th style="padding: 8px;">WEB-INF/jsp/</th>
+</tr>
+<tr>
+  <td style="padding: 8px;">① ItemListServlet.java</td>
+  <td style="padding: 8px; text-align: center;"></td>
+  <td style="padding: 8px; text-align: center;"></td>
+  <td style="padding: 8px; text-align: center;"></td>
+</tr>
+<tr>
+  <td style="padding: 8px;">② ItemDto.java</td>
+  <td style="padding: 8px; text-align: center;"></td>
+  <td style="padding: 8px; text-align: center;"></td>
+  <td style="padding: 8px; text-align: center;"></td>
+</tr>
+<tr>
+  <td style="padding: 8px;">③ itemList.jsp</td>
+  <td style="padding: 8px; text-align: center;"></td>
+  <td style="padding: 8px; text-align: center;"></td>
+  <td style="padding: 8px; text-align: center;"></td>
+</tr>
+<tr>
+  <td style="padding: 8px;">④ ItemDao.java</td>
+  <td style="padding: 8px; text-align: center;"></td>
+  <td style="padding: 8px; text-align: center;"></td>
+  <td style="padding: 8px; text-align: center;"></td>
+</tr>
+<tr>
+  <td style="padding: 8px;">⑤ LoginServlet.java</td>
+  <td style="padding: 8px; text-align: center;"></td>
+  <td style="padding: 8px; text-align: center;"></td>
+  <td style="padding: 8px; text-align: center;"></td>
+</tr>
+<tr>
+  <td style="padding: 8px;">⑥ loginForm.jsp</td>
+  <td style="padding: 8px; text-align: center;"></td>
+  <td style="padding: 8px; text-align: center;"></td>
+  <td style="padding: 8px; text-align: center;"></td>
+</tr>
+<tr>
+  <td style="padding: 8px;">⑦ MemberDto.java</td>
+  <td style="padding: 8px; text-align: center;"></td>
+  <td style="padding: 8px; text-align: center;"></td>
+  <td style="padding: 8px; text-align: center;"></td>
+</tr>
+</table>
+
+<div style="border-bottom: 1px solid #ccc; margin: 10px 0;"></div>
+<details style="margin-top: 8px;"><summary style="cursor: pointer; font-weight: bold; color: #555;">ヒント</summary>
+<p style="margin-top: 8px;"><code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">Servlet</code> は Controller。<code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">Dao</code> と <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">Dto</code> は Model。<code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">.jsp</code> は View（WEB-INF/jsp/）。</p>
+</details>
+<details style="margin-top: 5px;"><summary style="cursor: pointer; font-weight: bold; color: #0033ff;">解答例</summary>
+<p style="font-size:12px;color:#666;margin-bottom:5px;">【解説・確認用】</p>
+<pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">controller/  : ① ItemListServlet.java  ⑤ LoginServlet.java
+model/       : ② ItemDto.java  ④ ItemDao.java  ⑦ MemberDto.java
+WEB-INF/jsp/ : ③ itemList.jsp  ⑥ loginForm.jsp</pre>
+</details>
+</section>
+
+<hr style="border: none; border-top: 1px solid #ccc; margin: 1.5em 0;">
+
+<!-- ===== ミッション2 ===== -->
+<section style="margin-bottom: 30px;">
+<h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 15px;">ミッション2：MVC対応表の穴埋め</h2>
+<p style="margin-bottom: 10px;">商品管理アプリの対応表を完成させましょう。A〜J に入る語を答えてください。</p>
+
+<table border="1" style="border-collapse: collapse; width: 100%; margin-bottom: 10px;">
+<tr style="background-color: #f0f8ff;">
+  <th style="padding: 8px;">機能名</th>
+  <th style="padding: 8px;">URL</th>
+  <th style="padding: 8px;">Servletクラス名</th>
+  <th style="padding: 8px;">DAOメソッド</th>
+  <th style="padding: 8px;">JSPファイル名</th>
+  <th style="padding: 8px;">スコープ</th>
+</tr>
+<tr>
+  <td style="padding: 8px;">商品一覧</td>
+  <td style="padding: 8px; font-family: monospace;"><strong>A</strong></td>
+  <td style="padding: 8px; font-family: monospace;">ItemListServlet</td>
+  <td style="padding: 8px; font-family: monospace;"><strong>B</strong></td>
+  <td style="padding: 8px; font-family: monospace;">itemList.jsp</td>
+  <td style="padding: 8px;"><strong>C</strong></td>
+</tr>
+<tr>
+  <td style="padding: 8px;">商品登録</td>
+  <td style="padding: 8px; font-family: monospace;">/item/register</td>
+  <td style="padding: 8px; font-family: monospace;"><strong>D</strong></td>
+  <td style="padding: 8px; font-family: monospace;">insert(<strong>E</strong>)</td>
+  <td style="padding: 8px; font-family: monospace;">— (redirect)</td>
+  <td style="padding: 8px;">request</td>
+</tr>
+<tr>
+  <td style="padding: 8px;">商品詳細</td>
+  <td style="padding: 8px; font-family: monospace;"><strong>F</strong></td>
+  <td style="padding: 8px; font-family: monospace;">ItemDetailServlet</td>
+  <td style="padding: 8px; font-family: monospace;"><strong>G</strong>(id)</td>
+  <td style="padding: 8px; font-family: monospace;"><strong>H</strong></td>
+  <td style="padding: 8px;">request</td>
+</tr>
+<tr>
+  <td style="padding: 8px;">ログイン</td>
+  <td style="padding: 8px; font-family: monospace;">/login</td>
+  <td style="padding: 8px; font-family: monospace;">LoginServlet</td>
+  <td style="padding: 8px; font-family: monospace;"><strong>I</strong>(id, pass)</td>
+  <td style="padding: 8px; font-family: monospace;">— (redirect)</td>
+  <td style="padding: 8px;"><strong>J</strong></td>
+</tr>
+</table>
+
+<div style="border-bottom: 1px solid #ccc; margin: 10px 0;"></div>
+<details style="margin-top: 8px;"><summary style="cursor: pointer; font-weight: bold; color: #555;">ヒント</summary>
+<p style="margin-top: 8px;">A はクラス名から推測できるURLパス。E は insert に渡すオブジェクトの型名。G は id で1件取得するメソッド名。J はログイン情報はブラウザをまたいで使うため session。</p>
+</details>
+<details style="margin-top: 5px;"><summary style="cursor: pointer; font-weight: bold; color: #0033ff;">解答例</summary>
+<p style="font-size:12px;color:#666;margin-bottom:5px;">【解説・確認用】</p>
+<pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">A: /item/list
+B: findAll()
+C: request
+D: ItemRegisterServlet
+E: ItemDto（DTO オブジェクト）
+F: /item/detail
+G: findById
+H: itemDetail.jsp
+I: findByLogin（またはauthenticate等）
+J: session　← ログインユーザー情報はブラウザ単位で保持</pre>
+</details>
+</section>
+
+<hr style="border: none; border-top: 1px solid #ccc; margin: 1.5em 0;">
+
+<!-- ===== ミッション3 ===== -->
+<section style="margin-bottom: 30px;">
+<h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 15px;">ミッション3：4スコープ使い分け問題</h2>
+<p style="margin-bottom: 10px;">次のデータを保持するのに最適なスコープ（request / session / application）を選んでください。</p>
+
+<table border="1" style="border-collapse: collapse; width: 100%; margin-bottom: 10px;">
+<tr style="background-color: #f0f8ff;">
+  <th style="padding: 8px;">データ</th>
+  <th style="padding: 8px;">理由（選ぶポイント）</th>
+  <th style="padding: 8px;">スコープ</th>
+</tr>
+<tr>
+  <td style="padding: 8px;">登録完了メッセージ<br>（「登録しました」）</td>
+  <td style="padding: 8px;">次の1画面だけ使えれば十分</td>
+  <td style="padding: 8px; text-align: center;"><strong>①</strong></td>
+</tr>
+<tr>
+  <td style="padding: 8px;">ログイン中のユーザー名</td>
+  <td style="padding: 8px;">複数ページをまたいで表示する</td>
+  <td style="padding: 8px; text-align: center;"><strong>②</strong></td>
+</tr>
+<tr>
+  <td style="padding: 8px;">商品一覧（Listオブジェクト）</td>
+  <td style="padding: 8px;">Servlet から JSP へ1回だけ渡す</td>
+  <td style="padding: 8px; text-align: center;"><strong>③</strong></td>
+</tr>
+<tr>
+  <td style="padding: 8px;">ショッピングカートの中身</td>
+  <td style="padding: 8px;">購入完了まで保持し続ける</td>
+  <td style="padding: 8px; text-align: center;"><strong>④</strong></td>
+</tr>
+<tr>
+  <td style="padding: 8px;">サイト全体のアクセス件数</td>
+  <td style="padding: 8px;">全ユーザー共通で1つだけ持つ</td>
+  <td style="padding: 8px; text-align: center;"><strong>⑤</strong></td>
+</tr>
+</table>
+
+<div style="border-bottom: 1px solid #ccc; margin: 10px 0;"></div>
+<details style="margin-top: 8px;"><summary style="cursor: pointer; font-weight: bold; color: #555;">ヒント</summary>
+<p style="margin-top: 8px;">寿命の短い順に：request（1回のやりとり）→ session（ブラウザ単位）→ application（サーバ全体）。迷ったら寿命の短いほうを選ぶのが原則です。</p>
+</details>
+<details style="margin-top: 5px;"><summary style="cursor: pointer; font-weight: bold; color: #0033ff;">解答例</summary>
+<p style="font-size:12px;color:#666;margin-bottom:5px;">【解説・確認用】</p>
+<pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">① request     ← 1回の画面遷移だけに使う
+② session     ← 複数ページをまたいで保持
+③ request     ← Servlet → JSP の橋渡し
+④ session     ← 購入完了（または invalidate）まで保持
+⑤ application ← 全ユーザー共通・サーバ全体で1つ</pre>
+</details>
+</section>
+
+<hr style="border: none; border-top: 1px solid #ccc; margin: 1.5em 0;">
+
+<!-- ===== ミッション4: コードの間違い探し ===== -->
+<section style="margin-bottom: 30px;">
+<h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 15px;">ミッション4：間違いはどこ？（MVCルール違反）</h2>
+<p style="margin-bottom: 10px;">次のコードには MVC のルール違反が含まれています。どこが問題か指摘してください。</p>
+
+<!-- 問A -->
+<p style="margin-bottom: 10px;"><strong>【問題A】</strong>　次の JSP コードの問題点を答えてください。</p>
+<pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;"><span style="color:#666;">&lt;!-- itemList.jsp --&gt;</span>
+&lt;%
+    Connection con = DriverManager.getConnection(URL, USER, PASS);
+    PreparedStatement ps = con.prepareStatement("SELECT * FROM items");
+    ResultSet rs = ps.executeQuery();
+    List&lt;ItemDto&gt; list = new ArrayList&lt;&gt;();
+    while (rs.next()) {
+        ItemDto dto = new ItemDto();
+        dto.setItemId(rs.getInt("id"));
+        list.add(dto);
+    }
+%&gt;
+&lt;c:forEach var="item" items="${list}"&gt;
+    &lt;c:out value="${item.itemId}"/&gt;
+&lt;/c:forEach&gt;</pre>
+
+<div style="border-bottom: 1px solid #ccc; margin: 10px 0;"></div>
+<details style="margin-top: 8px;"><summary style="cursor: pointer; font-weight: bold; color: #555;">ヒント</summary>
+<p style="margin-top: 8px;">JSP（View）は表示だけを担当します。ここに書いてある処理は本来どのクラスが行うべきでしょうか？</p>
+</details>
+<details style="margin-top: 5px;"><summary style="cursor: pointer; font-weight: bold; color: #0033ff;">解答例</summary>
+<p style="font-size:12px;color:#666;margin-bottom:5px;">【解説・確認用】</p>
+<pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">問題点：JSP の中に DB 接続（JDBC）と SQL 処理が書かれている。
+
+正しいやり方：
+  ・DB接続・SQL実行は ItemDao（Model）に移す
+  ・Servlet（Controller）で dao.findAll() を呼び、結果を request.setAttribute する
+  ・JSP（View）は ${itemList} を c:forEach で表示するだけにする</pre>
+</details>
+
+<hr style="border: none; border-top: 1px solid #ccc; margin: 1.5em 0;">
+
+<!-- 問B -->
+<p style="margin-bottom: 10px;"><strong>【問題B】</strong>　次の Servlet コードの問題点を答えてください。</p>
+<pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;"><span style="color:#666;">// ItemListServlet.java（doGet）</span>
+<span style="color:#0033ff;">protected void</span> doGet(HttpServletRequest request, HttpServletResponse response)
+        <span style="color:#0033ff;">throws</span> ServletException, IOException {
+
+    List&lt;ItemDto&gt; itemList = dao.findAll();
+    request.setAttribute(<span style="color:#cc0000;">"itemList"</span>, itemList);
+
+    <span style="color:#666;">// JSP に HTML を直接 out で書いてしまっている</span>
+    PrintWriter out = response.getWriter();
+    out.println(<span style="color:#cc0000;">"&lt;html&gt;&lt;body&gt;"</span>);
+    <span style="color:#0033ff;">for</span> (ItemDto item : itemList) {
+        out.println(<span style="color:#cc0000;">"&lt;p&gt;"</span> + item.getItemName() + <span style="color:#cc0000;">"&lt;/p&gt;"</span>);
+    }
+    out.println(<span style="color:#cc0000;">"&lt;/body&gt;&lt;/html&gt;"</span>);
+}</pre>
+
+<div style="border-bottom: 1px solid #ccc; margin: 10px 0;"></div>
+<details style="margin-top: 8px;"><summary style="cursor: pointer; font-weight: bold; color: #555;">ヒント</summary>
+<p style="margin-top: 8px;">Servlet（Controller）が HTML を直接出力しています。HTML の組み立ては誰の仕事でしょうか？</p>
+</details>
+<details style="margin-top: 5px;"><summary style="cursor: pointer; font-weight: bold; color: #0033ff;">解答例</summary>
+<p style="font-size:12px;color:#666;margin-bottom:5px;">【解説・確認用】</p>
+<pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">問題点：Servlet（Controller）が HTML を out.println で直接出力している。
+
+正しいやり方：
+  ・HTML の出力は JSP（View）に任せる
+  ・Servlet は setAttribute してから forward するだけにする
+
+// 修正例
+request.setAttribute("itemList", itemList);
+RequestDispatcher dispatcher =
+    request.getRequestDispatcher("/WEB-INF/jsp/itemList.jsp");
+dispatcher.forward(request, response);</pre>
+</details>
+</section>
+
+<hr style="border: none; border-top: 1px solid #ccc; margin: 1.5em 0;">
+
+<!-- ===== 発展問題 ===== -->
+<section style="margin-bottom: 30px;">
+<h2 style="border-left: 5px solid #cc0000; padding-left: 10px; color: #cc0000; font-size: 18px; margin-bottom: 15px;">発展：ミニアプリ設計書を自分で書く</h2>
+<p style="margin-bottom: 10px;">「会員管理ミニアプリ（会員一覧＋会員登録）」の設計書を自分で埋めてください。テーブルは <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">members</code>（id, name, email, createdAt）とします。</p>
+
+<table border="1" style="border-collapse: collapse; width: 100%; margin-bottom: 10px;">
+<tr style="background-color: #f0f8ff;">
+  <th style="padding: 8px;">機能名</th>
+  <th style="padding: 8px;">URL</th>
+  <th style="padding: 8px;">Servletクラス名</th>
+  <th style="padding: 8px;">DAOメソッド</th>
+  <th style="padding: 8px;">JSPファイル名</th>
+  <th style="padding: 8px;">スコープ</th>
+</tr>
+<tr>
+  <td style="padding: 8px;">会員一覧</td>
+  <td style="padding: 8px;">　</td>
+  <td style="padding: 8px;">　</td>
+  <td style="padding: 8px;">　</td>
+  <td style="padding: 8px;">　</td>
+  <td style="padding: 8px;">　</td>
+</tr>
+<tr>
+  <td style="padding: 8px;">会員登録</td>
+  <td style="padding: 8px;">　</td>
+  <td style="padding: 8px;">　</td>
+  <td style="padding: 8px;">　</td>
+  <td style="padding: 8px;">　</td>
+  <td style="padding: 8px;">　</td>
+</tr>
+</table>
+
+<div style="border-bottom: 1px solid #ccc; margin: 10px 0;"></div>
+<details style="margin-top: 5px;"><summary style="cursor: pointer; font-weight: bold; color: #0033ff;">解答例</summary>
+<p style="font-size:12px;color:#666;margin-bottom:5px;">【解説・確認用】</p>
+<pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">会員一覧
+  URL      : /member/list
+  Servlet  : MemberListServlet
+  DAO      : findAll()
+  JSP      : memberList.jsp
+  スコープ : request
+
+会員登録
+  URL      : /member/register
+  Servlet  : MemberRegisterServlet
+  DAO      : insert(MemberDto)
+  JSP      : — (sendRedirect で一覧へ)
+  スコープ : request（登録完了メッセージのみ）</pre>
+</details>
+</section>
+
+<hr style="border: none; border-top: 1px solid #ccc; margin: 1.5em 0;">
+
+<!-- ===== マスター認定 ===== -->
+<section style="margin-bottom: 30px;">
+<h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 15px;">マスター認定：5分プレゼン課題</h2>
+<div style="background-color: #f0f8ff; padding: 20px; border-radius: 5px; border-left: 5px solid #0033ff;">
+<p style="margin-bottom: 10px;"><strong>お題：</strong>「会員管理ミニアプリ」をMVC設計でゼロから説明してください。</p>
+<ul style="padding-left: 20px; margin-bottom: 0;">
+  <li style="margin-bottom: 10px;">フォルダ構成（どこに何を置くか）を図で示せること</li>
+  <li style="margin-bottom: 10px;">一覧表示の黄金ルート（Browser→Servlet→DAO→DB→JSP→Browser）を全部追えること</li>
+  <li style="margin-bottom: 10px;">request と session をなぜ使い分けるか説明できること</li>
+  <li style="margin-bottom: 0px;"><strong>講師のOKが出るまで次の単元には進みません。</strong></li>
+</ul>
+</div>
+</section>
+
+</div>
