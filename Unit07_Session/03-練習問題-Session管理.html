@@ -1,0 +1,259 @@
+Unit07 練習問題：Session管理
+<div style="max-width: 800px; margin: 0 auto; font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif; line-height: 1.6; color: #333; padding: 20px; border: 1px solid #eee; background-color: #fff;">
+
+  <h1 style="padding-left: 10px; background-color: #f0f8ff; color: #0033ff; font-size: 24px; margin-bottom: 30px;">
+    Unit07 練習問題：Session管理
+  </h1>
+
+  <!-- ミッション1 -->
+  <section style="margin-bottom: 30px;">
+    <h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 15px;">
+      ミッション1：HttpSession 操作の穴埋め
+    </h2>
+
+    <div style="margin-bottom: 25px;">
+      <p style="margin-bottom: 8px;"><strong>【問題1-1】</strong> 次のログイン処理の（ ① 〜 ④ ）を埋めてください。</p>
+      <pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">
+// ① Session を取得（なければ新規作成）
+HttpSession session = request.（ ① ）();
+
+// ② ログインユーザー名を Session に保存
+session.（ ② ）("loginUser", userName);
+
+// ③ Session からログインユーザー名を取り出す
+String loginUser = （ ③ ） session.（ ④ ）("loginUser");</pre>
+      <div style="border-bottom: 1px solid #ccc; margin: 10px 0;"></div>
+      <details style="margin-top: 8px;">
+        <summary style="cursor: pointer; font-weight: bold; color: #555;">ヒント</summary>
+        <div style="margin-top: 8px; padding: 12px; background-color: #f9f9f9; border-radius: 5px; border: 1px solid #ddd;">
+          <ul style="padding-left: 20px; margin: 0;">
+            <li style="margin-bottom: 6px;">① request から Session を取得するメソッド名</li>
+            <li style="margin-bottom: 6px;">② 値を保存するメソッド（request.setAttribute と同じ形）</li>
+            <li style="margin-bottom: 6px;">③ getAttribute の戻り値は Object 型 → キャストが必要</li>
+            <li style="margin-bottom: 0;">④ 値を取り出すメソッド（request.getAttribute と同じ形）</li>
+          </ul>
+        </div>
+      </details>
+      <details style="margin-top: 5px;">
+        <summary style="cursor: pointer; font-weight: bold; color: #0033ff;">解答例</summary>
+        <div style="margin-top: 10px;">
+          <pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">
+① getSession
+② setAttribute
+③ (String)
+④ getAttribute</pre>
+          <div style="background: #e6f7ff; padding: 15px; border: 2px dashed #1890ff; border-radius: 6px; margin-top: 10px;">
+            <p style="font-size: 12px; color: #0050b3; margin-bottom: 8px; font-weight: bold;">マウスで全選択して Eclipse やメモ帳へドラッグしてください：</p>
+            <textarea readonly style="width: 100%; height: 120px; font-family: Consolas, monospace; font-size: 13px; padding: 10px; border: 1px solid #91d5ff; background: #fff; display: block; user-select: all !important;">HttpSession session = request.getSession();
+session.setAttribute("loginUser", userName);
+String loginUser = (String) session.getAttribute("loginUser");</textarea>
+          </div>
+        </div>
+      </details>
+    </div>
+
+    <div style="margin-bottom: 25px;">
+      <p style="margin-bottom: 8px;"><strong>【問題1-2】</strong> ログアウト処理のコードを完成させてください。Session が存在しない場合も考慮すること。</p>
+      <pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">
+// Session が存在する場合だけ取得（falseを渡すと、なければnullを返す）
+HttpSession session = request.getSession（ ① ）;
+if (session （ ② ） null) {
+	session.（ ③ ）(); // Session を破棄
+}</pre>
+      <div style="border-bottom: 1px solid #ccc; margin: 10px 0;"></div>
+      <details style="margin-top: 8px;">
+        <summary style="cursor: pointer; font-weight: bold; color: #0033ff;">解答例</summary>
+        <div style="margin-top: 10px;">
+          <pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">
+① (false)
+② !=
+③ invalidate</pre>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <hr style="border: none; border-top: 1px solid #ccc; margin: 1.5em 0;">
+
+  <!-- ミッション2 -->
+  <section style="margin-bottom: 30px;">
+    <h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 15px;">
+      ミッション2：スコープの使い分け選択問題
+    </h2>
+
+    <div style="margin-bottom: 25px;">
+      <p style="margin-bottom: 8px;"><strong>【問題2-1】</strong> 次の各データは <strong>request</strong> と <strong>session</strong> のどちらに入れるべきか答えてください。</p>
+      <table style="border-collapse: collapse; width: 100%; margin-bottom: 10px;">
+        <tr>
+          <th style="background-color: #f0f8ff; border: 1px solid #ccc; padding: 8px; text-align: left;">データの内容</th>
+          <th style="background-color: #f0f8ff; border: 1px solid #ccc; padding: 8px; text-align: left;">request / session</th>
+          <th style="background-color: #f0f8ff; border: 1px solid #ccc; padding: 8px; text-align: left;">理由</th>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ccc; padding: 8px;">商品一覧（findAll の結果）</td>
+          <td style="border: 1px solid #ccc; padding: 8px;"></td>
+          <td style="border: 1px solid #ccc; padding: 8px;"></td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ccc; padding: 8px;">ログイン中のユーザー名</td>
+          <td style="border: 1px solid #ccc; padding: 8px;"></td>
+          <td style="border: 1px solid #ccc; padding: 8px;"></td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ccc; padding: 8px;">登録完了メッセージ</td>
+          <td style="border: 1px solid #ccc; padding: 8px;"></td>
+          <td style="border: 1px solid #ccc; padding: 8px;"></td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ccc; padding: 8px;">ショッピングカートの中身</td>
+          <td style="border: 1px solid #ccc; padding: 8px;"></td>
+          <td style="border: 1px solid #ccc; padding: 8px;"></td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ccc; padding: 8px;">エラーメッセージ（入力値不正）</td>
+          <td style="border: 1px solid #ccc; padding: 8px;"></td>
+          <td style="border: 1px solid #ccc; padding: 8px;"></td>
+        </tr>
+      </table>
+      <div style="border-bottom: 1px solid #ccc; margin: 10px 0;"></div>
+      <details style="margin-top: 8px;">
+        <summary style="cursor: pointer; font-weight: bold; color: #555;">ヒント</summary>
+        <div style="margin-top: 8px; padding: 12px; background-color: #f9f9f9; border-radius: 5px; border: 1px solid #ddd;">
+          <p style="margin: 0;">「<strong>次のページでも使うか？</strong>」が判断基準。使うなら session、1回だけなら request。</p>
+        </div>
+      </details>
+      <details style="margin-top: 5px;">
+        <summary style="cursor: pointer; font-weight: bold; color: #0033ff;">解答例</summary>
+        <div style="margin-top: 10px; padding: 15px; background-color: #f0f8ff; border-radius: 5px; border: 1px solid #e1dbbd;">
+          <table style="border-collapse: collapse; width: 100%;">
+            <tr>
+              <th style="background-color: #f0f8ff; border: 1px solid #ccc; padding: 8px; text-align: left;">データ</th>
+              <th style="background-color: #f0f8ff; border: 1px solid #ccc; padding: 8px;">スコープ</th>
+              <th style="background-color: #f0f8ff; border: 1px solid #ccc; padding: 8px; text-align: left;">理由</th>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #ccc; padding: 8px;">商品一覧</td>
+              <td style="border: 1px solid #ccc; padding: 8px; text-align: center;"><strong>request</strong></td>
+              <td style="border: 1px solid #ccc; padding: 8px;">表示するだけ。次のページでは再取得する</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #ccc; padding: 8px;">ログイン中のユーザー名</td>
+              <td style="border: 1px solid #ccc; padding: 8px; text-align: center;"><strong>session</strong></td>
+              <td style="border: 1px solid #ccc; padding: 8px;">複数ページで使い続ける（ログアウトまで）</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #ccc; padding: 8px;">登録完了メッセージ</td>
+              <td style="border: 1px solid #ccc; padding: 8px; text-align: center;"><strong>request</strong></td>
+              <td style="border: 1px solid #ccc; padding: 8px;">1回表示したら消えてよい</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #ccc; padding: 8px;">カートの中身</td>
+              <td style="border: 1px solid #ccc; padding: 8px; text-align: center;"><strong>session</strong></td>
+              <td style="border: 1px solid #ccc; padding: 8px;">購入完了まで複数ページで保持する</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #ccc; padding: 8px;">エラーメッセージ</td>
+              <td style="border: 1px solid #ccc; padding: 8px; text-align: center;"><strong>request</strong></td>
+              <td style="border: 1px solid #ccc; padding: 8px;">入力画面に1回だけ表示</td>
+            </tr>
+          </table>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <hr style="border: none; border-top: 1px solid #ccc; margin: 1.5em 0;">
+
+  <!-- ミッション3 -->
+  <section style="margin-bottom: 30px;">
+    <h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 15px;">
+      ミッション3：ログイン状態管理フローの穴埋め
+    </h2>
+
+    <div style="margin-bottom: 25px;">
+      <p style="margin-bottom: 8px;"><strong>【問題3-1】</strong> 次の「ログイン → 認証 → 状態保存 → 次ページで確認」フローの（ ① 〜 ⑤ ）を埋めてください。</p>
+      <pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">
+【LoginServlet の doPost】
+String userId   = request.getParameter("userId");
+String password = request.getParameter("password");
+
+// DB で認証（例：DAOで照合）
+boolean isValid = memberDao.authenticate(userId, password);
+
+if (isValid) {
+	// ① Session を取得して userId を保存
+	HttpSession session = request.（ ① ）();
+	session.（ ② ）("loginUserId", userId);
+
+	// ③ 認証成功 → メニュー画面にリダイレクト
+	response.sendRedirect(request.getContextPath() + "/menu");
+} else {
+	// 認証失敗 → エラーを request に入れてログイン画面に戻す
+	request.（ ③ ）("errorMsg", "IDまたはパスワードが違います");
+	request.getRequestDispatcher("/WEB-INF/jsp/login.jsp")
+	       .（ ④ ）(request, response);
+}
+
+【MenuServlet の doGet】（ログイン済みチェック）
+HttpSession session = request.getSession(false);
+if (session == null || session.getAttribute("loginUserId") == null) {
+	// Session がない or loginUserId がない → ログイン画面に戻す
+	response.sendRedirect(request.getContextPath() + "/login");
+	return;
+}
+String loginUserId = （ ⑤ ） session.getAttribute("loginUserId");</pre>
+
+      <div style="border-bottom: 1px solid #ccc; margin: 10px 0;"></div>
+      <details style="margin-top: 8px;">
+        <summary style="cursor: pointer; font-weight: bold; color: #555;">ヒント①</summary>
+        <div style="margin-top: 8px; padding: 12px; background-color: #f9f9f9; border-radius: 5px; border: 1px solid #ddd;">
+          <ul style="padding-left: 20px; margin: 0;">
+            <li style="margin-bottom: 6px;">① は Session 取得メソッド</li>
+            <li style="margin-bottom: 0;">② は値を保存するメソッド</li>
+          </ul>
+        </div>
+      </details>
+      <details style="margin-top: 5px;">
+        <summary style="cursor: pointer; font-weight: bold; color: #555;">ヒント②</summary>
+        <div style="margin-top: 8px; padding: 12px; background-color: #f9f9f9; border-radius: 5px; border: 1px solid #ddd;">
+          <ul style="padding-left: 20px; margin: 0;">
+            <li style="margin-bottom: 6px;">③ は request にエラーを入れるメソッド</li>
+            <li style="margin-bottom: 6px;">④ は JSP に処理を移すメソッド</li>
+            <li style="margin-bottom: 0;">⑤ は String 型へのキャスト</li>
+          </ul>
+        </div>
+      </details>
+      <details style="margin-top: 5px;">
+        <summary style="cursor: pointer; font-weight: bold; color: #0033ff;">解答例</summary>
+        <div style="margin-top: 10px;">
+          <pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">
+① getSession
+② setAttribute
+③ setAttribute
+④ forward
+⑤ (String)</pre>
+          <div style="background: #e6f7ff; padding: 15px; border: 2px dashed #1890ff; border-radius: 6px; margin-top: 10px;">
+            <p style="font-size: 12px; color: #0050b3; margin-bottom: 8px; font-weight: bold;">マウスで全選択して Eclipse やメモ帳へドラッグしてください：</p>
+            <textarea readonly style="width: 100%; height: 280px; font-family: Consolas, monospace; font-size: 13px; padding: 10px; border: 1px solid #91d5ff; background: #fff; display: block; user-select: all !important;">// LoginServlet の doPost（認証成功時）
+HttpSession session = request.getSession();
+session.setAttribute("loginUserId", userId);
+response.sendRedirect(request.getContextPath() + "/menu");
+
+// LoginServlet の doPost（認証失敗時）
+request.setAttribute("errorMsg", "IDまたはパスワードが違います");
+request.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(request, response);
+
+// MenuServlet の doGet（ログイン済みチェック）
+HttpSession session = request.getSession(false);
+if (session == null || session.getAttribute("loginUserId") == null) {
+	response.sendRedirect(request.getContextPath() + "/login");
+	return;
+}
+String loginUserId = (String) session.getAttribute("loginUserId");</textarea>
+          </div>
+        </div>
+      </details>
+    </div>
+  </section>
+
+</div>

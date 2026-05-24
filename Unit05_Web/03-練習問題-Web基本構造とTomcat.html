@@ -1,0 +1,345 @@
+Unit05 練習問題：Web基本構造とTomcat
+<div style="max-width: 800px; margin: 0 auto; font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif; line-height: 1.6; color: #333; padding: 20px; border: 1px solid #eee; background-color: #fff;">
+
+  <h1 style="padding-left: 10px; background-color: #f0f8ff; color: #0033ff; font-size: 24px; margin-bottom: 30px;">
+    Unit05 練習問題：Web基本構造とTomcat
+  </h1>
+
+  <!-- ミッション1 -->
+  <section style="margin-bottom: 30px;">
+    <h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 15px;">
+      ミッション1：ブラウザ ↔ サーバの図の穴埋め
+    </h2>
+
+    <!-- 問題1-1 -->
+    <div style="margin-bottom: 25px;">
+      <p style="margin-bottom: 8px;"><strong>【問題1-1】</strong> 次の図の（ ① ）〜（ ④ ）に入る語句を答えてください。</p>
+      <pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">
+ブラウザ  →  （ ① ）  →  （ ② ）
+ブラウザ  ←  （ ③ ）  ←  （ ② ）
+
+GETメソッド  ：（ ④ ）するときに使う
+POSTメソッド ：フォームの値を（ ⑤ ）するときに使う</pre>
+      <div style="border-bottom: 1px solid #ccc; margin: 10px 0;"></div>
+      <details style="margin-top: 8px;">
+        <summary style="cursor: pointer; font-weight: bold; color: #555;">ヒント</summary>
+        <div style="margin-top: 8px; padding: 12px; background-color: #f9f9f9; border-radius: 5px; border: 1px solid #ddd;">
+          <ul style="padding-left: 20px; margin: 0;">
+            <li style="margin-bottom: 6px;">① と ③ は「リクエスト」「レスポンス」のどちらかです</li>
+            <li style="margin-bottom: 6px;">② は HTTP のやり取りを受け付ける側（ハードウェアではなくソフト）です</li>
+            <li style="margin-bottom: 0;">④ と ⑤ は「取得」「送信」のどちらかです</li>
+          </ul>
+        </div>
+      </details>
+      <details style="margin-top: 5px;">
+        <summary style="cursor: pointer; font-weight: bold; color: #0033ff;">解答例</summary>
+        <div style="margin-top: 10px;">
+          <p style="font-size: 12px; color: #666; margin-bottom: 5px;">【解説・確認用】</p>
+          <pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">
+① HTTPリクエスト
+② サーバ（Tomcat）
+③ HTTPレスポンス
+④ 取得（データを見るだけ）
+⑤ 送信（登録・変更など）</pre>
+          <div style="background: #e6f7ff; padding: 15px; border: 2px dashed #1890ff; border-radius: 6px; margin-top: 10px;">
+            <p style="font-size: 12px; color: #0050b3; margin-bottom: 8px; font-weight: bold;">マウスで全選択して Eclipse やメモ帳へドラッグしてください：</p>
+            <textarea readonly style="width: 100%; height: 100px; font-family: Consolas, monospace; font-size: 13px; padding: 10px; border: 1px solid #91d5ff; background: #fff; display: block; user-select: all !important;">① HTTPリクエスト
+② サーバ（Tomcat）
+③ HTTPレスポンス
+④ 取得（データを見るだけ）
+⑤ 送信（登録・変更など）</textarea>
+          </div>
+        </div>
+      </details>
+    </div>
+
+    <!-- 問題1-2 -->
+    <div style="margin-bottom: 25px;">
+      <p style="margin-bottom: 8px;"><strong>【問題1-2】</strong> HTTPリクエストを構成する4つの要素を答えてください。</p>
+      <table style="border-collapse: collapse; width: 100%; margin-bottom: 10px;">
+        <tr>
+          <th style="background-color: #f0f8ff; border: 1px solid #ccc; padding: 8px; text-align: left;">要素名</th>
+          <th style="background-color: #f0f8ff; border: 1px solid #ccc; padding: 8px; text-align: left;">意味</th>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ccc; padding: 8px;">URL</td>
+          <td style="border: 1px solid #ccc; padding: 8px;">（　　　　　　　）</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ccc; padding: 8px;">Method</td>
+          <td style="border: 1px solid #ccc; padding: 8px;">（　　　　　　　）</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ccc; padding: 8px;">Header</td>
+          <td style="border: 1px solid #ccc; padding: 8px;">（　　　　　　　）</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ccc; padding: 8px;">Body</td>
+          <td style="border: 1px solid #ccc; padding: 8px;">（　　　　　　　）</td>
+        </tr>
+      </table>
+      <div style="border-bottom: 1px solid #ccc; margin: 10px 0;"></div>
+      <details style="margin-top: 8px;">
+        <summary style="cursor: pointer; font-weight: bold; color: #0033ff;">解答例</summary>
+        <div style="margin-top: 10px;">
+          <pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">
+URL    → 行き先（どこへのリクエストか）
+Method → やりたいこと（GET / POST など）
+Header → 条件や情報（ブラウザ情報・Cookieなど）
+Body   → 送りたいデータ（主にPOST時のフォーム値）</pre>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <hr style="border: none; border-top: 1px solid #ccc; margin: 1.5em 0;">
+
+  <!-- ミッション2 -->
+  <section style="margin-bottom: 30px;">
+    <h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 15px;">
+      ミッション2：URLとServletパスの対応表
+    </h2>
+
+    <!-- 問題2-1 -->
+    <div style="margin-bottom: 25px;">
+      <p style="margin-bottom: 8px;"><strong>【問題2-1】</strong> 次のURLの各パーツが何を意味するか、空欄を埋めてください。</p>
+      <pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">
+http://localhost:8080/myapp/items
+  ①          ②     ③   ③     ④</pre>
+      <table style="border-collapse: collapse; width: 100%; margin-bottom: 10px; margin-top: 10px;">
+        <tr>
+          <th style="background-color: #f0f8ff; border: 1px solid #ccc; padding: 8px; text-align: left;">番号</th>
+          <th style="background-color: #f0f8ff; border: 1px solid #ccc; padding: 8px; text-align: left;">値</th>
+          <th style="background-color: #f0f8ff; border: 1px solid #ccc; padding: 8px; text-align: left;">意味</th>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ccc; padding: 8px;">①</td>
+          <td style="border: 1px solid #ccc; padding: 8px;">http</td>
+          <td style="border: 1px solid #ccc; padding: 8px;">（　　　　　　　）</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ccc; padding: 8px;">②</td>
+          <td style="border: 1px solid #ccc; padding: 8px;">localhost</td>
+          <td style="border: 1px solid #ccc; padding: 8px;">（　　　　　　　）</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ccc; padding: 8px;">③</td>
+          <td style="border: 1px solid #ccc; padding: 8px;">8080</td>
+          <td style="border: 1px solid #ccc; padding: 8px;">（　　　　　　　）</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ccc; padding: 8px;">④</td>
+          <td style="border: 1px solid #ccc; padding: 8px;">myapp</td>
+          <td style="border: 1px solid #ccc; padding: 8px;">（　　　　　　　）</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ccc; padding: 8px;">⑤</td>
+          <td style="border: 1px solid #ccc; padding: 8px;">/items</td>
+          <td style="border: 1px solid #ccc; padding: 8px;">（　　　　　　　）</td>
+        </tr>
+      </table>
+      <div style="border-bottom: 1px solid #ccc; margin: 10px 0;"></div>
+      <details style="margin-top: 8px;">
+        <summary style="cursor: pointer; font-weight: bold; color: #0033ff;">解答例</summary>
+        <div style="margin-top: 10px;">
+          <pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">
+① http   → 通信プロトコル（HTTPという決まりを使う）
+② localhost → サーバのホスト名（自分のPCを指す）
+③ 8080   → ポート番号（Tomcat が待ち受けている番号）
+④ myapp  → コンテキストパス（Webアプリの名前）
+⑤ /items → サーブレットパス（どのServletを呼ぶか）</pre>
+        </div>
+      </details>
+    </div>
+
+    <!-- 問題2-2 -->
+    <div style="margin-bottom: 25px;">
+      <p style="margin-bottom: 8px;"><strong>【問題2-2】</strong> 次の対応表の空欄を埋めてください。</p>
+      <table style="border-collapse: collapse; width: 100%; margin-bottom: 10px;">
+        <tr>
+          <th style="background-color: #f0f8ff; border: 1px solid #ccc; padding: 8px; text-align: left;">URL（ブラウザ）</th>
+          <th style="background-color: #f0f8ff; border: 1px solid #ccc; padding: 8px; text-align: left;">呼ばれるServlet（@WebServlet）</th>
+          <th style="background-color: #f0f8ff; border: 1px solid #ccc; padding: 8px; text-align: left;">呼ばれるメソッド</th>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ccc; padding: 8px;"><code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">/myapp/items</code> に GETでアクセス</td>
+          <td style="border: 1px solid #ccc; padding: 8px;"><code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">@WebServlet("/items")</code></td>
+          <td style="border: 1px solid #ccc; padding: 8px;">（　　　）</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ccc; padding: 8px;"><code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">/myapp/items</code> に POSTでアクセス</td>
+          <td style="border: 1px solid #ccc; padding: 8px;"><code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">@WebServlet("/items")</code></td>
+          <td style="border: 1px solid #ccc; padding: 8px;">（　　　）</td>
+        </tr>
+      </table>
+      <div style="border-bottom: 1px solid #ccc; margin: 10px 0;"></div>
+      <details style="margin-top: 8px;">
+        <summary style="cursor: pointer; font-weight: bold; color: #0033ff;">解答例</summary>
+        <div style="margin-top: 10px;">
+          <pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">
+GETでアクセス  → doGet()  が呼ばれる
+POSTでアクセス → doPost() が呼ばれる</pre>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <hr style="border: none; border-top: 1px solid #ccc; margin: 1.5em 0;">
+
+  <!-- ミッション3 -->
+  <section style="margin-bottom: 30px;">
+    <h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 15px;">
+      ミッション3：HelloServletクラスの穴埋め
+    </h2>
+
+    <p style="margin-bottom: 10px;">次のコードは「ブラウザから <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">/hello</code> にアクセスすると "Hello Servlet" と表示する」最小Servletです。<strong>（ A 〜 F ）</strong> に入るコードを答えてください。</p>
+
+    <pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">
+（ A ）("/hello")
+public class HelloServlet extends （ B ） {
+
+	@Override
+	protected void （ C ）(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		response.setContentType("text/plain; charset=UTF-8");
+		（ D ） out = response.（ E ）();
+		out.（ F ）("Hello Servlet");
+	}
+}</pre>
+
+    <table style="border-collapse: collapse; width: 100%; margin-top: 10px; margin-bottom: 10px;">
+      <tr>
+        <th style="background-color: #f0f8ff; border: 1px solid #ccc; padding: 8px;">記号</th>
+        <th style="background-color: #f0f8ff; border: 1px solid #ccc; padding: 8px;">自分の解答</th>
+        <th style="background-color: #f0f8ff; border: 1px solid #ccc; padding: 8px;">ヒント</th>
+      </tr>
+      <tr>
+        <td style="border: 1px solid #ccc; padding: 8px; text-align: center;">A</td>
+        <td style="border: 1px solid #ccc; padding: 8px;"></td>
+        <td style="border: 1px solid #ccc; padding: 8px;">URLマッピングを指定するアノテーション</td>
+      </tr>
+      <tr>
+        <td style="border: 1px solid #ccc; padding: 8px; text-align: center;">B</td>
+        <td style="border: 1px solid #ccc; padding: 8px;"></td>
+        <td style="border: 1px solid #ccc; padding: 8px;">Servletの親クラス（継承元）</td>
+      </tr>
+      <tr>
+        <td style="border: 1px solid #ccc; padding: 8px; text-align: center;">C</td>
+        <td style="border: 1px solid #ccc; padding: 8px;"></td>
+        <td style="border: 1px solid #ccc; padding: 8px;">GETリクエストを受け取るメソッド名</td>
+      </tr>
+      <tr>
+        <td style="border: 1px solid #ccc; padding: 8px; text-align: center;">D</td>
+        <td style="border: 1px solid #ccc; padding: 8px;"></td>
+        <td style="border: 1px solid #ccc; padding: 8px;">文字を出力するためのクラス名</td>
+      </tr>
+      <tr>
+        <td style="border: 1px solid #ccc; padding: 8px; text-align: center;">E</td>
+        <td style="border: 1px solid #ccc; padding: 8px;"></td>
+        <td style="border: 1px solid #ccc; padding: 8px;">レスポンスから出力ストリームを取得するメソッド</td>
+      </tr>
+      <tr>
+        <td style="border: 1px solid #ccc; padding: 8px; text-align: center;">F</td>
+        <td style="border: 1px solid #ccc; padding: 8px;"></td>
+        <td style="border: 1px solid #ccc; padding: 8px;">1行出力するメソッド（改行付き）</td>
+      </tr>
+    </table>
+
+    <div style="border-bottom: 1px solid #ccc; margin: 10px 0;"></div>
+    <details style="margin-top: 8px;">
+      <summary style="cursor: pointer; font-weight: bold; color: #555;">ヒント①（クラス名のみ）</summary>
+      <div style="margin-top: 8px; padding: 12px; background-color: #f9f9f9; border-radius: 5px; border: 1px solid #ddd;">
+        <ul style="padding-left: 20px; margin: 0;">
+          <li style="margin-bottom: 6px;">B は <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">HttpServlet</code> です</li>
+          <li style="margin-bottom: 0;">D は <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">PrintWriter</code> です</li>
+        </ul>
+      </div>
+    </details>
+    <details style="margin-top: 5px;">
+      <summary style="cursor: pointer; font-weight: bold; color: #555;">ヒント②（アノテーションとメソッド名）</summary>
+      <div style="margin-top: 8px; padding: 12px; background-color: #f9f9f9; border-radius: 5px; border: 1px solid #ddd;">
+        <ul style="padding-left: 20px; margin: 0;">
+          <li style="margin-bottom: 6px;">A は <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">@WebServlet</code> です</li>
+          <li style="margin-bottom: 6px;">C は <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">doGet</code> です</li>
+          <li style="margin-bottom: 0;">E は <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">getWriter</code>、F は <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">println</code> です</li>
+        </ul>
+      </div>
+    </details>
+    <details style="margin-top: 5px;">
+      <summary style="cursor: pointer; font-weight: bold; color: #0033ff;">解答例</summary>
+      <div style="margin-top: 10px;">
+        <p style="font-size: 12px; color: #666; margin-bottom: 5px;">【解説・確認用】</p>
+        <pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">
+@WebServlet("/hello")                          // A
+public class HelloServlet extends HttpServlet { // B
+
+	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) // C
+			throws ServletException, IOException {
+
+		response.setContentType("text/plain; charset=UTF-8");
+		PrintWriter out = response.getWriter(); // D, E
+		out.println("Hello Servlet");           // F
+	}
+}</pre>
+        <div style="background: #e6f7ff; padding: 15px; border: 2px dashed #1890ff; border-radius: 6px; margin-top: 10px;">
+          <p style="font-size: 12px; color: #0050b3; margin-bottom: 8px; font-weight: bold;">マウスで全選択して Eclipse やメモ帳へドラッグしてください：</p>
+          <textarea readonly style="width: 100%; height: 180px; font-family: Consolas, monospace; font-size: 13px; padding: 10px; border: 1px solid #91d5ff; background: #fff; display: block; user-select: all !important;">@WebServlet("/hello")
+public class HelloServlet extends HttpServlet {
+
+	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		response.setContentType("text/plain; charset=UTF-8");
+		PrintWriter out = response.getWriter();
+		out.println("Hello Servlet");
+	}
+}</textarea>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <hr style="border: none; border-top: 1px solid #ccc; margin: 1.5em 0;">
+
+  <!-- 発展 -->
+  <section style="margin-bottom: 30px;">
+    <h2 style="border-left: 5px solid #cc0000; padding-left: 10px; color: #cc0000; font-size: 18px; margin-bottom: 15px;">
+      発展：Tomcatのフォルダ構造の穴埋め
+    </h2>
+
+    <div style="margin-bottom: 25px;">
+      <p style="margin-bottom: 8px;"><strong>【発展問題】</strong> 次のTomcatのフォルダ構造の（ ① 〜 ④ ）を埋めてください。また、WEB-INFが「外から直接見えない」理由を1文で説明してください。</p>
+      <pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">
+（ ① ）
+ └ （ ② ）
+    └ アプリ名
+       ├ （公開される領域）HTML / CSS など
+       └ （ ③ ）（外から直接見えない）
+          ├ （ ④ ）（Javaのクラスファイル）
+          └ lib（ライブラリjar）</pre>
+      <p style="margin-bottom: 8px; margin-top: 10px;">WEB-INFが外から見えない理由：</p>
+      <p style="border: 1px solid #ccc; padding: 10px; border-radius: 5px; background-color: #fafafa; min-height: 40px;"></p>
+      <div style="border-bottom: 1px solid #ccc; margin: 10px 0;"></div>
+      <details style="margin-top: 8px;">
+        <summary style="cursor: pointer; font-weight: bold; color: #0033ff;">解答例</summary>
+        <div style="margin-top: 10px;">
+          <pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">
+① Tomcat
+② webapps
+③ WEB-INF
+④ classes
+
+【WEB-INFが外から見えない理由】
+Tomcatの仕様として、WEB-INF フォルダへのブラウザからの直接アクセスを
+拒否するよう設計されているため。
+JSP などの重要ファイルをWEB-INFに置くことで、
+Servlet（Controller）を必ず経由させる設計ができる。</pre>
+        </div>
+      </details>
+    </div>
+  </section>
+
+</div>

@@ -1,0 +1,335 @@
+Unit06 練習問題：Servletの仕組み
+<div style="max-width: 800px; margin: 0 auto; font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif; line-height: 1.6; color: #333; padding: 20px; border: 1px solid #eee; background-color: #fff;">
+
+  <h1 style="padding-left: 10px; background-color: #f0f8ff; color: #0033ff; font-size: 24px; margin-bottom: 30px;">
+    Unit06 練習問題：Servletの仕組み
+  </h1>
+
+  <!-- ミッション1 -->
+  <section style="margin-bottom: 30px;">
+    <h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 15px;">
+      ミッション1：getParameter の穴埋め
+    </h2>
+
+    <!-- 問題1-1 -->
+    <div style="margin-bottom: 25px;">
+      <p style="margin-bottom: 8px;"><strong>【問題1-1】</strong> 次のフォームと Servlet のコードがあります。（ ① 〜 ③ ）に入る語句を答えてください。</p>
+
+      <p style="margin-bottom: 6px; font-size: 14px; color: #555;">【フォーム（HTML）】</p>
+      <pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">
+&lt;form action="/myapp/register" method="post"&gt;
+  &lt;input type="text"   name="memberName"&gt;
+  &lt;input type="number" name="age"&gt;
+  &lt;button type="submit"&gt;登録&lt;/button&gt;
+&lt;/form&gt;</pre>
+
+      <p style="margin-bottom: 6px; margin-top: 15px; font-size: 14px; color: #555;">【Servlet の doPost】</p>
+      <pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">
+String name   = request.getParameter（ ① ）;
+String ageStr = request.getParameter（ ② ）;
+int    age    = Integer.（ ③ ）(ageStr);</pre>
+
+      <div style="border-bottom: 1px solid #ccc; margin: 10px 0;"></div>
+      <details style="margin-top: 8px;">
+        <summary style="cursor: pointer; font-weight: bold; color: #555;">ヒント</summary>
+        <div style="margin-top: 8px; padding: 12px; background-color: #f9f9f9; border-radius: 5px; border: 1px solid #ddd;">
+          <ul style="padding-left: 20px; margin: 0;">
+            <li style="margin-bottom: 6px;">① と ② の引数はフォームの <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">name</code> 属性の値と<strong>完全一致</strong>させる</li>
+            <li style="margin-bottom: 0;">③ は String を int に変換するメソッド名（Integer クラスのメソッド）</li>
+          </ul>
+        </div>
+      </details>
+      <details style="margin-top: 5px;">
+        <summary style="cursor: pointer; font-weight: bold; color: #0033ff;">解答例</summary>
+        <div style="margin-top: 10px;">
+          <pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">
+① ("memberName")
+② ("age")
+③ parseInt</pre>
+          <div style="background: #e6f7ff; padding: 15px; border: 2px dashed #1890ff; border-radius: 6px; margin-top: 10px;">
+            <p style="font-size: 12px; color: #0050b3; margin-bottom: 8px; font-weight: bold;">マウスで全選択して Eclipse やメモ帳へドラッグしてください：</p>
+            <textarea readonly style="width: 100%; height: 100px; font-family: Consolas, monospace; font-size: 13px; padding: 10px; border: 1px solid #91d5ff; background: #fff; display: block; user-select: all !important;">String name   = request.getParameter("memberName");
+String ageStr = request.getParameter("age");
+int    age    = Integer.parseInt(ageStr);</textarea>
+          </div>
+        </div>
+      </details>
+    </div>
+
+    <!-- 問題1-2 -->
+    <div style="margin-bottom: 25px;">
+      <p style="margin-bottom: 8px;"><strong>【問題1-2】</strong> 次のうち、<code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">getParameter</code> が <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">null</code> を返す原因として<strong>正しいもの</strong>をすべて選んでください。</p>
+      <ul style="padding-left: 20px; margin-bottom: 10px;">
+        <li style="margin-bottom: 6px;">A. フォームの <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">name</code> 属性と <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">getParameter</code> の引数の文字列が一致していない</li>
+        <li style="margin-bottom: 6px;">B. 入力フィールドに何も入力せずに送信した（空文字）</li>
+        <li style="margin-bottom: 6px;">C. フォームの <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">method</code> を "get" にしたまま <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">doPost</code> で受けようとしている</li>
+        <li style="margin-bottom: 6px;">D. <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">getParameter</code> に存在しないキー名を指定した</li>
+      </ul>
+      <div style="border-bottom: 1px solid #ccc; margin: 10px 0;"></div>
+      <details style="margin-top: 8px;">
+        <summary style="cursor: pointer; font-weight: bold; color: #0033ff;">解答例</summary>
+        <div style="margin-top: 10px; padding: 15px; background-color: #f0f8ff; border-radius: 5px; border: 1px solid #e1dbbd;">
+          <p style="margin-bottom: 8px;"><strong>正解：A と D</strong></p>
+          <ul style="padding-left: 20px; margin: 0; font-size: 14px; color: #555;">
+            <li style="margin-bottom: 6px;">A：キー名の不一致 → null が返る（最も多いバグの原因）</li>
+            <li style="margin-bottom: 6px;">B：空文字は null ではなく <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">""</code>（空文字列）が返る</li>
+            <li style="margin-bottom: 6px;">C：doPost ではなく doGet が呼ばれてしまう。getParameter 自体は呼ばれない（または doPost に到達しない）</li>
+            <li style="margin-bottom: 0;">D：存在しないキーを指定すると null が返る</li>
+          </ul>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <hr style="border: none; border-top: 1px solid #ccc; margin: 1.5em 0;">
+
+  <!-- ミッション2 -->
+  <section style="margin-bottom: 30px;">
+    <h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 15px;">
+      ミッション2：setAttribute のキー名統一問題
+    </h2>
+
+    <!-- 問題2-1 -->
+    <div style="margin-bottom: 25px;">
+      <p style="margin-bottom: 8px;"><strong>【問題2-1】</strong> 次の Servlet と JSP のコードがあります。JSP で一覧を正しく表示するために、（ ① ）〜（ ③ ）に入るキー名を答えてください。キー名はすべて<strong>同じ文字列</strong>である必要があります。</p>
+
+      <p style="margin-bottom: 6px; font-size: 14px; color: #555;">【Servlet の doGet】</p>
+      <pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">
+List&lt;MemberDto&gt; memberList = dao.findAll();
+request.setAttribute（ ① ）, memberList);</pre>
+
+      <p style="margin-bottom: 6px; margin-top: 15px; font-size: 14px; color: #555;">【JSP（memberList.jsp）】</p>
+      <pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">
+&lt;%
+  List&lt;MemberDto&gt; memberList =
+      (List&lt;MemberDto&gt;) request.getAttribute（ ② ）);
+  for (MemberDto m : memberList) {
+%&gt;
+  &lt;tr&gt;&lt;td&gt;&lt;%= m.getMemberName() %&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;% } %&gt;</pre>
+
+      <p style="margin-bottom: 6px; margin-top: 15px; font-size: 14px; color: #555;">【JSTL 版 JSP（参考）】</p>
+      <pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">
+&lt;c:forEach var="m" items="${（ ③ ）}"&gt;
+  &lt;tr&gt;&lt;td&gt;&lt;c:out value="${m.memberName}"/&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;/c:forEach&gt;</pre>
+
+      <div style="border-bottom: 1px solid #ccc; margin: 10px 0;"></div>
+      <details style="margin-top: 8px;">
+        <summary style="cursor: pointer; font-weight: bold; color: #555;">ヒント</summary>
+        <div style="margin-top: 8px; padding: 12px; background-color: #f9f9f9; border-radius: 5px; border: 1px solid #ddd;">
+          <p style="margin: 0;">① ② ③ はすべて同じキー文字列です。<code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">setAttribute</code> で保存したキー名を、<code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">getAttribute</code> と EL 式 <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">${...}</code> の両方で使います。</p>
+        </div>
+      </details>
+      <details style="margin-top: 5px;">
+        <summary style="cursor: pointer; font-weight: bold; color: #0033ff;">解答例</summary>
+        <div style="margin-top: 10px;">
+          <pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">
+① ("members"   // ← 自分でキー名を決める（memberList でも OK）
+② ("members"   // ① と同じ文字列
+③  members     // EL 式では ${members} → ① と同じ文字列
+
+※ キー名は自由に決めてよいが、Servlet と JSP で必ず一致させること</pre>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <hr style="border: none; border-top: 1px solid #ccc; margin: 1.5em 0;">
+
+  <!-- ミッション3 -->
+  <section style="margin-bottom: 30px;">
+    <h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 15px;">
+      ミッション3：データの通り道マップ穴埋め
+    </h2>
+
+    <p style="margin-bottom: 10px;"><strong>【問題3-1】</strong> 次の「データの通り道マップ」の（ ① 〜 ⑦ ）に入る語句を答えてください。</p>
+
+    <pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">
+【フォーム（HTML）】
+  name="（ ① ）"  ←→  name="（ ② ）"
+
+          ↓ POSTリクエスト
+
+【Servlet の doPost】
+  request.（ ③ ）("（ ① ）")  ← フォームの name と一致
+  request.（ ③ ）("（ ② ）")  ← フォームの name と一致
+          ↓ 型変換 → DTO に詰める → （ ④ ）.insert(dto)
+
+【Servlet の doGet】
+  （ ④ ）.findAll()  ← DB から取得
+  request.（ ⑤ ）("items", itemList)  ← JSP に渡すキー名
+  （ ⑥ ）.forward(request, response)  ← JSP へ移動
+
+          ↓
+
+【JSP】
+  ${（ ⑦ ）}  ← ⑤ で指定したキー名と一致</pre>
+
+    <table style="border-collapse: collapse; width: 100%; margin-top: 15px; margin-bottom: 10px;">
+      <tr>
+        <th style="background-color: #f0f8ff; border: 1px solid #ccc; padding: 8px;">記号</th>
+        <th style="background-color: #f0f8ff; border: 1px solid #ccc; padding: 8px;">自分の解答</th>
+        <th style="background-color: #f0f8ff; border: 1px solid #ccc; padding: 8px;">ヒント</th>
+      </tr>
+      <tr>
+        <td style="border: 1px solid #ccc; padding: 8px; text-align: center;">①</td>
+        <td style="border: 1px solid #ccc; padding: 8px;"></td>
+        <td style="border: 1px solid #ccc; padding: 8px;">商品名フィールドのname属性値（例：itemName）</td>
+      </tr>
+      <tr>
+        <td style="border: 1px solid #ccc; padding: 8px; text-align: center;">②</td>
+        <td style="border: 1px solid #ccc; padding: 8px;"></td>
+        <td style="border: 1px solid #ccc; padding: 8px;">価格フィールドのname属性値（例：price）</td>
+      </tr>
+      <tr>
+        <td style="border: 1px solid #ccc; padding: 8px; text-align: center;">③</td>
+        <td style="border: 1px solid #ccc; padding: 8px;"></td>
+        <td style="border: 1px solid #ccc; padding: 8px;">フォームの値を取り出すメソッド名</td>
+      </tr>
+      <tr>
+        <td style="border: 1px solid #ccc; padding: 8px; text-align: center;">④</td>
+        <td style="border: 1px solid #ccc; padding: 8px;"></td>
+        <td style="border: 1px solid #ccc; padding: 8px;">DB操作を担当するクラスの変数名（例：dao）</td>
+      </tr>
+      <tr>
+        <td style="border: 1px solid #ccc; padding: 8px; text-align: center;">⑤</td>
+        <td style="border: 1px solid #ccc; padding: 8px;"></td>
+        <td style="border: 1px solid #ccc; padding: 8px;">JSPにデータを預けるメソッド名</td>
+      </tr>
+      <tr>
+        <td style="border: 1px solid #ccc; padding: 8px; text-align: center;">⑥</td>
+        <td style="border: 1px solid #ccc; padding: 8px;"></td>
+        <td style="border: 1px solid #ccc; padding: 8px;">JSPへ処理を移すオブジェクト名（例：dispatcher）</td>
+      </tr>
+      <tr>
+        <td style="border: 1px solid #ccc; padding: 8px; text-align: center;">⑦</td>
+        <td style="border: 1px solid #ccc; padding: 8px;"></td>
+        <td style="border: 1px solid #ccc; padding: 8px;">⑤ で指定したキー文字列と一致する</td>
+      </tr>
+    </table>
+
+    <div style="border-bottom: 1px solid #ccc; margin: 10px 0;"></div>
+    <details style="margin-top: 8px;">
+      <summary style="cursor: pointer; font-weight: bold; color: #555;">ヒント①（メソッド名だけ）</summary>
+      <div style="margin-top: 8px; padding: 12px; background-color: #f9f9f9; border-radius: 5px; border: 1px solid #ddd;">
+        <ul style="padding-left: 20px; margin: 0;">
+          <li style="margin-bottom: 6px;">③ は <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">getParameter</code></li>
+          <li style="margin-bottom: 6px;">⑤ は <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">setAttribute</code></li>
+          <li style="margin-bottom: 0;">⑥ は <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">dispatcher</code></li>
+        </ul>
+      </div>
+    </details>
+    <details style="margin-top: 5px;">
+      <summary style="cursor: pointer; font-weight: bold; color: #0033ff;">解答例</summary>
+      <div style="margin-top: 10px;">
+        <pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">
+① itemName        （フォームの name 属性の値）
+② price           （フォームの name 属性の値）
+③ getParameter    （値を取り出すメソッド）
+④ dao             （DAO のインスタンス変数名）
+⑤ setAttribute    （JSP へ渡すメソッド）
+⑥ dispatcher      （RequestDispatcher のインスタンス変数名）
+⑦ items           （⑤ の第1引数のキー文字列と一致）</pre>
+      </div>
+    </details>
+  </section>
+
+  <hr style="border: none; border-top: 1px solid #ccc; margin: 1.5em 0;">
+
+  <!-- 発展 -->
+  <section style="margin-bottom: 30px;">
+    <h2 style="border-left: 5px solid #cc0000; padding-left: 10px; color: #cc0000; font-size: 18px; margin-bottom: 15px;">
+      発展：Servlet の doPost を完成させる
+    </h2>
+
+    <div style="margin-bottom: 25px;">
+      <p style="margin-bottom: 8px;"><strong>【発展問題】</strong> 次のコードは「商品名と価格をフォームから受け取り、DBに登録する」doPost です。（ A 〜 G ）を埋めて完成させてください。</p>
+
+      <pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">
+@Override
+protected void doPost(HttpServletRequest request, HttpServletResponse response)
+		throws ServletException, IOException {
+
+	// ① フォームの値を受け取る
+	String itemName = request.（ A ）("itemName");
+	String priceStr = request.（ A ）("price");
+
+	// ② 型変換
+	int price = Integer.（ B ）(priceStr);
+
+	// ③ DTO に詰める
+	ItemDto dto = new （ C ）();
+	dto.setItemName(（ D ）);
+	dto.setPrice(（ E ）);
+
+	// ④ DAO に登録を依頼
+	ItemDao dao = new ItemDao();
+	dao.（ F ）(dto);
+
+	// ⑤ 一覧画面にリダイレクト
+	response.（ G ）(request.getContextPath() + "/items");
+}</pre>
+
+      <div style="border-bottom: 1px solid #ccc; margin: 10px 0;"></div>
+      <details style="margin-top: 8px;">
+        <summary style="cursor: pointer; font-weight: bold; color: #555;">ヒント①（型と変数名）</summary>
+        <div style="margin-top: 8px; padding: 12px; background-color: #f9f9f9; border-radius: 5px; border: 1px solid #ddd;">
+          <ul style="padding-left: 20px; margin: 0;">
+            <li style="margin-bottom: 6px;">A は <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">getParameter</code>、B は <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">parseInt</code></li>
+            <li style="margin-bottom: 0;">C は DTO クラス名、D・E はローカル変数名</li>
+          </ul>
+        </div>
+      </details>
+      <details style="margin-top: 5px;">
+        <summary style="cursor: pointer; font-weight: bold; color: #555;">ヒント②（DAOとリダイレクト）</summary>
+        <div style="margin-top: 8px; padding: 12px; background-color: #f9f9f9; border-radius: 5px; border: 1px solid #ddd;">
+          <ul style="padding-left: 20px; margin: 0;">
+            <li style="margin-bottom: 6px;">F は DAO の登録メソッド名（Unit04 で作ったもの）</li>
+            <li style="margin-bottom: 0;">G は POST後に一覧へ戻るための <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">sendRedirect</code></li>
+          </ul>
+        </div>
+      </details>
+      <details style="margin-top: 5px;">
+        <summary style="cursor: pointer; font-weight: bold; color: #0033ff;">解答例</summary>
+        <div style="margin-top: 10px;">
+          <pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">
+A → getParameter
+B → parseInt
+C → ItemDto
+D → itemName
+E → price
+F → insert
+G → sendRedirect</pre>
+          <div style="background: #e6f7ff; padding: 15px; border: 2px dashed #1890ff; border-radius: 6px; margin-top: 10px;">
+            <p style="font-size: 12px; color: #0050b3; margin-bottom: 8px; font-weight: bold;">マウスで全選択して Eclipse やメモ帳へドラッグしてください：</p>
+            <textarea readonly style="width: 100%; height: 260px; font-family: Consolas, monospace; font-size: 13px; padding: 10px; border: 1px solid #91d5ff; background: #fff; display: block; user-select: all !important;">@Override
+protected void doPost(HttpServletRequest request, HttpServletResponse response)
+		throws ServletException, IOException {
+
+	// ① フォームの値を受け取る
+	String itemName = request.getParameter("itemName");
+	String priceStr = request.getParameter("price");
+
+	// ② 型変換
+	int price = Integer.parseInt(priceStr);
+
+	// ③ DTO に詰める
+	ItemDto dto = new ItemDto();
+	dto.setItemName(itemName);
+	dto.setPrice(price);
+
+	// ④ DAO に登録を依頼
+	ItemDao dao = new ItemDao();
+	dao.insert(dto);
+
+	// ⑤ 一覧画面にリダイレクト
+	response.sendRedirect(request.getContextPath() + "/items");
+}</textarea>
+          </div>
+        </div>
+      </details>
+    </div>
+  </section>
+
+</div>
