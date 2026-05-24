@@ -1,0 +1,435 @@
+Unit09 練習問題：ひたすら演習 ～黄金ルートを反復して体に叩き込む～
+<div style="max-width: 800px; margin: 0 auto; font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif; line-height: 1.6; color: #333; padding: 20px; border: 1px solid #eee; background-color: #fff;">
+
+<h1 style="padding-left: 10px; background-color: #f0f8ff; color: #0033ff; font-size: 24px; margin-bottom: 30px;">Unit09 練習問題：ひたすら演習</h1>
+
+<!-- ===== 黄金ルート復習 ===== -->
+<section style="margin-bottom: 30px;">
+<h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 15px;">黄金ルートを確認する</h2>
+
+<div style="background-color: #f0f8ff; padding: 20px; border-radius: 5px; border-left: 5px solid #0033ff;">
+<p style="margin-bottom: 10px;"><strong>今日の目標：</strong>下の流れを<strong>「名前の対応」を崩さずに</strong>自分で再現できるようにする。</p>
+<div style="margin: 15px 0; background-color: #fff; padding: 15px; border-radius: 10px; border: 1px solid #e1dbbd;">
+<p style="font-family: monospace; font-size: 15px; text-align: center; margin-bottom: 0;">
+Browser
+<br>↓ HTTPリクエスト（フォームの name 属性）
+<br>Tomcat
+<br>↓
+<br>Servlet（Controller）
+<br>　　getParameter("name") → 型変換 → DTO → dao.xxx()
+<br>↓
+<br>DAO / DB（Model）
+<br>↓
+<br>setAttribute("key", data) → forward
+<br>↓
+<br>JSP（View）
+<br>　　${key} / c:forEach / c:out / c:if
+<br>↓
+<br>Browser
+</p>
+</div>
+</div>
+</section>
+
+<!-- ===== 65秒集中動画 ===== -->
+<section style="margin-bottom: 30px;">
+<h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 15px;">65秒集中動画：対応表テンプレを写経する</h2>
+
+<p style="margin-bottom: 10px;">動画の冒頭65秒を集中視聴して、下の「写経テンプレ」を手で書き写してください。</p>
+<div style="text-align: center; margin-bottom: 15px;">
+<iframe width="560" height="315"
+  src="https://www.youtube.com/embed/gvcCEFlA-50?start=0&end=65"
+  frameborder="0" allowfullscreen></iframe>
+</div>
+
+<h3 style="padding-left: 10px; color: #0033ff; font-size: 16px; margin-top: 20px; margin-bottom: 10px;">写経テンプレ（これだけ手で書く）</h3>
+<pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">フォームname → getParameter("name")
+setAttribute("key") → JSPで取り出すkey
+DAOメソッド名 → SQL（SELECT / INSERT）
+JSP表示（JSTL）: c:out / c:forEach / c:if</pre>
+
+<div style="background:#e6f7ff;padding:15px;border:2px dashed #1890ff;border-radius:6px; margin-top: 10px;">
+  <p style="font-size:12px;color:#0050b3;margin-bottom:8px;font-weight:bold;">🖱️ マウスで全選択して Eclipse やメモ帳へドラッグしてください：</p>
+  <textarea readonly style="width:100%;height:100px;font-family:Consolas,monospace;font-size:13px;padding:10px;border:1px solid #91d5ff;background:#fff;display:block;user-select:all !important;">フォームname → getParameter("name")
+setAttribute("key") → JSPで取り出すkey
+DAOメソッド名 → SQL（SELECT / INSERT）
+JSP表示（JSTL）: c:out / c:forEach / c:if</textarea>
+</div>
+</section>
+
+<hr style="border: none; border-top: 1px solid #ccc; margin: 1.5em 0;">
+
+<!-- ===== ミッション1 ===== -->
+<section style="margin-bottom: 30px;">
+<h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 15px;">ミッション1：名前の対応を追う（穴埋め）</h2>
+<p style="margin-bottom: 10px;">商品登録フォームから Servlet を経由して JSP に表示するまでの「名前の対応」を完成させましょう。</p>
+
+<!-- 問1 -->
+<p style="margin-bottom: 10px;"><strong>【問題1】</strong>　次のHTMLフォームの <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">name</code> 属性と、Servlet 側の <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">getParameter</code> の引数が対応します。①〜④に入る語を答えてください。</p>
+
+<pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;"><span style="color:#666;">// form.html</span>
+&lt;form action="<span style="color:#cc0000;">/app/item/register</span>" method="<span style="color:#cc0000;">post</span>"&gt;
+    &lt;input type="text"   name="<strong>①</strong>" &gt;
+    &lt;input type="number" name="<strong>②</strong>" &gt;
+    &lt;button type="submit"&gt;登録&lt;/button&gt;
+&lt;/form&gt;
+
+<span style="color:#666;">// ItemRegisterServlet.java（doPost）</span>
+String itemName = request.getParameter("<strong>③</strong>");
+String priceStr = request.getParameter("<strong>④</strong>");
+int price = Integer.parseInt(priceStr);</pre>
+
+<div style="border-bottom: 1px solid #ccc; margin: 10px 0;"></div>
+<details style="margin-top: 8px;"><summary style="cursor: pointer; font-weight: bold; color: #555;">ヒント</summary>
+<p style="margin-top: 8px;"><code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">getParameter</code> の引数は、フォームの <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">name</code> 属性の値と<strong>完全一致</strong>していないと null になります。①と③、②と④はそれぞれ同じ文字列です。</p>
+</details>
+<details style="margin-top: 5px;"><summary style="cursor: pointer; font-weight: bold; color: #0033ff;">解答例</summary>
+<p style="font-size:12px;color:#666;margin-bottom:5px;">【解説・確認用】</p>
+<pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">① itemName
+② price
+③ itemName　← フォームの name="itemName" と一致
+④ price　　 ← フォームの name="price" と一致</pre>
+</details>
+
+<hr style="border: none; border-top: 1px solid #ccc; margin: 1.5em 0;">
+
+<!-- 問2 -->
+<p style="margin-bottom: 10px;"><strong>【問題2】</strong>　Servlet で <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">setAttribute</code> したキー名と、JSP で取り出すキー名が一致している必要があります。⑤〜⑦に入る語を答えてください。</p>
+
+<pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;"><span style="color:#666;">// ItemListServlet.java（doGet）</span>
+List&lt;ItemDto&gt; itemList = dao.findAll();
+request.setAttribute("<strong>⑤</strong>", itemList);
+RequestDispatcher dispatcher =
+    request.getRequestDispatcher("<span style="color:#cc0000;">/WEB-INF/jsp/itemList.jsp</span>");
+dispatcher.forward(request, response);
+
+<span style="color:#666;">// itemList.jsp</span>
+&lt;c:forEach var="item" items="${<strong>⑥</strong>}"&gt;
+    &lt;tr&gt;
+        &lt;td&gt;&lt;c:out value="${item.<strong>⑦</strong>}"/&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;c:out value="${item.price}"/&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/c:forEach&gt;</pre>
+
+<p style="font-size: 13px; color: #555; margin-bottom: 10px;">※ ItemDto には <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">itemName</code> フィールドがあり、<code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">getItemName()</code> でアクセスできます。</p>
+
+<div style="border-bottom: 1px solid #ccc; margin: 10px 0;"></div>
+<details style="margin-top: 8px;"><summary style="cursor: pointer; font-weight: bold; color: #555;">ヒント</summary>
+<p style="margin-top: 8px;">⑤と⑥は同じキー名を書きます。⑦は EL 式のプロパティ名（= フィールド名）です。<code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">${item.itemName}</code> は内部で <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">getItemName()</code> を呼びます。</p>
+</details>
+<details style="margin-top: 5px;"><summary style="cursor: pointer; font-weight: bold; color: #0033ff;">解答例</summary>
+<p style="font-size:12px;color:#666;margin-bottom:5px;">【解説・確認用】</p>
+<pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">⑤ itemList　← setAttribute のキー
+⑥ itemList　← JSP 側で同じキーを使う
+⑦ itemName　← EL 式のプロパティ名（getItemName() を呼ぶ）</pre>
+</details>
+
+<hr style="border: none; border-top: 1px solid #ccc; margin: 1.5em 0;">
+
+<!-- 問3: 通り道マップ -->
+<p style="margin-bottom: 10px;"><strong>【問題3】</strong>　「データの通り道マップ」の①〜⑥に入る語を語群から選んでください。</p>
+
+<table border="1" style="border-collapse: collapse; width: 100%; margin-bottom: 10px;">
+<tr style="background-color: #f0f8ff;">
+  <th style="padding: 8px; text-align: center;">場所</th>
+  <th style="padding: 8px; text-align: center;">コード例</th>
+  <th style="padding: 8px; text-align: center;">答え（①〜⑥）</th>
+</tr>
+<tr>
+  <td style="padding: 8px;">HTMLフォーム</td>
+  <td style="padding: 8px; font-family: monospace;">name="<strong>①</strong>"</td>
+  <td style="padding: 8px; text-align: center;">　</td>
+</tr>
+<tr>
+  <td style="padding: 8px;">Servlet</td>
+  <td style="padding: 8px; font-family: monospace;">getParameter("<strong>②</strong>")</td>
+  <td style="padding: 8px; text-align: center;">　</td>
+</tr>
+<tr>
+  <td style="padding: 8px;">Servlet</td>
+  <td style="padding: 8px; font-family: monospace;">dto.set<strong>③</strong>(itemName)</td>
+  <td style="padding: 8px; text-align: center;">　</td>
+</tr>
+<tr>
+  <td style="padding: 8px;">Servlet</td>
+  <td style="padding: 8px; font-family: monospace;">request.setAttribute("<strong>④</strong>", list)</td>
+  <td style="padding: 8px; text-align: center;">　</td>
+</tr>
+<tr>
+  <td style="padding: 8px;">JSP（c:forEach）</td>
+  <td style="padding: 8px; font-family: monospace;">items="${<strong>⑤</strong>}"</td>
+  <td style="padding: 8px; text-align: center;">　</td>
+</tr>
+<tr>
+  <td style="padding: 8px;">JSP（c:out）</td>
+  <td style="padding: 8px; font-family: monospace;">${item.<strong>⑥</strong>}</td>
+  <td style="padding: 8px; text-align: center;">　</td>
+</tr>
+</table>
+
+<p style="font-size: 13px; color: #555; margin-bottom: 10px;"><strong>語群：</strong> itemName / itemName / ItemName / itemList / itemList / itemName</p>
+
+<div style="border-bottom: 1px solid #ccc; margin: 10px 0;"></div>
+<details style="margin-top: 8px;"><summary style="cursor: pointer; font-weight: bold; color: #555;">ヒント</summary>
+<p style="margin-top: 8px;">①②はフォームの name 属性とgetParameter の引数なので同じ。③は setter のメソッド名（先頭大文字）。④⑤は setAttribute と JSP 側キー名で同じ。⑥は EL 式のプロパティ名（先頭小文字）。</p>
+</details>
+<details style="margin-top: 5px;"><summary style="cursor: pointer; font-weight: bold; color: #0033ff;">解答例</summary>
+<p style="font-size:12px;color:#666;margin-bottom:5px;">【解説・確認用】</p>
+<pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">① itemName   ← フォーム name 属性
+② itemName   ← getParameter の引数（①と一致）
+③ ItemName   ← setItemName() のメソッド名部分（先頭大文字）
+④ itemList   ← setAttribute のキー
+⑤ itemList   ← JSP 側のキー（④と一致）
+⑥ itemName   ← EL 式プロパティ名（先頭小文字）</pre>
+</details>
+</section>
+
+<hr style="border: none; border-top: 1px solid #ccc; margin: 1.5em 0;">
+
+<!-- ===== ミッション2 ===== -->
+<section style="margin-bottom: 30px;">
+<h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 15px;">ミッション2：JSTLで表示する（穴埋め）</h2>
+<p style="margin-bottom: 10px;">JSTL（<code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">c:out</code> / <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">c:forEach</code> / <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">c:if</code>）を使った表示パターンを完成させましょう。</p>
+
+<!-- 問4 -->
+<p style="margin-bottom: 10px;"><strong>【問題4】</strong>　商品一覧を表示する JSP コードの A〜D に入るタグ・属性・値を答えてください。</p>
+
+<pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">&lt;%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %&gt;
+&lt;table border="1"&gt;
+  &lt;tr&gt;
+    &lt;th&gt;ID&lt;/th&gt;&lt;th&gt;商品名&lt;/th&gt;&lt;th&gt;価格&lt;/th&gt;
+  &lt;/tr&gt;
+  &lt;<strong>A</strong> var="<strong>B</strong>" items="${itemList}"&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;c:out value="${<strong>C</strong>.itemId}"/&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;<strong>D</strong> value="${item.itemName}"/&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;c:out value="${item.price}"/&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/c:forEach&gt;
+&lt;/table&gt;</pre>
+
+<div style="border-bottom: 1px solid #ccc; margin: 10px 0;"></div>
+<details style="margin-top: 8px;"><summary style="cursor: pointer; font-weight: bold; color: #555;">ヒント</summary>
+<p style="margin-top: 8px;">A は繰り返しのタグ名（<code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">c:???</code>）。B はループ変数名。C は B で宣言した変数名。D は値を安全に出力するタグ（XSS対策）。</p>
+</details>
+<details style="margin-top: 5px;"><summary style="cursor: pointer; font-weight: bold; color: #0033ff;">解答例</summary>
+<p style="font-size:12px;color:#666;margin-bottom:5px;">【解説・確認用】</p>
+<pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">A: c:forEach
+B: item
+C: item   ← var="item" で宣言した変数名と同じ
+D: c:out</pre>
+</details>
+
+<hr style="border: none; border-top: 1px solid #ccc; margin: 1.5em 0;">
+
+<!-- 問5 -->
+<p style="margin-bottom: 10px;"><strong>【問題5】</strong>　ログインしているときだけ「ようこそ」メッセージを出す JSP の E〜G に入る語を答えてください。</p>
+
+<pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">&lt;%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %&gt;
+&lt;<strong>E</strong> test="${<strong>F</strong> != null}"&gt;
+    &lt;p&gt;ようこそ、&lt;c:out value="${<strong>G</strong>}"/&gt; さん！&lt;/p&gt;
+&lt;/c:if&gt;</pre>
+
+<p style="font-size: 13px; color: #555; margin-bottom: 10px;">※ Servlet 側で <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">session.setAttribute("loginUser", userName);</code> を実行済みとします。</p>
+
+<div style="border-bottom: 1px solid #ccc; margin: 10px 0;"></div>
+<details style="margin-top: 8px;"><summary style="cursor: pointer; font-weight: bold; color: #555;">ヒント</summary>
+<p style="margin-top: 8px;">E は条件分岐タグ。F と G は <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">setAttribute</code> のキー名と同じです。</p>
+</details>
+<details style="margin-top: 5px;"><summary style="cursor: pointer; font-weight: bold; color: #0033ff;">解答例</summary>
+<p style="font-size:12px;color:#666;margin-bottom:5px;">【解説・確認用】</p>
+<pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">E: c:if
+F: loginUser   ← session.setAttribute("loginUser", ...) のキー
+G: loginUser   ← 同じキーで EL 式から取り出す</pre>
+</details>
+
+<hr style="border: none; border-top: 1px solid #ccc; margin: 1.5em 0;">
+
+<!-- 問6: 正誤問題 -->
+<p style="margin-bottom: 10px;"><strong>【問題6】</strong>　次の JSP コードについて、正しいものを選んでください（複数可）。</p>
+
+<pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">（ア）&lt;c:out value="${item.itemName}"/&gt;
+（イ）&lt;c:forEach var="item" items="${items}" begin="1"&gt;
+（ウ）&lt;c:if test="${msg != null}"&gt;${msg}&lt;/c:if&gt;
+（エ）&lt;c:forEach items="${itemList}"&gt;${item.price}&lt;/c:forEach&gt;</pre>
+
+<div style="border-bottom: 1px solid #ccc; margin: 10px 0;"></div>
+<details style="margin-top: 8px;"><summary style="cursor: pointer; font-weight: bold; color: #555;">ヒント</summary>
+<p style="margin-top: 8px;">（エ）は <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">var</code> 属性がないため、ループ変数 <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">item</code> が宣言されていません。</p>
+</details>
+<details style="margin-top: 5px;"><summary style="cursor: pointer; font-weight: bold; color: #0033ff;">解答例</summary>
+<p style="font-size:12px;color:#666;margin-bottom:5px;">【解説・確認用】</p>
+<pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">正しいもの：（ア）（イ）（ウ）
+
+（ア）○ c:out で安全に出力 — 正しい
+（イ）○ begin="1" は2件目からの表示（0始まりインデックス省略も可）— 正しい
+（ウ）○ c:if で null チェック — 正しい
+（エ）✗ var 属性なし → ループ変数 item が未定義 → ${item.price} が機能しない</pre>
+</details>
+</section>
+
+<hr style="border: none; border-top: 1px solid #ccc; margin: 1.5em 0;">
+
+<!-- ===== ミッション3 ===== -->
+<section style="margin-bottom: 30px;">
+<h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 15px;">ミッション3：DAOメソッド → SQL 対応表</h2>
+<p style="margin-bottom: 10px;">DAOのメソッド名とその中で使うSQL文を対応させましょう。①〜⑧に入る語を答えてください。</p>
+
+<table border="1" style="border-collapse: collapse; width: 100%; margin-bottom: 10px;">
+<tr style="background-color: #f0f8ff;">
+  <th style="padding: 8px;">DAOメソッド</th>
+  <th style="padding: 8px;">使うSQL</th>
+  <th style="padding: 8px;">返す型</th>
+</tr>
+<tr>
+  <td style="padding: 8px; font-family: monospace;">findAll()</td>
+  <td style="padding: 8px; font-family: monospace;"><strong>①</strong> id, itemName, price FROM items</td>
+  <td style="padding: 8px; font-family: monospace;">List&lt;ItemDto&gt;</td>
+</tr>
+<tr>
+  <td style="padding: 8px; font-family: monospace;">findById(<strong>②</strong> id)</td>
+  <td style="padding: 8px; font-family: monospace;">SELECT ... WHERE <strong>③</strong> = ?</td>
+  <td style="padding: 8px; font-family: monospace;">ItemDto</td>
+</tr>
+<tr>
+  <td style="padding: 8px; font-family: monospace;">insert(<strong>④</strong> dto)</td>
+  <td style="padding: 8px; font-family: monospace;"><strong>⑤</strong> INTO items (itemName, price) VALUES (?, ?)</td>
+  <td style="padding: 8px; font-family: monospace;">int（更新件数）</td>
+</tr>
+<tr>
+  <td style="padding: 8px; font-family: monospace;">update(ItemDto dto)</td>
+  <td style="padding: 8px; font-family: monospace;"><strong>⑥</strong> items SET itemName=?, price=? WHERE id=?</td>
+  <td style="padding: 8px; font-family: monospace;">int（更新件数）</td>
+</tr>
+<tr>
+  <td style="padding: 8px; font-family: monospace;">delete(<strong>⑦</strong> id)</td>
+  <td style="padding: 8px; font-family: monospace;"><strong>⑧</strong> FROM items WHERE id=?</td>
+  <td style="padding: 8px; font-family: monospace;">int（更新件数）</td>
+</tr>
+</table>
+
+<div style="border-bottom: 1px solid #ccc; margin: 10px 0;"></div>
+<details style="margin-top: 8px;"><summary style="cursor: pointer; font-weight: bold; color: #555;">ヒント</summary>
+<p style="margin-top: 8px;">SQLキーワード（SELECT / INSERT / UPDATE / DELETE）と、引数の型（int / ItemDto）を思い出してください。③は主キーのカラム名です。</p>
+</details>
+<details style="margin-top: 5px;"><summary style="cursor: pointer; font-weight: bold; color: #0033ff;">解答例</summary>
+<p style="font-size:12px;color:#666;margin-bottom:5px;">【解説・確認用】</p>
+<pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">① SELECT
+② int
+③ id
+④ ItemDto
+⑤ INSERT
+⑥ UPDATE
+⑦ int
+⑧ DELETE</pre>
+</details>
+</section>
+
+<hr style="border: none; border-top: 1px solid #ccc; margin: 1.5em 0;">
+
+<!-- ===== 発展問題 ===== -->
+<section style="margin-bottom: 30px;">
+<h2 style="border-left: 5px solid #cc0000; padding-left: 10px; color: #cc0000; font-size: 18px; margin-bottom: 15px;">発展：doPost を完成させる（商品登録 Servlet）</h2>
+<p style="margin-bottom: 10px;">商品登録 Servlet の <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">doPost</code> メソッドを完成させましょう。A〜H に入る語を答えてください。</p>
+
+<pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;"><span style="color:#0033ff;">@WebServlet</span>(<span style="color:#cc0000;">"/item/register"</span>)
+<span style="color:#0033ff;">public class</span> ItemRegisterServlet <span style="color:#0033ff;">extends</span> HttpServlet {
+
+    <span style="color:#0033ff;">@Override</span>
+    <span style="color:#0033ff;">protected void</span> doPost(HttpServletRequest request, HttpServletResponse response)
+            <span style="color:#0033ff;">throws</span> ServletException, IOException {
+
+        request.setCharacterEncoding(<span style="color:#cc0000;">"UTF-8"</span>);
+
+        <span style="color:#666;">// ① フォームから値を取得</span>
+        String itemName = request.<strong>A</strong>(<span style="color:#cc0000;">"itemName"</span>);
+        String priceStr = request.getParameter(<span style="color:#cc0000;">"price"</span>);
+        <span style="color:#0033ff;">int</span> price = Integer.<strong>B</strong>(priceStr);
+
+        <span style="color:#666;">// ② DTO に詰める</span>
+        <strong>C</strong> dto = <span style="color:#0033ff;">new</span> ItemDto();
+        dto.setItemName(<strong>D</strong>);
+        dto.setPrice(price);
+
+        <span style="color:#666;">// ③ DAOで登録</span>
+        ItemDao dao = <span style="color:#0033ff;">new</span> ItemDao();
+        <span style="color:#0033ff;">int</span> result = dao.<strong>E</strong>(dto);
+
+        <span style="color:#666;">// ④ 完了メッセージをセットして一覧にリダイレクト</span>
+        <span style="color:#0033ff;">if</span> (result > <span style="color:#cc0000;">0</span>) {
+            request.<strong>F</strong>(<span style="color:#cc0000;">"message"</span>, <span style="color:#cc0000;">"登録が完了しました"</span>);
+        }
+        response.<strong>G</strong>(request.getContextPath() + <span style="color:#cc0000;">"<strong>H</strong>"</span>);
+    }
+}</pre>
+
+<div style="border-bottom: 1px solid #ccc; margin: 10px 0;"></div>
+<details style="margin-top: 8px;"><summary style="cursor: pointer; font-weight: bold; color: #555;">ヒント①（A〜D）</summary>
+<p style="margin-top: 8px;">A は文字列パラメータを取得するメソッド名。B は文字列を int に変換する静的メソッド名。C は DTO のクラス名。D はローカル変数 <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">itemName</code>。</p>
+</details>
+<details style="margin-top: 8px;"><summary style="cursor: pointer; font-weight: bold; color: #555;">ヒント②（E〜H）</summary>
+<p style="margin-top: 8px;">E は DAOの登録メソッド名。F は request にキーと値をセットするメソッド。G は別URLへリダイレクトするメソッド。H は一覧画面の URL パス（例：<code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">/item/list</code>）。</p>
+</details>
+<details style="margin-top: 5px;"><summary style="cursor: pointer; font-weight: bold; color: #0033ff;">解答例</summary>
+<p style="font-size:12px;color:#666;margin-bottom:5px;">【解説・確認用】</p>
+<pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">A: getParameter
+B: parseInt
+C: ItemDto
+D: itemName   ← ローカル変数をそのまま渡す
+E: insert
+F: setAttribute
+G: sendRedirect
+H: /item/list （例）</pre>
+<div style="background:#e6f7ff;padding:15px;border:2px dashed #1890ff;border-radius:6px; margin-top: 10px;">
+  <p style="font-size:12px;color:#0050b3;margin-bottom:8px;font-weight:bold;">🖱️ マウスで全選択して Eclipse やメモ帳へドラッグしてください：</p>
+  <textarea readonly style="width:100%;height:330px;font-family:Consolas,monospace;font-size:13px;padding:10px;border:1px solid #91d5ff;background:#fff;display:block;user-select:all !important;">@WebServlet("/item/register")
+public class ItemRegisterServlet extends HttpServlet {
+
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		request.setCharacterEncoding("UTF-8");
+
+		// ① フォームから値を取得
+		String itemName = request.getParameter("itemName");
+		String priceStr = request.getParameter("price");
+		int price = Integer.parseInt(priceStr);
+
+		// ② DTO に詰める
+		ItemDto dto = new ItemDto();
+		dto.setItemName(itemName);
+		dto.setPrice(price);
+
+		// ③ DAOで登録
+		ItemDao dao = new ItemDao();
+		int result = dao.insert(dto);
+
+		// ④ 完了メッセージをセットして一覧にリダイレクト
+		if (result > 0) {
+			request.setAttribute("message", "登録が完了しました");
+		}
+		response.sendRedirect(request.getContextPath() + "/item/list");
+	}
+}</textarea>
+</div>
+</details>
+</section>
+
+<hr style="border: none; border-top: 1px solid #ccc; margin: 1.5em 0;">
+
+<!-- ===== マスター認定 ===== -->
+<section style="margin-bottom: 30px;">
+<h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 15px;">マスター認定：5分図解プレゼン</h2>
+<div style="background-color: #f0f8ff; padding: 20px; border-radius: 5px; border-left: 5px solid #0033ff;">
+<p style="margin-bottom: 10px;"><strong>お題：</strong>「JSP終了時点の全知識」をホワイトボード（または紙）に図で描き、5分で説明してください。</p>
+<ul style="padding-left: 20px; margin-bottom: 0;">
+  <li style="margin-bottom: 10px;">全体の箱（Browser / Servlet / DAO / DB / JSP）と矢印が描けること</li>
+  <li style="margin-bottom: 10px;">「どこで詰まりやすいか」（名前の不一致、スコープの選択など）を説明できること</li>
+  <li style="margin-bottom: 10px;">JSTL の3タグ（<code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">c:out</code> / <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">c:forEach</code> / <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">c:if</code>）の使いどころを言えること</li>
+  <li style="margin-bottom: 0px;"><strong>講師のOKが出るまで次の単元には進みません。</strong></li>
+</ul>
+</div>
+</section>
+
+</div>

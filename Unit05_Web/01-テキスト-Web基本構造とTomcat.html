@@ -1,0 +1,390 @@
+Unit05 Web基本構造とTomcat ～Webの循環とTomcatの内部構造～
+<div style="max-width: 800px; margin: 0 auto; font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif; line-height: 1.6; color: #333; padding: 20px; border: 1px solid #eee; background-color: #fff;">
+
+  <h1 style="padding-left: 10px; background-color: #f0f8ff; color: #0033ff; font-size: 24px; margin-bottom: 30px;">
+    Unit05 Web基本構造とTomcat ～Webの循環とTomcatの内部構造～
+  </h1>
+
+  <!-- 前回復習 -->
+  <section style="margin-bottom: 30px;">
+    <h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 15px;">
+      前回の復習
+    </h2>
+
+    <h3 style="padding-left: 10px; color: #0033ff; font-size: 16px; margin-top: 15px; margin-bottom: 10px;">
+      復習1：なぜDAOとして分離すべきか（保守性）
+    </h3>
+
+    <div style="background-color: #f2f2f2; padding: 15px; border-radius: 5px; border-left: 5px solid #888888; margin-bottom: 10px;">
+      <p style="margin: 0;"><strong>カバ先生</strong>：「Unit04 まででDAO の書き方は身についてきましたね。ここで一度、なぜDAOとして分離するのかを整理しておきましょう。」</p>
+    </div>
+
+    <p style="margin-bottom: 10px;"><strong>問い</strong>：なぜデータベースへの接続処理をDAOとして分離すべきなのか、保守性の観点から説明してください。</p>
+
+    <div style="background-color: #f0f8ff; padding: 20px; border-radius: 5px; border-left: 5px solid #0033ff; margin-bottom: 15px;">
+      <div style="margin: 15px 0; background-color: #fff; padding: 15px; border-radius: 10px; border: 1px solid #e1dbbd;">
+        <p style="margin-bottom: 8px;"><strong>結論（覚える一文）</strong></p>
+        <p style="margin-bottom: 10px;">DAOは「DBとのやり取り（変更が起きやすい部分）」を1か所にまとめ、<strong>変更・バグ修正・テストの影響範囲を最小化</strong>するために分離する。</p>
+        <p style="margin-bottom: 8px;"><strong>保守性のポイント（写経して覚える）</strong></p>
+        <ul style="padding-left: 20px; margin-bottom: 0;">
+          <li style="margin-bottom: 8px;"><strong>変更点を1か所に集約</strong>できる（DB接続URL・ユーザー・パスワード、JDBCドライバ、SQLの修正）</li>
+          <li style="margin-bottom: 8px;"><strong>「データの取り出し方」と「使い方」を分離</strong>できる（DAO：SQL/JDBCの詳細 ／ それ以外：何をしたいか）</li>
+          <li style="margin-bottom: 0;"><strong>テストがしやすくなる</strong>（DAOだけ差し替えて、DBなしでも上流の動作確認がしやすい）</li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; margin-bottom: 15px; font-family: monospace; font-size: 14px;">
+      NG例（この形を避ける）<br>
+      画面やServletの中に、SQLやJDBCの細かい手順が散らばっている<br>
+      → 仕様変更のたびに複数箇所修正になり、壊れやすい
+    </div>
+
+    <h3 style="padding-left: 10px; color: #0033ff; font-size: 16px; margin-top: 20px; margin-bottom: 10px;">
+      復習2：DTOとEntityの違い
+    </h3>
+
+    <p style="margin-bottom: 10px;"><strong>結論（覚える一文）</strong>：Entityは「DBの行」を表し、DTOは「画面や処理が使いやすい形に運ぶ箱」。</p>
+
+    <pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">
+[DB]                         [アプリ]
+テーブル1行                 画面/処理で使うデータの形
+
+┌──────────────────┐        ┌──────────────────────┐
+│ sales_table        │        │ SalesSummaryDto       │
+│ id (PK)            │        │ totalAmount           │
+│ sale_date          │  →DTO→ │ displayDate           │
+│ amount             │        │ shopName              │
+│ shop_id (FK)       │        │ ...（必要な形に編集） │
+└──────────────────┘        └──────────────────────┘
+        ↑
+      Entity
+  SalesEntity（列とほぼ1対1）</pre>
+
+    <div style="background-color: #f0f8ff; padding: 20px; border-radius: 5px; border-left: 5px solid #0033ff; margin-bottom: 15px;">
+      <div style="margin: 15px 0; background-color: #fff; padding: 15px; border-radius: 10px; border: 1px solid #e1dbbd;">
+        <ul style="padding-left: 20px; margin-bottom: 0;">
+          <li style="margin-bottom: 8px;"><strong>Entity</strong>：テーブルの列と<strong>ほぼ1対1</strong>。DB設計変更の影響を受けやすい（DB寄りの層で管理）</li>
+          <li style="margin-bottom: 0;"><strong>DTO</strong>：画面・処理・APIの都合で<strong>必要な項目だけ集める／名前や型を整える</strong>。複数Entityの情報が混ざってもよい</li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="background-color: #ffe6f0; padding: 15px; border-radius: 5px; border-left: 5px solid #e8a0b0; margin-bottom: 10px;">
+      <p style="margin: 0;"><strong>ナナコ</strong>：「つまり Entity は DB の形そのまま、DTO は『使いやすいように詰め替えた宅配ボックス』みたいなイメージですね。」</p>
+    </div>
+    <div style="background-color: #f2f2f2; padding: 15px; border-radius: 5px; border-left: 5px solid #888888; margin-bottom: 10px;">
+      <p style="margin: 0;"><strong>カバ先生</strong>：「いいたとえです。今日は、そのDAOが作ったデータを<strong>ブラウザ画面まで届ける</strong>経路 ― Webの仕組みとTomcat ― を学びます。」</p>
+    </div>
+  </section>
+
+  <hr style="border: none; border-top: 1px solid #ccc; margin: 1.5em 0;">
+
+  <!-- チャプター1：インターネットの仕組み -->
+  <section style="margin-bottom: 30px;">
+    <h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 15px;">
+      チャプター1：インターネットの仕組み（動画視聴 約8分）
+    </h2>
+
+    <div style="background-color: #f0f8ff; padding: 15px; border-radius: 5px; border-left: 5px solid #0033ff; margin-bottom: 15px;">
+      <p style="margin: 0;"><strong>視聴区間</strong>：00:54 〜 08:52（手動停止の目安：<strong>08:52</strong>）</p>
+    </div>
+
+    <div style="margin-bottom: 10px;">
+      <iframe
+        width="560"
+        height="315"
+        src="https://www.youtube.com/embed/gvcCEFlA-50?start=54&end=532&rel=0"
+        title="インターネットの仕組み（抜粋）"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+        style="max-width: 100%; display: block;">
+      </iframe>
+    </div>
+
+    <p style="font-size: 12px; color: #666; margin-bottom: 15px;">
+      ※ リセット方法：ブラウザの更新（Windows: F5 / Ctrl+R、Mac: Command+R）<br>
+      ※ 手動停止の目安：<strong>08:52</strong>
+    </p>
+
+    <h3 style="padding-left: 10px; color: #0033ff; font-size: 16px; margin-top: 20px; margin-bottom: 10px;">
+      写経ポイント（ここだけノートに書く）
+    </h3>
+
+    <div style="background-color: #f2f2f2; padding: 15px; border-radius: 5px; border-left: 5px solid #888888; margin-bottom: 10px;">
+      <p style="margin: 0;"><strong>カバ先生</strong>：「動画を見たら、次の4行をノートに書き写してください。この4行が『HTTPの全体像』です。」</p>
+    </div>
+
+    <pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">
+ブラウザ →（HTTPリクエスト）→ サーバ
+ブラウザ ←（HTTPレスポンス）← サーバ
+
+URL    = 行き先
+Method = やりたいこと（取得 / 送信）
+Header = 条件や情報（ブラウザ情報など）
+Body   = 送りたいデータ（主にPOST）</pre>
+
+    <details style="margin-top: 8px;">
+      <summary style="cursor: pointer; font-weight: bold; color: #0033ff;">コピー用（ドラッグで貼り付け）</summary>
+      <div style="background: #e6f7ff; padding: 15px; border: 2px dashed #1890ff; border-radius: 6px; margin-top: 8px;">
+        <p style="font-size: 12px; color: #0050b3; margin-bottom: 8px; font-weight: bold;">マウスで全選択して Eclipse やメモ帳へドラッグしてください：</p>
+        <textarea readonly style="width: 100%; height: 130px; font-family: Consolas, monospace; font-size: 13px; padding: 10px; border: 1px solid #91d5ff; background: #fff; display: block; user-select: all !important;">ブラウザ →（HTTPリクエスト）→ サーバ
+ブラウザ ←（HTTPレスポンス）← サーバ
+
+URL    = 行き先
+Method = やりたいこと（取得 / 送信）
+Header = 条件や情報（ブラウザ情報など）
+Body   = 送りたいデータ（主にPOST）</textarea>
+      </div>
+    </details>
+  </section>
+
+  <hr style="border: none; border-top: 1px solid #ccc; margin: 1.5em 0;">
+
+  <!-- チャプター2：HTTPリクエストの写経 -->
+  <section style="margin-bottom: 30px;">
+    <h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 15px;">
+      チャプター2：HTTPリクエストを自分の目で見る
+    </h2>
+
+    <div style="background-color: #f2f2f2; padding: 15px; border-radius: 5px; border-left: 5px solid #888888; margin-bottom: 10px;">
+      <p style="margin: 0;"><strong>カバ先生</strong>：「ブラウザが実際に送っているHTTPリクエストを、デベロッパーツールで<strong>目で見て写経</strong>します。『なんとなく知っている』から『実物を見た』に変わります。」</p>
+    </div>
+    <div style="background-color: #e6f4ff; padding: 15px; border-radius: 5px; border-left: 5px solid #4da6ff; margin-bottom: 15px;">
+      <p style="margin: 0;"><strong>ユウタ</strong>：「デベロッパーツールって、あのF12で開くやつですか？」</p>
+    </div>
+
+    <h3 style="padding-left: 10px; color: #0033ff; font-size: 16px; margin-top: 20px; margin-bottom: 10px;">
+      手順（最短5ステップ）
+    </h3>
+
+    <ol style="padding-left: 20px; margin-bottom: 15px;">
+      <li style="margin-bottom: 10px;">任意のサイトを開く（例：学校のサイト、ニュースサイト等）</li>
+      <li style="margin-bottom: 10px;">デベロッパーツールを開く（Windows: <strong>F12</strong> / <strong>Ctrl+Shift+I</strong>）</li>
+      <li style="margin-bottom: 10px;"><strong>Network</strong> タブを開く</li>
+      <li style="margin-bottom: 10px;">ページを更新（<strong>F5</strong>）</li>
+      <li style="margin-bottom: 10px;">一覧から最初に取得している <strong>document（HTML）</strong> をクリックして <strong>Headers</strong> を開く</li>
+    </ol>
+
+    <h3 style="padding-left: 10px; color: #0033ff; font-size: 16px; margin-top: 20px; margin-bottom: 10px;">
+      写経テンプレ（これに埋めるだけ）
+    </h3>
+
+    <pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">
+【Request】
+URL:
+Method:
+Status:
+
+【Request Headers】
+Host:
+User-Agent:
+Accept:
+Accept-Language:
+Referer:（あれば）
+Cookie:（あれば。長いなら先頭だけでOK）
+
+【Response Headers】
+Content-Type:
+Set-Cookie:（あれば）
+Cache-Control:（あれば）</pre>
+
+    <h3 style="padding-left: 10px; color: #0033ff; font-size: 16px; margin-top: 20px; margin-bottom: 10px;">
+      写経した内容を「1行」にまとめる
+    </h3>
+
+    <p style="margin-bottom: 10px;">写経が終わったら、次の1行の形に変換してノートに追記してください。</p>
+
+    <pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">
+（ブラウザ）Method + URL + Header + Body →（サーバ）→ Status + ResponseHeader + Body</pre>
+
+    <div style="background-color: #ffe6f0; padding: 15px; border-radius: 5px; border-left: 5px solid #e8a0b0; margin-top: 10px;">
+      <p style="margin: 0;"><strong>ナナコ</strong>：「実際に見てみると、ブラウザって毎回こんなに情報を送っているんですね。」</p>
+    </div>
+  </section>
+
+  <hr style="border: none; border-top: 1px solid #ccc; margin: 1.5em 0;">
+
+  <!-- チャプター3：クイズ -->
+  <section style="margin-bottom: 30px;">
+    <h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 15px;">
+      チャプター3：クイズ
+    </h2>
+
+    <div style="background-color: #f2f2f2; padding: 15px; border-radius: 5px; border-left: 5px solid #888888; margin-bottom: 15px;">
+      <p style="margin: 0;"><strong>カバ先生</strong>：「解答は折りたたみの中にあります。まず自分で考えてから開いてください。」</p>
+    </div>
+
+    <!-- 第1問 -->
+    <div style="margin-bottom: 20px;">
+      <p style="margin-bottom: 8px;"><strong>【第1問】</strong> GETメソッドについて、最も適切な説明はどれ？</p>
+      <ul style="padding-left: 20px; margin-bottom: 10px;">
+        <li style="margin-bottom: 6px;">A. リクエストボディ（Body）に主要データを載せて送るのが基本である</li>
+        <li style="margin-bottom: 6px;">B. URLにパラメータが付くことが多く、同じURLなら再実行しやすい</li>
+        <li style="margin-bottom: 6px;">C. 必ずデータ更新に使うメソッドである</li>
+      </ul>
+      <div style="border-bottom: 1px solid #ccc; margin: 10px 0;"></div>
+      <details style="margin-top: 8px;">
+        <summary style="cursor: pointer; font-weight: bold; color: #0033ff;">解答例</summary>
+        <div style="margin-top: 10px; padding: 15px; background-color: #f0f8ff; border-radius: 5px; border: 1px solid #e1dbbd;">
+          <p style="margin-bottom: 6px;"><strong>正解：B</strong></p>
+          <p style="margin: 0; color: #555; font-size: 14px;">GETはURLに情報が乗りやすく、表示・検索などの「取得」によく使う。同じURLを再実行しても副作用が起きにくいのが特徴。</p>
+        </div>
+      </details>
+    </div>
+
+    <!-- 第2問 -->
+    <div style="margin-bottom: 20px;">
+      <p style="margin-bottom: 8px;"><strong>【第2問】</strong> POSTメソッドがふさわしいケースはどれ？</p>
+      <ul style="padding-left: 20px; margin-bottom: 10px;">
+        <li style="margin-bottom: 6px;">A. 商品一覧を表示するだけの画面を開く</li>
+        <li style="margin-bottom: 6px;">B. フォームの入力内容を送信して、登録処理を行う</li>
+        <li style="margin-bottom: 6px;">C. 画像やCSSなどの静的ファイルを取得する</li>
+      </ul>
+      <div style="border-bottom: 1px solid #ccc; margin: 10px 0;"></div>
+      <details style="margin-top: 8px;">
+        <summary style="cursor: pointer; font-weight: bold; color: #0033ff;">解答例</summary>
+        <div style="margin-top: 10px; padding: 15px; background-color: #f0f8ff; border-radius: 5px; border: 1px solid #e1dbbd;">
+          <p style="margin-bottom: 6px;"><strong>正解：B</strong></p>
+          <p style="margin: 0; color: #555; font-size: 14px;">POSTは送信するデータ（Body）を持ちやすく、登録・更新の処理で使う。URLに値が露出しないため、パスワードや個人情報の送信にも適している。</p>
+        </div>
+      </details>
+    </div>
+
+    <div style="background-color: #e6f4ff; padding: 15px; border-radius: 5px; border-left: 5px solid #4da6ff; margin-top: 10px;">
+      <p style="margin: 0;"><strong>ユウタ</strong>：「GET は『見るだけ』、POST は『送る・変える』って覚えたらいいですね！」</p>
+    </div>
+  </section>
+
+  <hr style="border: none; border-top: 1px solid #ccc; margin: 1.5em 0;">
+
+  <!-- チャプター4：Tomcatとディレクトリ構造 -->
+  <section style="margin-bottom: 30px;">
+    <h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 15px;">
+      チャプター4：Tomcatとディレクトリ構造（動画視聴 約10分）
+    </h2>
+
+    <div style="background-color: #f0f8ff; padding: 15px; border-radius: 5px; border-left: 5px solid #0033ff; margin-bottom: 15px;">
+      <p style="margin: 0;"><strong>視聴区間</strong>：35:43 〜 45:22（手動停止の目安：<strong>45:22</strong>）</p>
+    </div>
+
+    <div style="margin-bottom: 10px;">
+      <iframe
+        width="560"
+        height="315"
+        src="https://www.youtube.com/embed/gvcCEFlA-50?start=2143&end=2722&rel=0"
+        title="Tomcatとディレクトリ構造（抜粋）"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+        style="max-width: 100%; display: block;">
+      </iframe>
+    </div>
+
+    <p style="font-size: 12px; color: #666; margin-bottom: 15px;">
+      ※ リセット方法：ブラウザの更新（Windows: F5 / Ctrl+R、Mac: Command+R）<br>
+      ※ 手動停止の目安：<strong>45:22</strong>
+    </p>
+
+    <h3 style="padding-left: 10px; color: #0033ff; font-size: 16px; margin-top: 20px; margin-bottom: 10px;">
+      写経ポイント①：フォルダを「箱」として覚える
+    </h3>
+
+    <div style="background-color: #f2f2f2; padding: 15px; border-radius: 5px; border-left: 5px solid #888888; margin-bottom: 10px;">
+      <p style="margin: 0;"><strong>カバ先生</strong>：「次のフォルダ構造をノートに書き写してください。どの箱が外から見えて、どの箱が見えないかがポイントです。」</p>
+    </div>
+
+    <pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">
+Tomcat
+ └ webapps
+    └ アプリ名（コンテキスト）
+       ├ （公開される領域）HTML / CSS / 画像など
+       └ WEB-INF（外から直接見えない）
+          ├ classes（Javaのクラス）
+          └ lib（ライブラリjar）</pre>
+
+    <h3 style="padding-left: 10px; color: #0033ff; font-size: 16px; margin-top: 20px; margin-bottom: 10px;">
+      写経ポイント②：リクエストの流れを2行で
+    </h3>
+
+    <pre style="background-color: #fdf5e6; color: #333; padding: 15px; border-radius: 5px; border: 1px solid #e1dbbd; overflow-x: auto; font-family: monospace;">
+URL →（Tomcat）→ アプリに振り分け
+リクエスト →（アプリ）→ 処理 → レスポンス</pre>
+
+    <details style="margin-top: 8px;">
+      <summary style="cursor: pointer; font-weight: bold; color: #0033ff;">コピー用（ドラッグで貼り付け）</summary>
+      <div style="background: #e6f7ff; padding: 15px; border: 2px dashed #1890ff; border-radius: 6px; margin-top: 8px;">
+        <p style="font-size: 12px; color: #0050b3; margin-bottom: 8px; font-weight: bold;">マウスで全選択して Eclipse やメモ帳へドラッグしてください：</p>
+        <textarea readonly style="width: 100%; height: 150px; font-family: Consolas, monospace; font-size: 13px; padding: 10px; border: 1px solid #91d5ff; background: #fff; display: block; user-select: all !important;">Tomcat
+ └ webapps
+    └ アプリ名（コンテキスト）
+       ├ （公開される領域）HTML / CSS / 画像など
+       └ WEB-INF（外から直接見えない）
+          ├ classes（Javaのクラス）
+          └ lib（ライブラリjar）
+
+URL →（Tomcat）→ アプリに振り分け
+リクエスト →（アプリ）→ 処理 → レスポンス</textarea>
+      </div>
+    </details>
+
+    <div style="margin-top: 15px;">
+      <div style="background-color: #ffe6f0; padding: 15px; border-radius: 5px; border-left: 5px solid #e8a0b0; margin-bottom: 10px;">
+        <p style="margin: 0;"><strong>ナナコ</strong>：「WEB-INF の中は外から直接見えないんですね。JSPをそこに置く理由がわかった気がします。」</p>
+      </div>
+      <div style="background-color: #f2f2f2; padding: 15px; border-radius: 5px; border-left: 5px solid #888888; margin-bottom: 10px;">
+        <p style="margin: 0;"><strong>カバ先生</strong>：「そうです。JSPを WEB-INF の中に置くことで、<strong>Servlet を経由しないと画面が見られない</strong>という制約を作れます。これがMVCの安全設計の基本です。」</p>
+      </div>
+    </div>
+  </section>
+
+  <hr style="border: none; border-top: 1px solid #ccc; margin: 1.5em 0;">
+
+  <!-- マスター認定 -->
+  <section style="margin-bottom: 30px;">
+    <h2 style="border-left: 5px solid #cc0000; padding-left: 10px; color: #cc0000; font-size: 18px; margin-bottom: 15px;">
+      マスター認定：5分間プレゼン課題
+    </h2>
+
+    <div style="background-color: #fff5f5; padding: 20px; border-radius: 5px; border-left: 5px solid #cc0000; margin-bottom: 15px;">
+      <p style="margin-bottom: 10px;"><strong>お題</strong>：「Webの循環とTomcatの内部構造」をホワイトボードに描いて説明してください。</p>
+      <p style="margin-bottom: 6px;"><strong>ルール</strong>：講師のOKが出るまで次に進めない。</p>
+    </div>
+
+    <h3 style="padding-left: 10px; color: #cc0000; font-size: 16px; margin-top: 20px; margin-bottom: 10px;">
+      チェックポイント（これだけ描ければOK）
+    </h3>
+
+    <div style="background-color: #f0f8ff; padding: 20px; border-radius: 5px; border-left: 5px solid #0033ff; margin-bottom: 15px;">
+      <div style="margin: 15px 0; background-color: #fff; padding: 15px; border-radius: 10px; border: 1px solid #e1dbbd;">
+        <p style="margin-bottom: 8px;"><strong>Webの循環（矢印が必須）</strong></p>
+        <ul style="padding-left: 20px; margin-bottom: 15px;">
+          <li style="margin-bottom: 6px;">ブラウザ →（HTTPリクエスト）→ Tomcat</li>
+          <li style="margin-bottom: 6px;">ブラウザ ←（HTTPレスポンス）← Tomcat</li>
+        </ul>
+        <p style="margin-bottom: 8px;"><strong>Tomcatの箱の中</strong></p>
+        <ul style="padding-left: 20px; margin-bottom: 15px;">
+          <li style="margin-bottom: 6px;"><code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">webapps</code> → アプリ名 → <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">WEB-INF</code> → <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">classes</code> / <code style="font-family: monospace; background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px;">lib</code></li>
+        </ul>
+        <p style="margin-bottom: 8px;"><strong>言葉で言えること（短く）</strong></p>
+        <ul style="padding-left: 20px; margin-bottom: 0;">
+          <li style="margin-bottom: 6px;">「ブラウザはHTTPで依頼する」</li>
+          <li style="margin-bottom: 6px;">「Tomcatがアプリに渡して処理する」</li>
+          <li style="margin-bottom: 0;">「処理結果がHTTPレスポンスで戻る」</li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="background-color: #f2f2f2; padding: 15px; border-radius: 5px; border-left: 5px solid #888888; margin-bottom: 10px;">
+      <p style="margin: 0;"><strong>カバ先生</strong>：「この図と3つの言葉がスラスラ出てくるようになったら、次のUnit06（Servlet）に進みます。しっかり身につけておきましょう。」</p>
+    </div>
+    <div style="background-color: #e6f4ff; padding: 15px; border-radius: 5px; border-left: 5px solid #4da6ff; margin-bottom: 10px;">
+      <p style="margin: 0;"><strong>ユウタ</strong>：「次はいよいよ Servlet ですね。Tomcat の中身に Java コードが入ってくる感じかな。」</p>
+    </div>
+    <div style="background-color: #f2f2f2; padding: 15px; border-radius: 5px; border-left: 5px solid #888888;">
+      <p style="margin: 0;"><strong>カバ先生</strong>：「まさにそうです。Tomcat が受け取ったリクエストを、どの Servlet クラスに渡すかを決める仕組みが Unit06 のテーマです。」</p>
+    </div>
+  </section>
+
+</div>

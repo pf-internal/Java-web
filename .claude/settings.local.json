@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "Bash(python scripts/build_unit04_dao_update_pdf.py)"
+      "Bash(python scripts/build_unit04_dao_update_pdf.py)",
+      "Bash(dir \"C:\\\\Users\\\\kawak\\\\Documents\\\\cursor-projects\\\\Java-Web\\\\.claude\\\\worktrees\\\\happy-brattain-2fe71f\")",
+      "Bash(find \"C:\\\\Users\\\\kawak\\\\Documents\\\\cursor-projects\\\\Java-Web\" -maxdepth 3 -name \"*Day*\" -o -name \"*Lesson0*\" 2>/dev/null | head -20)"
     ]
   }
 }
