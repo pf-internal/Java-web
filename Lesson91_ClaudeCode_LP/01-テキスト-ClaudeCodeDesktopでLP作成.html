@@ -1,442 +1,99 @@
 特別講義 Claude Code Desktop で仕事・ビジネスを加速する
-<div style="max-width: 860px; margin: 0 auto; font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif; line-height: 1.7; color: #333; padding: 20px; border: 1px solid #eee; background-color: #fff;">
-
-  
-<h1 style="padding: 14px 16px; background-color: #f0f8ff; color: #0033ff; font-size: 24px; margin-bottom: 8px; border-left: 6px solid #0033ff;">
-  特別講義：Claude Code Desktop で仕事・ビジネスを加速する
-</h1>
-<p style="margin: 0 0 16px 0; color: #555; font-size: 14px;">対象：PC基本操作ができる方 ／ 所要時間：約4時間</p>
-<img src="https://raw.githubusercontent.com/pf-internal/Java-web/master/Lesson91_ClaudeCode_LP/slides/lesson91_claudecode_lp-slide-p01.jpg" style="width: 100%; max-width: 720px; display: block; margin: 0 auto 30px; border-radius: 8px; border: 1px solid #e0e0e0; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
-
-<!-- ===== 0. このレッスンについて ===== -->
-<section style="margin-bottom: 36px;">
-<h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 14px;">0. このレッスンについて</h2>
-
-<div style="background-color: #f0f8ff; padding: 18px; border-radius: 6px; border-left: 5px solid #0033ff; margin-bottom: 16px;">
-  <p style="margin-bottom: 8px;"><strong>今日のゴール</strong></p>
-  <ul style="padding-left: 20px; margin-bottom: 0;">
-    <li style="margin-bottom: 6px;"><strong>Claude Code Desktop</strong> をインストールして動かせるようになる</li>
-    <li style="margin-bottom: 6px;">LP 作成を通じて <strong>AI との対話（壁打ち）の基本操作</strong>を身につける</li>
-    <li style="margin-bottom: 6px;"><strong>ビジネスモデルを多角的に再考</strong>するプロンプトを体験する</li>
-    <li style="margin-bottom: 6px;"><strong>競合他社のリサーチ</strong>を AI に任せて特徴を整理する</li>
-    <li style="margin-bottom: 0;"><strong>複雑な繰り返し作業を自動化</strong>して運用まで持っていく仕組みを作る</li>
-  </ul>
+<div style="max-width:860px;margin:0 auto;font-family:'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',Meiryo,sans-serif;font-size:16px;line-height:1.9;color:#3d3a36;padding:24px 20px 28px 20px;background:#fff8ef;border-radius:28px;">
+<div style="padding:6px 0 26px 0;">
+<p style="margin:0 0 14px 0;"><span style="display:inline-block;background:#ffe9d4;color:#d9701c;font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-weight:700;font-size:13px;line-height:1;padding:7px 14px;border-radius:999px;margin:0 6px 6px 0;">特別講義</span><span style="display:inline-block;background:#e3f4ec;color:#2f9c76;font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-weight:700;font-size:13px;line-height:1;padding:7px 14px;border-radius:999px;margin:0 6px 6px 0;">所要時間 約4時間</span><span style="display:inline-block;background:#e7f0fb;color:#3f7cc6;font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-weight:700;font-size:13px;line-height:1;padding:7px 14px;border-radius:999px;margin:0 6px 6px 0;">対象：PC基本操作ができる方</span></p>
+<h1 style="font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-size:27px;line-height:1.55;color:#2d2a26;margin:0 0 14px 0;font-weight:700;"><span style="white-space:nowrap;">Claude Code Desktop で、</span><br><span style="white-space:nowrap;">仕事・ビジネスを<span style="color:#d9701c;background:linear-gradient(transparent 62%, #ffe9d4 62%);">加速する</span>。</span></h1>
+<p style="margin:0 0 18px 0;color:#6f6a64;font-size:15.5px;">AI に日本語で話しかけながら、LP（ランディングページ）を完成させる。そこで身につけた「対話の型」を、競合リサーチ・業務の自動化・ビジネスモデルの再考にまで広げていく4時間です。</p>
 </div>
-
-<table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-  <tr style="background-color: #0033ff; color: #fff;">
-    <th style="padding: 8px 12px; text-align: left; border: 1px solid #ccc;">時間の目安</th>
-    <th style="padding: 8px 12px; text-align: left; border: 1px solid #ccc;">内容</th>
-  </tr>
-  <tr style="background-color: #f9f9f9;">
-    <td style="padding: 8px 12px; border: 1px solid #ddd;">0:00 〜 0:30</td>
-    <td style="padding: 8px 12px; border: 1px solid #ddd;">Claude Code・MCP とは／環境構築</td>
-  </tr>
-  <tr>
-    <td style="padding: 8px 12px; border: 1px solid #ddd;">0:30 〜 1:00</td>
-    <td style="padding: 8px 12px; border: 1px solid #ddd;">MCP 体験：Chrome 自動化・アプリ連携</td>
-  </tr>
-  <tr style="background-color: #f9f9f9;">
-    <td style="padding: 8px 12px; border: 1px solid #ddd;">1:00 〜 2:00</td>
-    <td style="padding: 8px 12px; border: 1px solid #ddd;"><strong>ハンズオン①：壁打ちで LP を完成させる（対話の基本操作を習得）</strong></td>
-  </tr>
-  <tr>
-    <td style="padding: 8px 12px; border: 1px solid #ddd;">2:00 〜 3:30</td>
-    <td style="padding: 8px 12px; border: 1px solid #ddd;"><strong>ハンズオン②：ビジネス活用（リサーチ・自動化・ビジネスモデル分析）</strong></td>
-  </tr>
-  <tr style="background-color: #f9f9f9;">
-    <td style="padding: 8px 12px; border: 1px solid #ddd;">3:30 〜 4:00</td>
-    <td style="padding: 8px 12px; border: 1px solid #ddd;">まとめ・次のステップ</td>
-  </tr>
-</table>
-
-<div style="background-color: #fff8e1; padding: 12px 16px; border-radius: 6px; border: 1px solid #ffe082; margin-top: 14px; font-size: 14px;">
-  <strong>事前に用意するもの</strong>：Windows 10以降またはmacOS 12以降のPC ／ インターネット接続 ／ Anthropic アカウント（当日作成可）／ クレジットカード（月5ドル程度〜）
+<section style="margin-bottom:12px;">
+<h2 style="font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-size:21px;line-height:1.5;color:#2d2a26;margin:0 0 16px 0;padding:2px 0 2px 14px;border-left:5px solid #f28c38;"><span style="color:#f28c38;">0</span>　このレッスンについて</h2>
+<div style="background:#fff1df;border:1px solid #f7dcc0;border-radius:20px;padding:20px;margin-bottom:16px;"><p style="font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-weight:700;font-size:16px;color:#d9701c;margin:0 0 10px 0;">今日のゴール</p><div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:10px;"><span style="flex:none;width:24px;height:24px;border-radius:50%;background:#f28c38;color:#fff;text-align:center;line-height:24px;font-size:13px;font-weight:700;margin-top:3px;">✓</span><span style="flex:1;"><strong>Claude Code Desktop</strong> をインストールして動かせるようになる</span></div><div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:10px;"><span style="flex:none;width:24px;height:24px;border-radius:50%;background:#f28c38;color:#fff;text-align:center;line-height:24px;font-size:13px;font-weight:700;margin-top:3px;">✓</span><span style="flex:1;">LP 作成を通じて <strong>AI との対話（壁打ち）の基本操作</strong>を身につける</span></div><div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:10px;"><span style="flex:none;width:24px;height:24px;border-radius:50%;background:#f28c38;color:#fff;text-align:center;line-height:24px;font-size:13px;font-weight:700;margin-top:3px;">✓</span><span style="flex:1;"><strong>ビジネスモデルを多角的に再考</strong>するプロンプトを体験する</span></div><div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:10px;"><span style="flex:none;width:24px;height:24px;border-radius:50%;background:#f28c38;color:#fff;text-align:center;line-height:24px;font-size:13px;font-weight:700;margin-top:3px;">✓</span><span style="flex:1;"><strong>競合他社のリサーチ</strong>を AI に任せて特徴を整理する</span></div><div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:0;"><span style="flex:none;width:24px;height:24px;border-radius:50%;background:#f28c38;color:#fff;text-align:center;line-height:24px;font-size:13px;font-weight:700;margin-top:3px;">✓</span><span style="flex:1;"><strong>複雑な繰り返し作業を自動化</strong>して運用まで持っていく仕組みを作る</span></div></div>
+<div style="margin:6px 0 18px 0;"><img src="https://raw.githubusercontent.com/yamiqumo/Java-web/master/Lesson91_ClaudeCode_LP/figures/fig-05-timeline.webp" alt="今日の4時間の流れ：環境構築、MCP体験、ハンズオン1とハンズオン2、まとめ" style="width:100%;max-width:760px;display:block;margin:0 auto;border-radius:18px;border:1px solid rgba(61,58,54,.12);box-shadow:0 4px 14px rgba(61,58,54,.07);background:#fff;"><p style="margin:8px 4px 0 4px;font-size:13px;color:#6f6a64;text-align:center;">今日の4時間の流れ</p></div>
+<div style="border-radius:16px;overflow:hidden;border:1px solid rgba(61,58,54,.12);box-shadow:0 4px 14px rgba(61,58,54,.07);margin-bottom:16px;"><table style="width:100%;border-collapse:collapse;"><tr><th style="width:28%;background:#ffe9d4;color:#3d3a36;font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-weight:700;text-align:left;padding:11px 14px;font-size:14px;line-height:1.6;">時間の目安</th><th style="background:#ffe9d4;color:#3d3a36;font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-weight:700;text-align:left;padding:11px 14px;font-size:14px;line-height:1.6;">内容</th></tr><tr><td style="background:#fff;padding:11px 14px;font-size:14px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);font-weight:700;">0:00 〜 0:30</td><td style="background:#fff;padding:11px 14px;font-size:14px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);">Claude Code・MCP とは／環境構築</td></tr><tr><td style="background:#fffaf3;padding:11px 14px;font-size:14px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);font-weight:700;">0:30 〜 1:00</td><td style="background:#fffaf3;padding:11px 14px;font-size:14px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);">MCP 体験：Chrome 自動化・アプリ連携</td></tr><tr><td style="background:#fff;padding:11px 14px;font-size:14px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);font-weight:700;">1:00 〜 2:00</td><td style="background:#fff;padding:11px 14px;font-size:14px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);"><strong>ハンズオン①：壁打ちで LP を完成させる（対話の基本操作を習得）</strong></td></tr><tr><td style="background:#fffaf3;padding:11px 14px;font-size:14px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);font-weight:700;">2:00 〜 3:30</td><td style="background:#fffaf3;padding:11px 14px;font-size:14px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);"><strong>ハンズオン②：ビジネス活用（リサーチ・自動化・ビジネスモデル分析）</strong></td></tr><tr><td style="background:#fff;padding:11px 14px;font-size:14px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);font-weight:700;">3:30 〜 4:00</td><td style="background:#fff;padding:11px 14px;font-size:14px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);">まとめ・次のステップ</td></tr></table></div>
+<div style="background:#fff4cc;border:1px solid #f1dc8a;border-radius:16px;padding:14px 18px;margin-bottom:16px;font-size:14.5px;"><strong>事前に用意するもの</strong>：Windows 10以降またはmacOS 12以降のPC ／ インターネット接続 ／ Anthropic アカウント（当日作成可）／ クレジットカード（月5ドル程度〜）</div>
+</section>
+<div style="border-top:2px dashed #f0d9bd;margin:34px 0;"></div>
+<section style="margin-bottom:12px;">
+<h2 style="font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-size:21px;line-height:1.5;color:#2d2a26;margin:0 0 16px 0;padding:2px 0 2px 14px;border-left:5px solid #f28c38;"><span style="color:#f28c38;">1</span>　Claude Code とは</h2>
+<p style="margin:0 0 14px 0;"><strong>Claude Code</strong> は、AI「Claude」を使って <strong>会話形式でファイル・コードを作れるツール</strong>です。普通のAIチャットとの最大の違いは、テキストを「表示する」だけでなく <strong>PC上のファイルに直接書き出し・編集</strong>できる点です。</p>
+<div style="margin:6px 0 18px 0;"><img src="https://raw.githubusercontent.com/yamiqumo/Java-web/master/Lesson91_ClaudeCode_LP/figures/fig-01-new-vs-old.webp" alt="これまでは何人もの専門家と何カ月も必要だったが、いまは日本語で指示するだけで形になる" style="width:100%;max-width:760px;display:block;margin:0 auto;border-radius:18px;border:1px solid rgba(61,58,54,.12);box-shadow:0 4px 14px rgba(61,58,54,.07);background:#fff;"><p style="margin:8px 4px 0 4px;font-size:13px;color:#6f6a64;text-align:center;">アイデアを形にするまでの道のりが、短くなった</p></div>
+<div style="border-radius:16px;overflow:hidden;border:1px solid rgba(61,58,54,.12);box-shadow:0 4px 14px rgba(61,58,54,.07);margin-bottom:16px;"><table style="width:100%;border-collapse:collapse;"><tr><th style="width:20%;background:#ffe9d4;color:#3d3a36;font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-weight:700;text-align:left;padding:11px 14px;font-size:15px;line-height:1.6;"></th><th style="width:36%;background:#ffe9d4;color:#3d3a36;font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-weight:700;text-align:left;padding:11px 14px;font-size:15px;line-height:1.6;">普通のAIチャット</th><th style="background:#ffe9d4;color:#3d3a36;font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-weight:700;text-align:left;padding:11px 14px;font-size:15px;line-height:1.6;">Claude Code Desktop</th></tr><tr><td style="background:#fff;padding:11px 14px;font-size:15px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);font-weight:700;">出力</td><td style="background:#fff;padding:11px 14px;font-size:15px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);">コードを「表示」するだけ</td><td style="background:#fff;padding:11px 14px;font-size:15px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);"><strong>PCのファイルに直接書き出し</strong></td></tr><tr><td style="background:#fffaf3;padding:11px 14px;font-size:15px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);font-weight:700;">操作</td><td style="background:#fffaf3;padding:11px 14px;font-size:15px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);">コードをコピーして自分で貼る</td><td style="background:#fffaf3;padding:11px 14px;font-size:15px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);"><strong>「○○を修正して」で即反映</strong></td></tr><tr><td style="background:#fff;padding:11px 14px;font-size:15px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);font-weight:700;">拡張性</td><td style="background:#fff;padding:11px 14px;font-size:15px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);">チャット内のみ</td><td style="background:#fff;padding:11px 14px;font-size:15px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);"><strong>MCP でブラウザ・外部アプリと連携</strong></td></tr></table></div>
+<div style="margin:6px 0 18px 0;"><img src="https://raw.githubusercontent.com/yamiqumo/Java-web/master/Lesson91_ClaudeCode_LP/figures/fig-02-chat-vs-claudecode.webp" alt="ふつうのAIチャットと Claude Code Desktop のちがい" style="width:100%;max-width:760px;display:block;margin:0 auto;border-radius:18px;border:1px solid rgba(61,58,54,.12);box-shadow:0 4px 14px rgba(61,58,54,.07);background:#fff;"><p style="margin:8px 4px 0 4px;font-size:13px;color:#6f6a64;text-align:center;">答えを見せるだけか、PCのファイルまで直接作るか</p></div>
+<div style="background:#f6f1ea;border-radius:20px;padding:18px 20px;margin-bottom:16px;"><p style="margin:0 0 6px 0;"><span style="display:inline-block;background:#888;color:#fff;font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-weight:700;font-size:12px;line-height:1;padding:6px 12px;border-radius:999px;">カバ先生</span></p><p style="margin:0;">簡単に言うと「AI がキーボードを代わりに打ってくれる」イメージです。さらに MCP を組み合わせると、ブラウザやアプリまで操作できるようになります。</p></div>
+</section>
+<section style="margin-bottom:12px;">
+<h2 style="font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-size:21px;line-height:1.5;color:#2d2a26;margin:0 0 16px 0;padding:2px 0 2px 14px;border-left:5px solid #f28c38;"><span style="color:#f28c38;">2</span>　MCP とは：AI にツールの「手」を持たせる仕組み</h2>
+<p style="margin:0 0 14px 0;"><strong>MCP（Model Context Protocol）</strong> は、Claude がブラウザ・アプリ・データベースなど外部ツールと連携するための <strong>共通の「接続口」</strong> です。MCP を使うと、Claude Code はPCの外に出て様々なサービスを直接操作できます。</p>
+<div style="margin:6px 0 18px 0;"><img src="https://raw.githubusercontent.com/yamiqumo/Java-web/master/Lesson91_ClaudeCode_LP/figures/fig-03-mcp.webp" alt="MCP は Claude と外のツール（Chrome、Slack、GitHub、Google ドライブ、データベース）をつなぐ共通の接続口" style="width:100%;max-width:760px;display:block;margin:0 auto;border-radius:18px;border:1px solid rgba(61,58,54,.12);box-shadow:0 4px 14px rgba(61,58,54,.07);background:#fff;"><p style="margin:8px 4px 0 4px;font-size:13px;color:#6f6a64;text-align:center;">MCP は、AI の「手」を増やす共通の差し込み口</p></div>
+<h3 style="font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-size:17px;line-height:1.5;color:#d9701c;margin:26px 0 12px 0;">MCP でできること（代表例）</h3>
+<div style="border-radius:16px;overflow:hidden;border:1px solid rgba(61,58,54,.12);box-shadow:0 4px 14px rgba(61,58,54,.07);margin-bottom:16px;"><table style="width:100%;border-collapse:collapse;"><tr><th style="width:30%;background:#ffe9d4;color:#3d3a36;font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-weight:700;text-align:left;padding:11px 14px;font-size:14px;line-height:1.6;">MCP ツール</th><th style="background:#ffe9d4;color:#3d3a36;font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-weight:700;text-align:left;padding:11px 14px;font-size:14px;line-height:1.6;">できること</th></tr><tr><td style="background:#fff;padding:11px 14px;font-size:14px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);font-weight:700;">Claude in Chrome</td><td style="background:#fff;padding:11px 14px;font-size:14px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);">Chrome ブラウザをAIが直接操作。フォーム入力・ボタンクリック・スクリーンショット撮影を自動化</td></tr><tr><td style="background:#fffaf3;padding:11px 14px;font-size:14px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);font-weight:700;">Slack MCP</td><td style="background:#fffaf3;padding:11px 14px;font-size:14px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);">Slack へのメッセージ送信・チャンネル検索・通知自動化</td></tr><tr><td style="background:#fff;padding:11px 14px;font-size:14px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);font-weight:700;">GitHub MCP</td><td style="background:#fff;padding:11px 14px;font-size:14px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);">PR 作成・コードレビュー依頼・Issue 管理を AI が代行</td></tr><tr><td style="background:#fffaf3;padding:11px 14px;font-size:14px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);font-weight:700;">Google Drive MCP</td><td style="background:#fffaf3;padding:11px 14px;font-size:14px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);">ファイル検索・ドキュメント読み取り・スプレッドシート更新</td></tr><tr><td style="background:#fff;padding:11px 14px;font-size:14px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);font-weight:700;">データベース MCP</td><td style="background:#fff;padding:11px 14px;font-size:14px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);">SQL を AI が生成・実行。自然言語でデータを取得・集計</td></tr></table></div>
+<h3 style="font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-size:17px;line-height:1.5;color:#d9701c;margin:26px 0 12px 0;">2-1. Claude in Chrome：ブラウザを AI が操作する</h3>
+<p style="margin:0 0 12px 0;">Chrome 拡張機能「Claude in Chrome」を入れると、Claude Code がブラウザを直接コントロールできます。</p>
+<div style="background:#fff;border:1px solid rgba(61,58,54,.12);border-radius:20px;padding:20px;margin-bottom:16px;box-shadow:0 4px 14px rgba(61,58,54,.07);"><p style="font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-weight:700;font-size:16px;color:#d9701c;margin:0 0 10px 0;">指示の例</p><pre style="background:#fdf5e6;color:#3d3a36;padding:14px 16px;border-radius:12px;border:1px solid #e1dbbd;font-family:Consolas,Menlo,monospace;font-size:13.5px;line-height:1.75;white-space:pre-wrap;word-break:break-word;margin:0 0 10px 0;">今開いているフォームに以下の情報を入力して送信してください：
+名前：山田太郎、メール：test@example.com、お問い合わせ内容：テスト送信</pre><pre style="background:#fdf5e6;color:#3d3a36;padding:14px 16px;border-radius:12px;border:1px solid #e1dbbd;font-family:Consolas,Menlo,monospace;font-size:13.5px;line-height:1.75;white-space:pre-wrap;word-break:break-word;margin:0 0 0 0;">このページのスクリーンショットを撮って、商品一覧の価格をCSVにまとめてください</pre></div>
+<div style="background:#e3f4ec;border:1px solid #bfe3d1;border-radius:20px 20px 0 0;padding:18px 18px 6px 18px;margin-bottom:0;"><p style="font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-weight:700;font-size:16px;color:#2f9c76;margin:0 0 10px 0;">従来の自動化（Selenium 等）との違い</p></div>
+<div style="border-radius:16px;overflow:hidden;border:1px solid rgba(61,58,54,.12);box-shadow:0 4px 14px rgba(61,58,54,.07);margin-bottom:16px;"><table style="width:100%;border-collapse:collapse;"><tr><th style="width:22%;background:#cfeadc;color:#3d3a36;font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-weight:700;text-align:left;padding:11px 14px;font-size:14px;line-height:1.6;"></th><th style="width:39%;background:#cfeadc;color:#3d3a36;font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-weight:700;text-align:left;padding:11px 14px;font-size:14px;line-height:1.6;">従来ツール（Selenium など）</th><th style="background:#cfeadc;color:#3d3a36;font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-weight:700;text-align:left;padding:11px 14px;font-size:14px;line-height:1.6;">MCP（Claude in Chrome）</th></tr><tr><td style="background:#fff;padding:11px 14px;font-size:14px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);font-weight:700;">画面変更への対応</td><td style="background:#fff;padding:11px 14px;font-size:14px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);">HTML 構造が変わるとスクリプトが壊れる</td><td style="background:#fff;padding:11px 14px;font-size:14px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);"><strong>AIが意味で理解するため変更に強い</strong></td></tr><tr><td style="background:#fffaf3;padding:11px 14px;font-size:14px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);font-weight:700;">セットアップ</td><td style="background:#fffaf3;padding:11px 14px;font-size:14px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);">コード（XPath/CSSセレクタ）を書く必要がある</td><td style="background:#fffaf3;padding:11px 14px;font-size:14px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);"><strong>日本語で指示するだけ</strong></td></tr><tr><td style="background:#fff;padding:11px 14px;font-size:14px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);font-weight:700;">仕様変更対応</td><td style="background:#fff;padding:11px 14px;font-size:14px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);">スクリプトを書き直す工数がかかる</td><td style="background:#fff;padding:11px 14px;font-size:14px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);"><strong>指示をそのまま再実行するだけで OK</strong></td></tr></table></div>
+<div style="background:#f6f1ea;border-radius:20px;padding:18px 20px;margin-bottom:16px;"><p style="margin:0 0 6px 0;"><span style="display:inline-block;background:#888;color:#fff;font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-weight:700;font-size:12px;line-height:1;padding:6px 12px;border-radius:999px;">カバ先生</span></p><p style="margin:0;">Selenium のような自動化ツールは、ページの HTML 構造が変わった途端に壊れます。MCP は AI が「ボタンがどこにあるか」を見た目と文脈で判断するので、仕様変更・デザインリニューアルが起きても <strong>同じ指示で動き続ける</strong> のが大きな強みです。</p></div>
+<h3 style="font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-size:17px;line-height:1.5;color:#d9701c;margin:26px 0 12px 0;">2-2. アプリケーション自動化の実例</h3>
+<div style="border-radius:16px;overflow:hidden;border:1px solid rgba(61,58,54,.12);box-shadow:0 4px 14px rgba(61,58,54,.07);margin-bottom:16px;"><table style="width:100%;border-collapse:collapse;"><tr><th style="width:34%;background:#ffe9d4;color:#3d3a36;font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-weight:700;text-align:left;padding:11px 14px;font-size:14px;line-height:1.6;">やりたいこと</th><th style="background:#ffe9d4;color:#3d3a36;font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-weight:700;text-align:left;padding:11px 14px;font-size:14px;line-height:1.6;">Claude への指示例</th></tr><tr><td style="background:#fff;padding:11px 14px;font-size:14px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);font-weight:700;">定期レポートを Slack に送る</td><td style="background:#fff;padding:11px 14px;font-size:14px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);">「売上CSVを集計して、結果を #report チャンネルに毎朝9時に投稿して」</td></tr><tr><td style="background:#fffaf3;padding:11px 14px;font-size:14px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);font-weight:700;">競合サイトの価格を監視</td><td style="background:#fffaf3;padding:11px 14px;font-size:14px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);">「このページの商品価格を毎日チェックして、変動があればメールで教えて」</td></tr><tr><td style="background:#fff;padding:11px 14px;font-size:14px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);font-weight:700;">フォーム送信を一括処理</td><td style="background:#fff;padding:11px 14px;font-size:14px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);">「このスプレッドシートの50件分を、申込フォームに自動入力して送信して」</td></tr><tr><td style="background:#fffaf3;padding:11px 14px;font-size:14px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);font-weight:700;">GitHub の PR を自動レビュー</td><td style="background:#fffaf3;padding:11px 14px;font-size:14px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);">「新しい PR が来たらコードを確認して、問題があればコメントして」</td></tr></table></div>
+<div style="background:#fff4cc;border:1px solid #f1dc8a;border-radius:16px;padding:14px 18px;margin-bottom:0;font-size:14.5px;"><strong>注意</strong>：自動化は相手のサービス利用規約を必ず確認してください。サーバーに負荷をかける操作や、規約で禁止されているスクレイピングは行わないようにしましょう。</div>
+</section>
+<div style="border-top:2px dashed #f0d9bd;margin:34px 0;"></div>
+<section style="margin-bottom:12px;">
+<h2 style="font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-size:21px;line-height:1.5;color:#2d2a26;margin:0 0 16px 0;padding:2px 0 2px 14px;border-left:5px solid #f28c38;"><span style="color:#f28c38;">3</span>　環境構築</h2>
+<div style="background:#fff4cc;border:1px solid #f1dc8a;border-radius:20px;padding:20px;margin-bottom:16px;"><p style="font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-weight:700;font-size:16px;color:#b98a00;margin:0 0 10px 0;">前提：Git のインストール</p><p style="margin:0 0 12px 0;font-size:14.5px;">Claude Code はファイル管理に Git を使うため、先にインストールが必要です。</p><div style="background:#fff;border-radius:14px;padding:14px 16px;margin-bottom:10px;font-size:14.5px;"><strong style="color:#d9701c;">Windows</strong><br><code style="font-family:Consolas,Menlo,monospace;background:#fff;border:1px solid #e1dbbd;padding:1px 6px;border-radius:6px;font-size:.92em;">git-scm.com</code> を開き「Download for Windows」→ インストーラーを実行（オプションはすべてデフォルトで OK）→ コマンドプロンプトで <code style="font-family:Consolas,Menlo,monospace;background:#fff;border:1px solid #e1dbbd;padding:1px 6px;border-radius:6px;font-size:.92em;">git --version</code> と入力してバージョンが表示されれば完了</div><div style="background:#fff;border-radius:14px;padding:14px 16px;margin-bottom:10px;font-size:14.5px;"><strong style="color:#d9701c;">Mac</strong><br>ターミナルで <code style="font-family:Consolas,Menlo,monospace;background:#fff;border:1px solid #e1dbbd;padding:1px 6px;border-radius:6px;font-size:.92em;">git --version</code> を実行 → インストールを促すダイアログが出たら「インストール」を押すだけで完了（Xcode コマンドラインツールとして自動インストールされます）</div><p style="margin:0;font-size:13px;color:#6f6a64;">※ すでに Git が入っている場合は <code style="font-family:Consolas,Menlo,monospace;background:#fff;border:1px solid #e1dbbd;padding:1px 6px;border-radius:6px;font-size:.92em;">git --version</code> でバージョンが表示されるのでスキップして OK</p></div>
+<div style="background:#fff;border:1px solid rgba(61,58,54,.12);border-radius:20px;padding:20px;margin-bottom:16px;box-shadow:0 4px 14px rgba(61,58,54,.07);"><p style="font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-weight:700;font-size:16px;color:#d9701c;margin:0 0 10px 0;">インストールの手順</p><div style="font-size:15px;"><div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:12px;"><span style="flex:none;width:28px;height:28px;border-radius:50%;background:#f28c38;color:#fff;text-align:center;line-height:28px;font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-size:14px;font-weight:700;margin-top:2px;">1</span><span style="flex:1;"><strong>ダウンロード</strong>：<code style="font-family:Consolas,Menlo,monospace;background:#fff;border:1px solid #e1dbbd;padding:1px 6px;border-radius:6px;font-size:.92em;">claude.ai/code</code> を開き「Download」</span></div><div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:12px;"><span style="flex:none;width:28px;height:28px;border-radius:50%;background:#f28c38;color:#fff;text-align:center;line-height:28px;font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-size:14px;font-weight:700;margin-top:2px;">2</span><span style="flex:1;"><strong>インストール</strong>：Windows は <code style="font-family:Consolas,Menlo,monospace;background:#fff;border:1px solid #e1dbbd;padding:1px 6px;border-radius:6px;font-size:.92em;">.exe</code> をダブルクリック／Mac は <code style="font-family:Consolas,Menlo,monospace;background:#fff;border:1px solid #e1dbbd;padding:1px 6px;border-radius:6px;font-size:.92em;">.dmg</code> をアプリフォルダへドラッグ</span></div><div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:12px;"><span style="flex:none;width:28px;height:28px;border-radius:50%;background:#f28c38;color:#fff;text-align:center;line-height:28px;font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-size:14px;font-weight:700;margin-top:2px;">3</span><span style="flex:1;"><strong>API キー発行</strong>：<code style="font-family:Consolas,Menlo,monospace;background:#fff;border:1px solid #e1dbbd;padding:1px 6px;border-radius:6px;font-size:.92em;">console.anthropic.com</code> でアカウント作成 → Billing にカード登録 → 「API Keys」→「Create Key」</span></div><div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:12px;"><span style="flex:none;width:28px;height:28px;border-radius:50%;background:#f28c38;color:#fff;text-align:center;line-height:28px;font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-size:14px;font-weight:700;margin-top:2px;">4</span><span style="flex:1;"><strong>ログイン</strong>：Claude Code Desktop を起動 → 「API Key でサインイン」→ キーを貼り付け</span></div><div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:0;"><span style="flex:none;width:28px;height:28px;border-radius:50%;background:#f28c38;color:#fff;text-align:center;line-height:28px;font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-size:14px;font-weight:700;margin-top:2px;">5</span><span style="flex:1;"><strong>動作確認</strong>：デスクトップに <code style="font-family:Consolas,Menlo,monospace;background:#fff;border:1px solid #e1dbbd;padding:1px 6px;border-radius:6px;font-size:.92em;">my-lp</code> フォルダを作成 → Claude Code で開き、「hello.txt を作って『動作確認OK』と書いて」と入力</span></div></div></div>
+<div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:4px;">
+<div style="flex:1 1 220px;background:#fff4cc;border-radius:16px;padding:12px 16px;font-size:14px;"><strong>Windows の警告</strong><br>「詳細情報」→「実行」</div>
+<div style="flex:1 1 220px;background:#fff4cc;border-radius:16px;padding:12px 16px;font-size:14px;"><strong>Mac の警告</strong><br>システム設定 → セキュリティ →「このまま開く」</div>
+<div style="flex:1 1 220px;background:#ffe9d4;border-radius:16px;padding:12px 16px;font-size:14px;"><strong>料金目安</strong><br>今日の演習で $1〜2 程度</div>
 </div>
 </section>
-
-<!-- ===== 1. Claude Code とは ===== -->
-<section style="margin-bottom: 36px;">
-<h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 14px;">1. Claude Code とは</h2>
-
-<p style="margin-bottom: 12px;"><strong>Claude Code</strong> は、AI「Claude」を使って <strong>会話形式でファイル・コードを作れるツール</strong>です。普通のAIチャットとの最大の違いは、テキストを「表示する」だけでなく <strong>PC上のファイルに直接書き出し・編集</strong>できる点です。</p>
-<img src="https://raw.githubusercontent.com/pf-internal/Java-web/master/Lesson91_ClaudeCode_LP/slides/lesson91_claudecode_lp-slide-p02.jpg" style="width: 100%; max-width: 720px; display: block; margin: 0 auto 16px; border-radius: 8px; border: 1px solid #e0e0e0; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
-
-<div style="background-color: #f0f8ff; padding: 16px; border-radius: 6px; border-left: 5px solid #0033ff; margin-bottom: 14px;">
-  <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-    <tr style="background-color: #ddeeff;">
-      <th style="padding: 8px 12px; border: 1px solid #b0c4de; text-align: left;"></th>
-      <th style="padding: 8px 12px; border: 1px solid #b0c4de; text-align: left;">普通のAIチャット</th>
-      <th style="padding: 8px 12px; border: 1px solid #b0c4de; text-align: left;">Claude Code Desktop</th>
-    </tr>
-    <tr>
-      <td style="padding: 8px 12px; border: 1px solid #ddd;"><strong>出力</strong></td>
-      <td style="padding: 8px 12px; border: 1px solid #ddd;">コードを「表示」するだけ</td>
-      <td style="padding: 8px 12px; border: 1px solid #ddd;"><strong>PCのファイルに直接書き出し</strong></td>
-    </tr>
-    <tr style="background-color: #f9f9f9;">
-      <td style="padding: 8px 12px; border: 1px solid #ddd;"><strong>操作</strong></td>
-      <td style="padding: 8px 12px; border: 1px solid #ddd;">コードをコピーして自分で貼る</td>
-      <td style="padding: 8px 12px; border: 1px solid #ddd;"><strong>「○○を修正して」で即反映</strong></td>
-    </tr>
-    <tr>
-      <td style="padding: 8px 12px; border: 1px solid #ddd;"><strong>拡張性</strong></td>
-      <td style="padding: 8px 12px; border: 1px solid #ddd;">チャット内のみ</td>
-      <td style="padding: 8px 12px; border: 1px solid #ddd;"><strong>MCP でブラウザ・外部アプリと連携</strong></td>
-    </tr>
-  </table>
-</div>
-<img src="https://raw.githubusercontent.com/pf-internal/Java-web/master/Lesson91_ClaudeCode_LP/slides/lesson91_claudecode_lp-slide-p03.jpg" style="width: 100%; max-width: 720px; display: block; margin: 0 auto 14px; border-radius: 8px; border: 1px solid #e0e0e0; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
-
-<div style="background-color: #f2f2f2; padding: 14px 16px; border-radius: 6px; border-left: 5px solid #888;">
-  <p style="margin: 0;"><strong>カバ先生</strong>：「簡単に言うと『AI がキーボードを代わりに打ってくれる』イメージです。さらに MCP を組み合わせると、ブラウザやアプリまで操作できるようになります。」</p>
-</div>
-<img src="https://raw.githubusercontent.com/pf-internal/Java-web/master/Lesson91_ClaudeCode_LP/slides/lesson91_claudecode_lp-slide-p04.jpg" style="width: 100%; max-width: 720px; display: block; margin: 14px auto 0; border-radius: 8px; border: 1px solid #e0e0e0; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+<section style="margin-bottom:12px;">
+<h2 style="font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-size:21px;line-height:1.5;color:#2d2a26;margin:0 0 16px 0;padding:2px 0 2px 14px;border-left:5px solid #f28c38;"><span style="color:#f28c38;">4</span>　壁打ちで進める</h2>
+<p style="margin:0 0 14px 0;">「完璧な指示を作る」練習ではありません。<strong>投げる → 見る → 直す</strong> を繰り返しながら形にします。</p>
+<div style="margin:6px 0 18px 0;"><img src="https://raw.githubusercontent.com/yamiqumo/Java-web/master/Lesson91_ClaudeCode_LP/figures/fig-04-loop.webp" alt="壁打ちは、投げる、見る、直す、くり返すの4ステップを回して形にする" style="width:100%;max-width:760px;display:block;margin:0 auto;border-radius:18px;border:1px solid rgba(61,58,54,.12);box-shadow:0 4px 14px rgba(61,58,54,.07);background:#fff;"><p style="margin:8px 4px 0 4px;font-size:13px;color:#6f6a64;text-align:center;">投げる → 見る → 直す → くり返す</p></div>
+<h3 style="font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-size:17px;line-height:1.5;color:#d9701c;margin:26px 0 12px 0;">気持ちを、指示の言葉にする</h3>
+<div style="border-radius:16px;overflow:hidden;border:1px solid rgba(61,58,54,.12);box-shadow:0 4px 14px rgba(61,58,54,.07);margin-bottom:16px;"><table style="width:100%;border-collapse:collapse;"><tr><th style="width:32%;background:#ffe9d4;color:#3d3a36;font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-weight:700;text-align:left;padding:11px 14px;font-size:14px;line-height:1.6;">言いたいこと</th><th style="background:#ffe9d4;color:#3d3a36;font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-weight:700;text-align:left;padding:11px 14px;font-size:14px;line-height:1.6;">Claude Code への伝え方</th></tr><tr><td style="background:#fff;padding:11px 14px;font-size:14px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);font-weight:700;">なんかダサい</td><td style="background:#fff;padding:11px 14px;font-size:14px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);">「全体的にもっとシンプルにして。余白を広く取ってください」</td></tr><tr><td style="background:#fffaf3;padding:11px 14px;font-size:14px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);font-weight:700;">色が気に入らない</td><td style="background:#fffaf3;padding:11px 14px;font-size:14px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);">「ヘッダー背景を濃紺（#2c3e50）、ボタンをオレンジに変えてください」</td></tr><tr><td style="background:#fff;padding:11px 14px;font-size:14px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);font-weight:700;">スマホで見たい</td><td style="background:#fff;padding:11px 14px;font-size:14px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);">「スマートフォン幅でも崩れないか確認して、必要なら修正してください」</td></tr></table></div>
+<div style="margin:6px 0 18px 0;"><img src="https://raw.githubusercontent.com/yamiqumo/Java-web/master/Lesson91_ClaudeCode_LP/figures/fig-07-three-tips.webp" alt="Claude Code を使いこなす3つのコツ：条件をはっきり、小さく頼んで重ねる、考えを言葉にする" style="width:100%;max-width:760px;display:block;margin:0 auto;border-radius:18px;border:1px solid rgba(61,58,54,.12);box-shadow:0 4px 14px rgba(61,58,54,.07);background:#fff;"><p style="margin:8px 4px 0 4px;font-size:13px;color:#6f6a64;text-align:center;">使いこなす3つのコツ</p></div>
 </section>
-
-<!-- ===== 2. MCP とは ===== -->
-<section style="margin-bottom: 36px;">
-<h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 14px;">2. MCP とは：AI にツールの「手」を持たせる仕組み</h2>
-
-<p style="margin-bottom: 14px;"><strong>MCP（Model Context Protocol）</strong> は、Claude がブラウザ・アプリ・データベースなど外部ツールと連携するための <strong>共通の「接続口」</strong> です。MCP を使うと、Claude Code はPCの外に出て様々なサービスを直接操作できます。</p>
-
-<div style="background-color: #f0f8ff; padding: 18px; border-radius: 6px; border-left: 5px solid #0033ff; margin-bottom: 20px;">
-  <p style="margin-bottom: 10px;"><strong>MCP でできること（代表例）</strong></p>
-  <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-    <tr style="background-color: #0033ff; color: #fff;">
-      <th style="padding: 8px 12px; border: 1px solid #4466cc; text-align: left; width: 30%;">MCP ツール</th>
-      <th style="padding: 8px 12px; border: 1px solid #4466cc; text-align: left;">できること</th>
-    </tr>
-    <tr>
-      <td style="padding: 8px 12px; border: 1px solid #ddd;"><strong>Claude in Chrome</strong></td>
-      <td style="padding: 8px 12px; border: 1px solid #ddd;">Chrome ブラウザをAIが直接操作。フォーム入力・ボタンクリック・スクリーンショット撮影を自動化</td>
-    </tr>
-    <tr style="background-color: #f9f9f9;">
-      <td style="padding: 8px 12px; border: 1px solid #ddd;"><strong>Slack MCP</strong></td>
-      <td style="padding: 8px 12px; border: 1px solid #ddd;">Slack へのメッセージ送信・チャンネル検索・通知自動化</td>
-    </tr>
-    <tr>
-      <td style="padding: 8px 12px; border: 1px solid #ddd;"><strong>GitHub MCP</strong></td>
-      <td style="padding: 8px 12px; border: 1px solid #ddd;">PR 作成・コードレビュー依頼・Issue 管理を AI が代行</td>
-    </tr>
-    <tr style="background-color: #f9f9f9;">
-      <td style="padding: 8px 12px; border: 1px solid #ddd;"><strong>Google Drive MCP</strong></td>
-      <td style="padding: 8px 12px; border: 1px solid #ddd;">ファイル検索・ドキュメント読み取り・スプレッドシート更新</td>
-    </tr>
-    <tr>
-      <td style="padding: 8px 12px; border: 1px solid #ddd;"><strong>データベース MCP</strong></td>
-      <td style="padding: 8px 12px; border: 1px solid #ddd;">SQL を AI が生成・実行。自然言語でデータを取得・集計</td>
-    </tr>
-  </table>
-</div>
-
-<!-- ===== 2-1. Chrome 自動化 ===== -->
-<h3 style="border-left: 4px solid #0055cc; padding-left: 10px; color: #0055cc; font-size: 16px; margin-bottom: 12px;">2-1. Claude in Chrome：ブラウザを AI が操作する</h3>
-
-<p style="margin-bottom: 12px;">Chrome 拡張機能「Claude in Chrome」を入れると、Claude Code がブラウザを直接コントロールできます。</p>
-
-<div style="background-color: #fff3f3; padding: 16px; border-radius: 6px; border-left: 5px solid #cc0000; margin-bottom: 14px; font-size: 14px;">
-  <p style="margin-bottom: 8px;"><strong>指示の例</strong></p>
-  <pre style="background-color: #fdf5e6; color: #333; padding: 10px 14px; border-radius: 5px; border: 1px solid #e1dbbd; font-family: monospace; font-size: 13px; overflow-x: auto; margin-bottom: 8px;">今開いているフォームに以下の情報を入力して送信してください：
-名前：山田太郎、メール：test@example.com、お問い合わせ内容：テスト送信</pre>
-  <pre style="background-color: #fdf5e6; color: #333; padding: 10px 14px; border-radius: 5px; border: 1px solid #e1dbbd; font-family: monospace; font-size: 13px; overflow-x: auto; margin: 0;">このページのスクリーンショットを撮って、商品一覧の価格をCSVにまとめてください</pre>
-</div>
-
-<div style="background-color: #e8f5e9; padding: 14px 16px; border-radius: 6px; border-left: 4px solid #4caf50; margin-bottom: 20px;">
-  <p style="margin-bottom: 6px;"><strong>従来の自動化（Selenium 等）との違い</strong></p>
-  <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-    <tr style="background-color: #c8e6c9;">
-      <th style="padding: 7px 10px; border: 1px solid #a5d6a7; text-align: left;"></th>
-      <th style="padding: 7px 10px; border: 1px solid #a5d6a7; text-align: left;">従来ツール（Selenium など）</th>
-      <th style="padding: 7px 10px; border: 1px solid #a5d6a7; text-align: left;">MCP（Claude in Chrome）</th>
-    </tr>
-    <tr>
-      <td style="padding: 7px 10px; border: 1px solid #ddd;"><strong>画面変更への対応</strong></td>
-      <td style="padding: 7px 10px; border: 1px solid #ddd;">HTML 構造が変わるとスクリプトが壊れる</td>
-      <td style="padding: 7px 10px; border: 1px solid #ddd;"><strong>AIが意味で理解するため変更に強い</strong></td>
-    </tr>
-    <tr style="background-color: #f9f9f9;">
-      <td style="padding: 7px 10px; border: 1px solid #ddd;"><strong>セットアップ</strong></td>
-      <td style="padding: 7px 10px; border: 1px solid #ddd;">コード（XPath/CSSセレクタ）を書く必要がある</td>
-      <td style="padding: 7px 10px; border: 1px solid #ddd;"><strong>日本語で指示するだけ</strong></td>
-    </tr>
-    <tr>
-      <td style="padding: 7px 10px; border: 1px solid #ddd;"><strong>仕様変更対応</strong></td>
-      <td style="padding: 7px 10px; border: 1px solid #ddd;">スクリプトを書き直す工数がかかる</td>
-      <td style="padding: 7px 10px; border: 1px solid #ddd;"><strong>指示をそのまま再実行するだけで OK</strong></td>
-    </tr>
-  </table>
-</div>
-
-<div style="background-color: #f2f2f2; padding: 14px 16px; border-radius: 6px; border-left: 5px solid #888; margin-bottom: 14px;">
-  <p style="margin: 0;"><strong>カバ先生</strong>：「Selenium のような自動化ツールは、ページの HTML 構造が変わった途端に壊れます。MCP は AI が『ボタンがどこにあるか』を見た目と文脈で判断するので、仕様変更・デザインリニューアルが起きても <strong>同じ指示で動き続ける</strong> のが大きな強みです。」</p>
-</div>
-
-<!-- ===== 2-2. アプリ自動化 ===== -->
-<h3 style="border-left: 4px solid #0055cc; padding-left: 10px; color: #0055cc; font-size: 16px; margin-bottom: 12px;">2-2. アプリケーション自動化の実例</h3>
-
-<div style="background-color: #f0f8ff; padding: 16px; border-radius: 6px; border-left: 5px solid #0033ff; margin-bottom: 14px; font-size: 14px;">
-  <table style="width: 100%; border-collapse: collapse;">
-    <tr style="background-color: #0033ff; color: #fff;">
-      <th style="padding: 8px 12px; border: 1px solid #4466cc; text-align: left;">やりたいこと</th>
-      <th style="padding: 8px 12px; border: 1px solid #4466cc; text-align: left;">Claude への指示例</th>
-    </tr>
-    <tr>
-      <td style="padding: 8px 12px; border: 1px solid #ddd;">定期レポートを Slack に送る</td>
-      <td style="padding: 8px 12px; border: 1px solid #ddd;">「売上CSVを集計して、結果を #report チャンネルに毎朝9時に投稿して」</td>
-    </tr>
-    <tr style="background-color: #f9f9f9;">
-      <td style="padding: 8px 12px; border: 1px solid #ddd;">競合サイトの価格を監視</td>
-      <td style="padding: 8px 12px; border: 1px solid #ddd;">「このページの商品価格を毎日チェックして、変動があればメールで教えて」</td>
-    </tr>
-    <tr>
-      <td style="padding: 8px 12px; border: 1px solid #ddd;">フォーム送信を一括処理</td>
-      <td style="padding: 8px 12px; border: 1px solid #ddd;">「このスプレッドシートの50件分を、申込フォームに自動入力して送信して」</td>
-    </tr>
-    <tr style="background-color: #f9f9f9;">
-      <td style="padding: 8px 12px; border: 1px solid #ddd;">GitHub の PR を自動レビュー</td>
-      <td style="padding: 8px 12px; border: 1px solid #ddd;">「新しい PR が来たらコードを確認して、問題があればコメントして」</td>
-    </tr>
-  </table>
-</div>
-
-<div style="background-color: #fff8e1; padding: 12px 16px; border-radius: 6px; border: 1px solid #ffe082; font-size: 14px; margin-bottom: 8px;">
-  <strong>注意</strong>：自動化は相手のサービス利用規約を必ず確認してください。サーバーに負荷をかける操作や、規約で禁止されているスクレイピングは行わないようにしましょう。
-</div>
-</section>
-
-<hr style="border: none; border-top: 2px solid #e1dbbd; margin: 2em 0;">
-
-<!-- ===== 3. 環境構築 ===== -->
-<section style="margin-bottom: 36px;">
-<h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 14px;">3. 環境構築</h2>
-
-<div style="background-color: #fff8e1; padding: 16px 20px; border-radius: 6px; border: 1px solid #ffe082; margin-bottom: 14px;">
-  <p style="margin: 0 0 10px 0; font-weight: bold;">前提：Git のインストール</p>
-  <p style="margin: 0 0 10px 0; font-size: 14px;">Claude Code はファイル管理に Git を使うため、先にインストールが必要です。</p>
-  <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-    <tr style="background-color: #ffd740; color: #333;">
-      <th style="padding: 8px 12px; border: 1px solid #ffe082; text-align: left; width: 20%;">OS</th>
-      <th style="padding: 8px 12px; border: 1px solid #ffe082; text-align: left;">手順</th>
-    </tr>
-    <tr>
-      <td style="padding: 8px 12px; border: 1px solid #ffe082;"><strong>Windows</strong></td>
-      <td style="padding: 8px 12px; border: 1px solid #ffe082;">
-        <code style="background-color: #f5f5f5; padding: 1px 5px; border-radius: 3px; font-family: monospace;">git-scm.com</code> を開き「Download for Windows」→ インストーラーを実行（オプションはすべてデフォルトで OK）→ コマンドプロンプトで <code style="background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px; font-family: monospace;">git --version</code> と入力してバージョンが表示されれば完了
-      </td>
-    </tr>
-    <tr style="background-color: #fffde7;">
-      <td style="padding: 8px 12px; border: 1px solid #ffe082;"><strong>Mac</strong></td>
-      <td style="padding: 8px 12px; border: 1px solid #ffe082;">
-        ターミナルで <code style="background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px; font-family: monospace;">git --version</code> を実行 → インストールを促すダイアログが出たら「インストール」を押すだけで完了（Xcode コマンドラインツールとして自動インストールされます）
-      </td>
-    </tr>
-  </table>
-  <p style="margin: 10px 0 0 0; font-size: 13px; color: #666;">※ すでに Git が入っている場合は <code style="background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px; font-family: monospace;">git --version</code> でバージョンが表示されるのでスキップして OK</p>
-</div>
-
-<div style="background-color: #f0f8ff; padding: 16px 20px; border-radius: 6px; border-left: 5px solid #0033ff; margin-bottom: 14px;">
-  <p style="margin: 0 0 10px 0; font-weight: bold;">手順</p>
-  <ol style="padding-left: 20px; margin: 0; font-size: 14px; line-height: 2.2;">
-    <li><strong>ダウンロード</strong>：<code style="background-color: #f5f5f5; padding: 1px 5px; border-radius: 3px; font-family: monospace;">claude.ai/code</code> を開き「Download」</li>
-    <li><strong>インストール</strong>：Windows は <code style="background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px; font-family: monospace;">.exe</code> をダブルクリック／Mac は <code style="background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px; font-family: monospace;">.dmg</code> をアプリフォルダへドラッグ</li>
-    <li><strong>API キー発行</strong>：<code style="background-color: #f5f5f5; padding: 1px 5px; border-radius: 3px; font-family: monospace;">console.anthropic.com</code> でアカウント作成 → Billing にカード登録 → 「API Keys」→「Create Key」</li>
-    <li><strong>ログイン</strong>：Claude Code Desktop を起動 → 「API Key でサインイン」→ キーを貼り付け</li>
-    <li><strong>動作確認</strong>：デスクトップに <code style="background-color: #f5f5f5; padding: 1px 4px; border-radius: 3px; font-family: monospace;">my-lp</code> フォルダを作成 → Claude Code で開き、「hello.txt を作って『動作確認OK』と書いて」と入力</li>
-  </ol>
-</div>
-
-<div style="display: flex; gap: 12px; font-size: 14px;">
-  <div style="background-color: #fff3cd; padding: 10px 14px; border-radius: 6px; border-left: 4px solid #ffc107; flex: 1;">
-    <strong>Windows の警告</strong>：「詳細情報」→「実行」
-  </div>
-  <div style="background-color: #fff3cd; padding: 10px 14px; border-radius: 6px; border-left: 4px solid #ffc107; flex: 1;">
-    <strong>Mac の警告</strong>：システム設定 → セキュリティ →「このまま開く」
-  </div>
-  <div style="background-color: #fff8e1; padding: 10px 14px; border-radius: 6px; border: 1px solid #ffe082; flex: 1;">
-    <strong>料金目安</strong>：今日の演習で $1〜2 程度
-  </div>
-</div>
-</section>
-
-<!-- ===== 4. 壁打ちの進め方 ===== -->
-<section style="margin-bottom: 36px;">
-<h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 14px;">4. 壁打ちで進める</h2>
-
-<p style="margin-bottom: 14px;">「完璧な指示を作る」練習ではありません。<strong>投げる → 見る → 直す</strong> を繰り返しながら形にします。</p>
-
-<div style="background-color: #f0f8ff; padding: 14px 20px; border-radius: 6px; border-left: 5px solid #0033ff; margin-bottom: 16px;">
-  <div style="display: flex; gap: 0; align-items: stretch; font-size: 14px; flex-wrap: wrap;">
-    <div style="background-color: #0033ff; color: #fff; padding: 12px 16px; border-radius: 6px 0 0 6px; text-align: center; min-width: 80px;"><strong>① 投げる</strong><br><span style="font-size: 12px;">ざっくり指示</span></div>
-    <div style="background-color: #ddeeff; color: #333; padding: 12px 10px; text-align: center; font-size: 18px; display: flex; align-items: center;">→</div>
-    <div style="background-color: #3366cc; color: #fff; padding: 12px 16px; text-align: center; min-width: 80px;"><strong>② 見る</strong><br><span style="font-size: 12px;">ブラウザで確認</span></div>
-    <div style="background-color: #ddeeff; color: #333; padding: 12px 10px; text-align: center; font-size: 18px; display: flex; align-items: center;">→</div>
-    <div style="background-color: #0055aa; color: #fff; padding: 12px 16px; text-align: center; min-width: 80px;"><strong>③ 直す</strong><br><span style="font-size: 12px;">気になる点を指示</span></div>
-    <div style="background-color: #ddeeff; color: #333; padding: 12px 10px; text-align: center; font-size: 18px; display: flex; align-items: center;">→</div>
-    <div style="background-color: #003388; color: #fff; padding: 12px 16px; border-radius: 0 6px 6px 0; text-align: center; min-width: 80px;"><strong>繰り返す</strong><br><span style="font-size: 12px;">完成まで</span></div>
-  </div>
-</div>
-<img src="https://raw.githubusercontent.com/pf-internal/Java-web/master/Lesson91_ClaudeCode_LP/slides/lesson91_claudecode_lp-slide-p05.jpg" style="width: 100%; max-width: 720px; display: block; margin: 16px auto; border-radius: 8px; border: 1px solid #e0e0e0; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
-
-<div style="background-color: #f0f8ff; padding: 14px 16px; border-radius: 6px; border-left: 5px solid #0033ff; font-size: 14px;">
-  <table style="width: 100%; border-collapse: collapse;">
-    <tr style="background-color: #ddeeff;">
-      <th style="padding: 7px 10px; border: 1px solid #b0c4de; text-align: left; width: 35%;">言いたいこと</th>
-      <th style="padding: 7px 10px; border: 1px solid #b0c4de; text-align: left;">Claude Code への伝え方</th>
-    </tr>
-    <tr>
-      <td style="padding: 7px 10px; border: 1px solid #ddd;">なんかダサい</td>
-      <td style="padding: 7px 10px; border: 1px solid #ddd;">「全体的にもっとシンプルにして。余白を広く取ってください」</td>
-    </tr>
-    <tr style="background-color: #f9f9f9;">
-      <td style="padding: 7px 10px; border: 1px solid #ddd;">色が気に入らない</td>
-      <td style="padding: 7px 10px; border: 1px solid #ddd;">「ヘッダー背景を濃紺（#2c3e50）、ボタンをオレンジに変えてください」</td>
-    </tr>
-    <tr>
-      <td style="padding: 7px 10px; border: 1px solid #ddd;">スマホで見たい</td>
-      <td style="padding: 7px 10px; border: 1px solid #ddd;">「スマートフォン幅でも崩れないか確認して、必要なら修正してください」</td>
-    </tr>
-  </table>
-</div>
-</section>
-
-<hr style="border: none; border-top: 2px solid #e1dbbd; margin: 2em 0;">
-
-<!-- ===== 5. ハンズオン：LP作成 ===== -->
-<section style="margin-bottom: 36px;">
-<h2 style="border-left: 5px solid #cc0000; padding-left: 10px; color: #cc0000; font-size: 18px; margin-bottom: 14px;">5. ハンズオン：LP を完成させる</h2>
-<img src="https://raw.githubusercontent.com/pf-internal/Java-web/master/Lesson91_ClaudeCode_LP/slides/lesson91_claudecode_lp-slide-p06.jpg" style="width: 100%; max-width: 720px; display: block; margin: 0 auto 16px; border-radius: 8px; border: 1px solid #e0e0e0; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
-
-<p style="margin-bottom: 14px; font-weight: bold;">まず「作るもの」を決めましょう（メモしてから進む）</p>
-<table style="width: 100%; border-collapse: collapse; font-size: 14px; margin-bottom: 20px;">
-  <tr style="background-color: #0033ff; color: #fff;">
-    <th style="padding: 8px 12px; border: 1px solid #ccc; width: 30%;">項目</th>
-    <th style="padding: 8px 12px; border: 1px solid #ccc;">記入欄</th>
-  </tr>
-  <tr>
-    <td style="padding: 10px 12px; border: 1px solid #ddd;"><strong>LP のテーマ</strong></td>
-    <td style="padding: 10px 12px; border: 1px solid #ddd; color: #aaa;">例：英語スクールの体験レッスン申込み LP</td>
-  </tr>
-  <tr style="background-color: #f9f9f9;">
-    <td style="padding: 10px 12px; border: 1px solid #ddd;"><strong>ターゲット</strong></td>
-    <td style="padding: 10px 12px; border: 1px solid #ddd; color: #aaa;">例：30代・仕事で英語が必要になった方</td>
-  </tr>
-  <tr>
-    <td style="padding: 10px 12px; border: 1px solid #ddd;"><strong>キャッチコピー</strong></td>
-    <td style="padding: 10px 12px; border: 1px solid #ddd; color: #aaa;">例：「3ヶ月で会議英語が話せるようになる」</td>
-  </tr>
-  <tr style="background-color: #f9f9f9;">
-    <td style="padding: 10px 12px; border: 1px solid #ddd;"><strong>特徴・強み（3つ）</strong></td>
-    <td style="padding: 10px 12px; border: 1px solid #ddd; color: #aaa;">例：①マンツーマン ②朝6時から夜23時 ③業種別コース</td>
-  </tr>
-  <tr>
-    <td style="padding: 10px 12px; border: 1px solid #ddd;"><strong>デザインイメージ</strong></td>
-    <td style="padding: 10px 12px; border: 1px solid #ddd; color: #aaa;">例：シンプル・白基調・アクセントは青</td>
-  </tr>
-</table>
-
-<div style="background-color: #fff3f3; padding: 16px; border-radius: 6px; border-left: 5px solid #cc0000; margin-bottom: 14px;">
-  <p style="margin-bottom: 8px; font-size: 14px;"><strong>最初の一投（メモシートの内容に書き換えて使う）</strong></p>
-  <pre style="background-color: #fdf5e6; color: #333; padding: 12px 16px; border-radius: 5px; border: 1px solid #e1dbbd; font-family: monospace; font-size: 13px; overflow-x: auto; margin: 0;">英語スクールの体験レッスン申込み LP を index.html で作ってください。
+<div style="border-top:2px dashed #f0d9bd;margin:34px 0;"></div>
+<section style="margin-bottom:12px;">
+<h2 style="font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-size:21px;line-height:1.5;color:#2d2a26;margin:0 0 16px 0;padding:2px 0 2px 14px;border-left:5px solid #c9573b;"><span style="color:#c9573b;">5</span>　ハンズオン：LP を完成させる</h2>
+<p style="margin:0 0 14px 0;font-weight:700;">まず「作るもの」を決めましょう（メモしてから進む）</p>
+<div style="margin:6px 0 18px 0;"><img src="https://raw.githubusercontent.com/yamiqumo/Java-web/master/Lesson91_ClaudeCode_LP/figures/fig-06-prompt-parts.webp" alt="最初の一投に入れる4つの要素：テーマ、ターゲット、コピーと強み、見た目" style="width:100%;max-width:760px;display:block;margin:0 auto;border-radius:18px;border:1px solid rgba(61,58,54,.12);box-shadow:0 4px 14px rgba(61,58,54,.07);background:#fff;"><p style="margin:8px 4px 0 4px;font-size:13px;color:#6f6a64;text-align:center;">最初の一投に入れる4つの要素</p></div>
+<div style="border-radius:16px;overflow:hidden;border:1px solid rgba(61,58,54,.12);box-shadow:0 4px 14px rgba(61,58,54,.07);margin-bottom:16px;"><table style="width:100%;border-collapse:collapse;"><tr><th style="width:30%;background:#ffe9d4;color:#3d3a36;font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-weight:700;text-align:left;padding:11px 14px;font-size:15px;line-height:1.6;">項目</th><th style="background:#ffe9d4;color:#3d3a36;font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-weight:700;text-align:left;padding:11px 14px;font-size:15px;line-height:1.6;">記入欄</th></tr><tr><td style="background:#fff;padding:11px 14px;font-size:15px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);font-weight:700;">LP のテーマ</td><td style="background:#fff;padding:11px 14px;font-size:15px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);"><span style="color:#a39d94;">例：英語スクールの体験レッスン申込み LP</span></td></tr><tr><td style="background:#fffaf3;padding:11px 14px;font-size:15px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);font-weight:700;">ターゲット</td><td style="background:#fffaf3;padding:11px 14px;font-size:15px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);"><span style="color:#a39d94;">例：30代・仕事で英語が必要になった方</span></td></tr><tr><td style="background:#fff;padding:11px 14px;font-size:15px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);font-weight:700;">キャッチコピー</td><td style="background:#fff;padding:11px 14px;font-size:15px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);"><span style="color:#a39d94;">例：「3ヶ月で会議英語が話せるようになる」</span></td></tr><tr><td style="background:#fffaf3;padding:11px 14px;font-size:15px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);font-weight:700;">特徴・強み（3つ）</td><td style="background:#fffaf3;padding:11px 14px;font-size:15px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);"><span style="color:#a39d94;">例：①マンツーマン ②朝6時から夜23時 ③業種別コース</span></td></tr><tr><td style="background:#fff;padding:11px 14px;font-size:15px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);font-weight:700;">デザインイメージ</td><td style="background:#fff;padding:11px 14px;font-size:15px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);"><span style="color:#a39d94;">例：シンプル・白基調・アクセントは青</span></td></tr></table></div>
+<div style="background:#fff;border:1px solid rgba(61,58,54,.12);border-radius:20px;padding:20px;margin-bottom:16px;box-shadow:0 4px 14px rgba(61,58,54,.07);"><p style="font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-weight:700;font-size:16px;color:#c9573b;margin:0 0 10px 0;">最初の一投（メモシートの内容に書き換えて使う）</p><pre style="background:#fdf5e6;color:#3d3a36;padding:14px 16px;border-radius:12px;border:1px solid #e1dbbd;font-family:Consolas,Menlo,monospace;font-size:13.5px;line-height:1.75;white-space:pre-wrap;word-break:break-word;margin:0 0 0 0;">英語スクールの体験レッスン申込み LP を index.html で作ってください。
 対象は30代・仕事で英語が必要な人。
 キャッチコピーは「3ヶ月で会議英語が話せるようになる」。
 特徴は①マンツーマン ②朝6時〜夜23時 ③業種別コース。
-白基調でシンプルに、スマホ対応もお願いします。</pre>
-</div>
-<img src="https://raw.githubusercontent.com/pf-internal/Java-web/master/Lesson91_ClaudeCode_LP/slides/lesson91_claudecode_lp-slide-p07.jpg" style="width: 100%; max-width: 720px; display: block; margin: 0 auto 14px; border-radius: 8px; border: 1px solid #e0e0e0; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
-
-<div style="background-color: #fff3f3; padding: 16px; border-radius: 6px; border-left: 5px solid #cc0000; margin-bottom: 14px; font-size: 14px;">
-  <p style="margin-bottom: 14px;"><strong>ワーク：壁打ちプロンプト集（5種）</strong></p>
-  <p style="margin-bottom: 6px; color: #555;">下のプロンプトを参考に、自分のLPに合わせて言葉を変えて使ってみましょう。</p>
-
-  <p style="margin: 14px 0 4px 0; font-weight: bold; color: #cc0000;">① マーケティング分析</p>
-  <p style="margin: 0 0 4px 0; color: #555; font-size: 13px;">→ 完成したLPのURLを貼り付けてAIに分析させる</p>
-  <pre style="background-color: #fdf5e6; color: #333; padding: 10px 14px; border-radius: 5px; border: 1px solid #e1dbbd; font-family: monospace; font-size: 13px; overflow-x: auto; margin: 0 0 14px 0;">マーケティングの観点から、現状のサイト（http://xxxxx.com）の
-30代女性をターゲットとしている点も含めて、問題点を教えてください。</pre>
-
-  <p style="margin: 0 0 4px 0; font-weight: bold; color: #cc0000;">② 競合分析</p>
-  <p style="margin: 0 0 4px 0; color: #555; font-size: 13px;">→ 競合サイトとの比較でLP改善のヒントを得る</p>
-  <pre style="background-color: #fdf5e6; color: #333; padding: 10px 14px; border-radius: 5px; border: 1px solid #e1dbbd; font-family: monospace; font-size: 13px; overflow-x: auto; margin: 0 0 14px 0;">同業他社のこのサイト（http://xxxxx.com）の良い点・悪い点を挙げて、
-悪い点の改善アイデアを主だったものから3つ教えてください。</pre>
-
-  <p style="margin: 0 0 4px 0; font-weight: bold; color: #cc0000;">③ キャッチコピー強化</p>
-  <p style="margin: 0 0 4px 0; color: #555; font-size: 13px;">→ 訴求力の高い言葉に磨き直す</p>
-  <pre style="background-color: #fdf5e6; color: #333; padding: 10px 14px; border-radius: 5px; border: 1px solid #e1dbbd; font-family: monospace; font-size: 13px; overflow-x: auto; margin: 0 0 14px 0;">ヒーローセクションのキャッチコピーを、
+白基調でシンプルに、スマホ対応もお願いします。</pre></div>
+<h3 style="font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-size:17px;line-height:1.5;color:#d9701c;margin:26px 0 12px 0;">ワーク：壁打ちプロンプト集（5種）</h3>
+<p style="margin:0 0 14px 0;font-size:14.5px;color:#6f6a64;">下のプロンプトを参考に、自分のLPに合わせて言葉を変えて使ってみましょう。</p>
+<div style="background:#fff;border:1px solid rgba(61,58,54,.12);border-radius:20px;padding:18px 20px;margin-bottom:16px;box-shadow:0 4px 14px rgba(61,58,54,.07);"><p style="font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-weight:700;font-size:16px;color:#3d3a36;margin:0 0 4px 0;"><span style="display:inline-block;width:28px;height:28px;border-radius:50%;background:#f28c38;color:#fff;text-align:center;line-height:28px;font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-weight:700;font-size:14px;margin-right:10px;">1</span>マーケティング分析</p><p style="margin:0 0 10px 0;font-size:13.5px;color:#6f6a64;">→ 完成したLPのURLを貼り付けてAIに分析させる</p><pre style="background:#fdf5e6;color:#3d3a36;padding:14px 16px;border-radius:12px;border:1px solid #e1dbbd;font-family:Consolas,Menlo,monospace;font-size:13.5px;line-height:1.75;white-space:pre-wrap;word-break:break-word;margin:0 0 0 0;">マーケティングの観点から、現状のサイト（http://xxxxx.com）の
+30代女性をターゲットとしている点も含めて、問題点を教えてください。</pre></div>
+<div style="background:#fff;border:1px solid rgba(61,58,54,.12);border-radius:20px;padding:18px 20px;margin-bottom:16px;box-shadow:0 4px 14px rgba(61,58,54,.07);"><p style="font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-weight:700;font-size:16px;color:#3d3a36;margin:0 0 4px 0;"><span style="display:inline-block;width:28px;height:28px;border-radius:50%;background:#f28c38;color:#fff;text-align:center;line-height:28px;font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-weight:700;font-size:14px;margin-right:10px;">2</span>競合分析</p><p style="margin:0 0 10px 0;font-size:13.5px;color:#6f6a64;">→ 競合サイトとの比較でLP改善のヒントを得る</p><pre style="background:#fdf5e6;color:#3d3a36;padding:14px 16px;border-radius:12px;border:1px solid #e1dbbd;font-family:Consolas,Menlo,monospace;font-size:13.5px;line-height:1.75;white-space:pre-wrap;word-break:break-word;margin:0 0 0 0;">同業他社のこのサイト（http://xxxxx.com）の良い点・悪い点を挙げて、
+悪い点の改善アイデアを主だったものから3つ教えてください。</pre></div>
+<div style="background:#fff;border:1px solid rgba(61,58,54,.12);border-radius:20px;padding:18px 20px;margin-bottom:16px;box-shadow:0 4px 14px rgba(61,58,54,.07);"><p style="font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-weight:700;font-size:16px;color:#3d3a36;margin:0 0 4px 0;"><span style="display:inline-block;width:28px;height:28px;border-radius:50%;background:#f28c38;color:#fff;text-align:center;line-height:28px;font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-weight:700;font-size:14px;margin-right:10px;">3</span>キャッチコピー強化</p><p style="margin:0 0 10px 0;font-size:13.5px;color:#6f6a64;">→ 訴求力の高い言葉に磨き直す</p><pre style="background:#fdf5e6;color:#3d3a36;padding:14px 16px;border-radius:12px;border:1px solid #e1dbbd;font-family:Consolas,Menlo,monospace;font-size:13.5px;line-height:1.75;white-space:pre-wrap;word-break:break-word;margin:0 0 0 0;">ヒーローセクションのキャッチコピーを、
 「30代・転職希望者」が読んで「自分ごと」に感じられる表現に書き直してください。
 現在の文章：「プロが教えるWebデザイン講座」
-候補を3パターン提案してから、最も良いものを実装してください。</pre>
-
-  <p style="margin: 0 0 4px 0; font-weight: bold; color: #cc0000;">④ 社会的証明の追加</p>
-  <p style="margin: 0 0 4px 0; color: #555; font-size: 13px;">→ 信頼感・購買意欲を高めるコンテンツを追加する</p>
-  <pre style="background-color: #fdf5e6; color: #333; padding: 10px 14px; border-radius: 5px; border: 1px solid #e1dbbd; font-family: monospace; font-size: 13px; overflow-x: auto; margin: 0 0 14px 0;">「お客様の声」を3名分、カード形式で追加してください。
+候補を3パターン提案してから、最も良いものを実装してください。</pre></div>
+<div style="background:#fff;border:1px solid rgba(61,58,54,.12);border-radius:20px;padding:18px 20px;margin-bottom:16px;box-shadow:0 4px 14px rgba(61,58,54,.07);"><p style="font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-weight:700;font-size:16px;color:#3d3a36;margin:0 0 4px 0;"><span style="display:inline-block;width:28px;height:28px;border-radius:50%;background:#f28c38;color:#fff;text-align:center;line-height:28px;font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-weight:700;font-size:14px;margin-right:10px;">4</span>社会的証明の追加</p><p style="margin:0 0 10px 0;font-size:13.5px;color:#6f6a64;">→ 信頼感・購買意欲を高めるコンテンツを追加する</p><pre style="background:#fdf5e6;color:#3d3a36;padding:14px 16px;border-radius:12px;border:1px solid #e1dbbd;font-family:Consolas,Menlo,monospace;font-size:13.5px;line-height:1.75;white-space:pre-wrap;word-break:break-word;margin:0 0 0 0;">「お客様の声」を3名分、カード形式で追加してください。
 ペルソナは30代・主婦・副業希望。
-顔写真の代わりにイニシャルアイコンを使ってください。</pre>
-
-  <p style="margin: 0 0 4px 0; font-weight: bold; color: #cc0000;">⑤ 最終品質チェック</p>
-  <p style="margin: 0 0 4px 0; color: #555; font-size: 13px;">→ 公開前の一括見直し</p>
-  <pre style="background-color: #fdf5e6; color: #333; padding: 10px 14px; border-radius: 5px; border: 1px solid #e1dbbd; font-family: monospace; font-size: 13px; overflow-x: auto; margin: 0;">LP 全体を以下の観点でチェックして、問題があれば修正してください。
+顔写真の代わりにイニシャルアイコンを使ってください。</pre></div>
+<div style="background:#fff;border:1px solid rgba(61,58,54,.12);border-radius:20px;padding:18px 20px;margin-bottom:16px;box-shadow:0 4px 14px rgba(61,58,54,.07);"><p style="font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-weight:700;font-size:16px;color:#3d3a36;margin:0 0 4px 0;"><span style="display:inline-block;width:28px;height:28px;border-radius:50%;background:#f28c38;color:#fff;text-align:center;line-height:28px;font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-weight:700;font-size:14px;margin-right:10px;">5</span>最終品質チェック</p><p style="margin:0 0 10px 0;font-size:13.5px;color:#6f6a64;">→ 公開前の一括見直し</p><pre style="background:#fdf5e6;color:#3d3a36;padding:14px 16px;border-radius:12px;border:1px solid #e1dbbd;font-family:Consolas,Menlo,monospace;font-size:13.5px;line-height:1.75;white-space:pre-wrap;word-break:break-word;margin:0 0 0 0;">LP 全体を以下の観点でチェックして、問題があれば修正してください。
 ①誤字・脱字　②CTAボタンの数と配置　③スマホ幅での崩れ
-④フォントサイズが小さすぎる箇所　⑤余白が詰まって読みにくい箇所</pre>
-</div>
-<div style="background-color: #e8f5e9; padding: 12px 16px; border-radius: 6px; border-left: 4px solid #4caf50; font-size: 14px;">
-  <strong>完成チェック</strong>：隣の人に見せて「何をするページか」が3秒で伝われば合格です。
-</div>
+④フォントサイズが小さすぎる箇所　⑤余白が詰まって読みにくい箇所</pre></div>
+<div style="background:#e3f4ec;border:1px solid #bfe3d1;border-radius:16px;padding:14px 18px;margin-bottom:0;font-size:14.5px;"><strong>完成チェック</strong>：隣の人に見せて「何をするページか」が3秒で伝われば合格です。</div>
 </section>
-
-<hr style="border: none; border-top: 2px solid #e1dbbd; margin: 2em 0;">
-
-<!-- ===== 6. まとめ ===== -->
-<section style="margin-bottom: 20px;">
-<h2 style="border-left: 5px solid #0033ff; padding-left: 10px; color: #0033ff; font-size: 18px; margin-bottom: 14px;">6. まとめと次のステップ</h2>
-
-<div style="background-color: #f0f8ff; padding: 18px; border-radius: 6px; border-left: 5px solid #0033ff; margin-bottom: 18px;">
-  <p style="margin-bottom: 10px;"><strong>今日できるようになったこと</strong></p>
-  <ul style="padding-left: 20px; margin-bottom: 0;">
-    <li style="margin-bottom: 6px;">Claude Code Desktop をインストールし、LP 作成で AI との対話操作を習得した</li>
-    <li style="margin-bottom: 6px;">MCP でブラウザ・アプリを AI が操作できる仕組みを理解した</li>
-    <li style="margin-bottom: 6px;">競合他社のリサーチを AI に任せて特徴を整理できるようになった</li>
-    <li style="margin-bottom: 6px;">ビジネスモデルを多角的に再考するプロンプトの作り方を体験した</li>
-    <li style="margin-bottom: 0;">複雑な繰り返し作業を自動化して運用まで持っていく流れを把握した</li>
-  </ul>
-</div>
-<img src="https://raw.githubusercontent.com/pf-internal/Java-web/master/Lesson91_ClaudeCode_LP/slides/lesson91_claudecode_lp-slide-p13.jpg" style="width: 100%; max-width: 720px; display: block; margin: 0 auto 18px; border-radius: 8px; border: 1px solid #e0e0e0; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
-
-<div style="background-color: #fff8e1; padding: 18px; border-radius: 6px; border: 1px solid #ffe082; margin-bottom: 18px;">
-  <p style="margin-bottom: 10px;"><strong>次のステップ</strong></p>
-  <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-    <tr style="background-color: #ffd740; color: #333;">
-      <th style="padding: 8px 12px; border: 1px solid #ffe082; text-align: left;">やること</th>
-      <th style="padding: 8px 12px; border: 1px solid #ffe082; text-align: left;">ヒント</th>
-    </tr>
-    <tr>
-      <td style="padding: 8px 12px; border: 1px solid #ffe082;"><strong>ビジネスモデルを再考する</strong></td>
-      <td style="padding: 8px 12px; border: 1px solid #ffe082;">「自社の強み・弱み・競合・市場」を Claude に整理させ、新しい切り口を見つける</td>
-    </tr>
-    <tr style="background-color: #fffde7;">
-      <td style="padding: 8px 12px; border: 1px solid #ffe082;"><strong>競合リサーチを自動化する</strong></td>
-      <td style="padding: 8px 12px; border: 1px solid #ffe082;">MCP ＋ Chrome で競合サイトを定期巡回し、特徴・変化をリスト化して通知させる</td>
-    </tr>
-    <tr>
-      <td style="padding: 8px 12px; border: 1px solid #ffe082;"><strong>業務の自動化を1本運用する</strong></td>
-      <td style="padding: 8px 12px; border: 1px solid #ffe082;">「毎日やっている繰り返し作業」を Claude Code ＋ MCP に任せ、本番運用まで持っていく</td>
-    </tr>
-    <tr style="background-color: #fffde7;">
-      <td style="padding: 8px 12px; border: 1px solid #ffe082;"><strong>LP を公開して反応を見る</strong></td>
-      <td style="padding: 8px 12px; border: 1px solid #ffe082;">GitHub Pages・Netlify Drop にドラッグするだけで無料公開。実際の反応をもとに壁打ちで改善する</td>
-    </tr>
-  </table>
-</div>
-<img src="https://raw.githubusercontent.com/pf-internal/Java-web/master/Lesson91_ClaudeCode_LP/slides/lesson91_claudecode_lp-slide-p14.jpg" style="width: 100%; max-width: 720px; display: block; margin: 0 auto 18px; border-radius: 8px; border: 1px solid #e0e0e0; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
-
-<div style="background-color: #f2f2f2; padding: 14px 16px; border-radius: 6px; border-left: 5px solid #888; margin-bottom: 16px;">
-  <p style="margin: 0;"><strong>カバ先生</strong>：「LP 作成はゴールではなく、AI との対話に慣れるための練習です。本当の価値は、その先にある『ビジネスモデルの再考』『競合リサーチ』『業務の自動化』にあります。<strong>指示する → 確認する → 修正する</strong> のループを回せるようになったら、あとはテーマを変えるだけで何にでも応用できます。」</p>
-</div>
-
-<img src="https://raw.githubusercontent.com/pf-internal/Java-web/master/Lesson91_ClaudeCode_LP/slides/lesson91_claudecode_lp-slide-p15.jpg" style="width: 100%; max-width: 720px; display: block; margin: 0 auto 16px; border-radius: 8px; border: 1px solid #e0e0e0; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
-
-<div style="background-color: #e8f5e9; padding: 14px 16px; border-radius: 6px; border-left: 4px solid #4caf50; font-size: 14px;">
-  <strong>お疲れさまでした！</strong> 今日体験したことを自分のビジネス・仕事に当てはめて、明日から1つだけ Claude Code に任せてみましょう。
-</div>
+<div style="border-top:2px dashed #f0d9bd;margin:34px 0;"></div>
+<section style="margin-bottom:12px;">
+<h2 style="font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-size:21px;line-height:1.5;color:#2d2a26;margin:0 0 16px 0;padding:2px 0 2px 14px;border-left:5px solid #f28c38;"><span style="color:#f28c38;">6</span>　まとめと次のステップ</h2>
+<div style="background:#fff1df;border:1px solid #f7dcc0;border-radius:20px;padding:20px;margin-bottom:16px;"><p style="font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-weight:700;font-size:16px;color:#d9701c;margin:0 0 10px 0;">今日できるようになったこと</p><div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:10px;"><span style="flex:none;width:24px;height:24px;border-radius:50%;background:#f28c38;color:#fff;text-align:center;line-height:24px;font-size:13px;font-weight:700;margin-top:3px;">✓</span><span style="flex:1;">Claude Code Desktop をインストールし、LP 作成で AI との対話操作を習得した</span></div><div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:10px;"><span style="flex:none;width:24px;height:24px;border-radius:50%;background:#f28c38;color:#fff;text-align:center;line-height:24px;font-size:13px;font-weight:700;margin-top:3px;">✓</span><span style="flex:1;">MCP でブラウザ・アプリを AI が操作できる仕組みを理解した</span></div><div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:10px;"><span style="flex:none;width:24px;height:24px;border-radius:50%;background:#f28c38;color:#fff;text-align:center;line-height:24px;font-size:13px;font-weight:700;margin-top:3px;">✓</span><span style="flex:1;">競合他社のリサーチを AI に任せて特徴を整理できるようになった</span></div><div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:10px;"><span style="flex:none;width:24px;height:24px;border-radius:50%;background:#f28c38;color:#fff;text-align:center;line-height:24px;font-size:13px;font-weight:700;margin-top:3px;">✓</span><span style="flex:1;">ビジネスモデルを多角的に再考するプロンプトの作り方を体験した</span></div><div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:0;"><span style="flex:none;width:24px;height:24px;border-radius:50%;background:#f28c38;color:#fff;text-align:center;line-height:24px;font-size:13px;font-weight:700;margin-top:3px;">✓</span><span style="flex:1;">複雑な繰り返し作業を自動化して運用まで持っていく流れを把握した</span></div></div>
+<div style="margin:6px 0 18px 0;"><img src="https://raw.githubusercontent.com/yamiqumo/Java-web/master/Lesson91_ClaudeCode_LP/figures/fig-08-next-uses.webp" alt="LPづくりで身につけた対話の型を、ビジネスモデル再考・競合リサーチ・自動化・LP公開の4つに広げる" style="width:100%;max-width:760px;display:block;margin:0 auto;border-radius:18px;border:1px solid rgba(61,58,54,.12);box-shadow:0 4px 14px rgba(61,58,54,.07);background:#fff;"><p style="margin:8px 4px 0 4px;font-size:13px;color:#6f6a64;text-align:center;">LPづくりのあとに広がる、4つの活用</p></div>
+<h3 style="font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-size:17px;line-height:1.5;color:#d9701c;margin:26px 0 12px 0;">次のステップ</h3>
+<div style="border-radius:16px;overflow:hidden;border:1px solid rgba(61,58,54,.12);box-shadow:0 4px 14px rgba(61,58,54,.07);margin-bottom:16px;"><table style="width:100%;border-collapse:collapse;"><tr><th style="width:30%;background:#fff4cc;color:#3d3a36;font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-weight:700;text-align:left;padding:11px 14px;font-size:14px;line-height:1.6;">やること</th><th style="background:#fff4cc;color:#3d3a36;font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-weight:700;text-align:left;padding:11px 14px;font-size:14px;line-height:1.6;">ヒント</th></tr><tr><td style="background:#fff;padding:11px 14px;font-size:14px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);font-weight:700;">ビジネスモデルを再考する</td><td style="background:#fff;padding:11px 14px;font-size:14px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);">「自社の強み・弱み・競合・市場」を Claude に整理させ、新しい切り口を見つける</td></tr><tr><td style="background:#fffaf3;padding:11px 14px;font-size:14px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);font-weight:700;">競合リサーチを自動化する</td><td style="background:#fffaf3;padding:11px 14px;font-size:14px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);">MCP ＋ Chrome で競合サイトを定期巡回し、特徴・変化をリスト化して通知させる</td></tr><tr><td style="background:#fff;padding:11px 14px;font-size:14px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);font-weight:700;">業務の自動化を1本運用する</td><td style="background:#fff;padding:11px 14px;font-size:14px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);">「毎日やっている繰り返し作業」を Claude Code ＋ MCP に任せ、本番運用まで持っていく</td></tr><tr><td style="background:#fffaf3;padding:11px 14px;font-size:14px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);font-weight:700;">LP を公開して反応を見る</td><td style="background:#fffaf3;padding:11px 14px;font-size:14px;line-height:1.7;vertical-align:top;border-top:1px solid rgba(61,58,54,.12);">GitHub Pages・Netlify Drop にドラッグするだけで無料公開。実際の反応をもとに壁打ちで改善する</td></tr></table></div>
+<div style="background:#f6f1ea;border-radius:20px;padding:18px 20px;margin-bottom:16px;"><p style="margin:0 0 6px 0;"><span style="display:inline-block;background:#888;color:#fff;font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;font-weight:700;font-size:12px;line-height:1;padding:6px 12px;border-radius:999px;">カバ先生</span></p><p style="margin:0;">LP 作成はゴールではなく、AI との対話に慣れるための練習です。本当の価値は、その先にある「ビジネスモデルの再考」「競合リサーチ」「業務の自動化」にあります。<strong>指示する → 確認する → 修正する</strong> のループを回せるようになったら、あとはテーマを変えるだけで何にでも応用できます。</p></div>
+<div style="background:#e3f4ec;border:1px solid #bfe3d1;border-radius:16px;padding:14px 18px;margin-bottom:0;font-size:14.5px;"><strong>お疲れさまでした！</strong> 今日体験したことを自分のビジネス・仕事に当てはめて、明日から1つだけ Claude Code に任せてみましょう。</div>
 </section>
-
 </div>
